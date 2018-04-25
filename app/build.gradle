@@ -29,4 +29,7 @@ dependencies {
     //rx
     implementation 'io.reactivex.rxjava2:rxandroid:2.0.2'
     implementation 'io.reactivex.rxjava2:rxjava:2.1.10'
+
+    //Live data & ViewModel
+    implementation "android.arch.lifecycle:extensions:${archComponentsVersion}"
 }

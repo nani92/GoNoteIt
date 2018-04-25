@@ -24,6 +24,7 @@ allprojects {
 
 ext {
     supportLibVersion = "27.1.1"
+    archComponentsVersion = "1.1.1"
 }
 
 task clean(type: Delete) {
