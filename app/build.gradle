@@ -32,4 +32,10 @@ dependencies {
 
     //Live data & ViewModel
     implementation "android.arch.lifecycle:extensions:${archComponentsVersion}"
+
+    //room
+    implementation "android.arch.persistence.room:runtime:${roomVersion}"
+    implementation "android.arch.persistence.room:rxjava2:${roomVersion}"
+    annotationProcessor "android.arch.persistence.room:compiler:${roomVersion}"
+
 }
