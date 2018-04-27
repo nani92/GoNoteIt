@@ -1,3 +1,4 @@
 <resources>
+    <!--App variables-->
     <string name="app_name">Go Note It</string>
 </resources>
