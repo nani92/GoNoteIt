@@ -57,5 +57,5 @@ dependencies {
 }
 
 apollo {
-    customTypeMapping['data'] = "eu.napcode.gonoteit.model.NoteModel"
+    customTypeMapping['data'] = "eu.napcode.gonoteit.api.Note"
 }

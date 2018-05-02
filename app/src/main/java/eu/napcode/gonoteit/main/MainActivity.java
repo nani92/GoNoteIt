@@ -15,11 +15,12 @@ import javax.inject.Inject;
 import dagger.android.AndroidInjection;
 import eu.napcode.gonoteit.GetNotesQuery;
 import eu.napcode.gonoteit.R;
+import eu.napcode.gonoteit.api.Note;
 import eu.napcode.gonoteit.api.NoteAdapter;
 import eu.napcode.gonoteit.di.modules.viewmodel.ViewModelFactory;
 import eu.napcode.gonoteit.model.NoteModel;
-import eu.napcode.gonoteit.rx.RxSchedulers;
 import eu.napcode.gonoteit.type.CustomType;
+import eu.napcode.gonoteit.type.Type;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.observers.DisposableObserver;
@@ -71,7 +72,9 @@ public class MainActivity extends AppCompatActivity {
                                        Log.d("Natalia", "ok ");
 
                                        for (GetNotesQuery.AllEntity allEntity : dataResponse.data().allEntities()) {
-                                           Log.d("Natalia dupa", allEntity.type().rawValue() + ((NoteModel)allEntity.data()).getMsg());
+                                           Log.d("Natalia dupa", allEntity.type().rawValue() + allEntity.data());
+                                           Type type = allEntity.type();
+                                           Log.d("Natali kupa", ((NoteModel)((Note)allEntity.data()).parseNote(type)).getMsg());
                                        }
 
                                    }

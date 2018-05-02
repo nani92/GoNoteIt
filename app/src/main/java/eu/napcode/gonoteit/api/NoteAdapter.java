@@ -2,26 +2,18 @@ package eu.napcode.gonoteit.api;
 
 import com.apollographql.apollo.response.CustomTypeAdapter;
 import com.apollographql.apollo.response.CustomTypeValue;
-import com.google.gson.Gson;
 import javax.annotation.Nonnull;
 
-import eu.napcode.gonoteit.model.NoteModel;
-
-public class NoteAdapter implements CustomTypeAdapter<NoteModel> {
+public class NoteAdapter implements CustomTypeAdapter<Note> {
 
     @Override
-    public NoteModel decode(@Nonnull CustomTypeValue value) {
-        Gson gson = new Gson();
-        String stringValue = value.value.toString();
-
-        return gson.fromJson(String.valueOf(stringValue), NoteModel.class);
+    public Note decode(@Nonnull CustomTypeValue value) {
+        return new Note(value.value.toString());
     }
 
     @Nonnull
     @Override
-    public CustomTypeValue encode(@Nonnull NoteModel value) {
-        Gson gson = new Gson();
-
-        return CustomTypeValue.fromRawValue(gson.toJson(value));
+    public CustomTypeValue encode(@Nonnull Note note) {
+        return CustomTypeValue.fromRawValue(note.getNoteString());
     }
 }
