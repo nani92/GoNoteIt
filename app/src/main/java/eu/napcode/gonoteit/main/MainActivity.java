@@ -15,8 +15,11 @@ import javax.inject.Inject;
 import dagger.android.AndroidInjection;
 import eu.napcode.gonoteit.GetNotesQuery;
 import eu.napcode.gonoteit.R;
+import eu.napcode.gonoteit.api.NoteAdapter;
 import eu.napcode.gonoteit.di.modules.viewmodel.ViewModelFactory;
+import eu.napcode.gonoteit.model.NoteModel;
 import eu.napcode.gonoteit.rx.RxSchedulers;
+import eu.napcode.gonoteit.type.CustomType;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.observers.DisposableObserver;
@@ -50,6 +53,7 @@ public class MainActivity extends AppCompatActivity {
         ApolloClient apolloClient = ApolloClient.builder()
                 .serverUrl("http://10.0.0.105:8000/graphql/")
                 .okHttpClient(okHttpClient)
+                .addCustomTypeAdapter(CustomType.GENERICSCALAR, new NoteAdapter())
                 .build();
 
         CompositeDisposable disposables = new CompositeDisposable();
@@ -67,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
                                        Log.d("Natalia", "ok ");
 
                                        for (GetNotesQuery.AllEntity allEntity : dataResponse.data().allEntities()) {
-                                           Log.d("Natalia dupa", allEntity.type().rawValue());
+                                           Log.d("Natalia dupa", allEntity.type().rawValue() + ((NoteModel)allEntity.data()).getMsg());
                                        }
 
                                    }
