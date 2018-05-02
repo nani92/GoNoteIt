@@ -13,4 +13,12 @@
         tools:layoutManager="android.support.v7.widget.GridLayoutManager"
         tools:listitem="@layout/item_note"/>
 
+    <android.support.design.widget.FloatingActionButton
+        android:layout_width="@dimen/fab_size"
+        android:layout_height="@dimen/fab_size"
+        android:layout_margin="@dimen/base_margin"
+        android:src="@drawable/ic_add_24px"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent"/>
+
 </android.support.constraint.ConstraintLayout>

@@ -2,4 +2,5 @@
 <resources>
     <dimen name="base_margin">16dp</dimen>
     <dimen name="note_title_text_size">20sp</dimen>
+    <dimen name="fab_size">56dp</dimen>
 </resources>
