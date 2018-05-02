@@ -1,4 +1,5 @@
 <resources>
     <!--App variables-->
     <string name="app_name">Go Note It</string>
+    <string name="logout">Logout</string>
 </resources>
