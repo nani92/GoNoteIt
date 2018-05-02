@@ -48,4 +48,7 @@ dependencies {
     //graphQL
     implementation "com.apollographql.apollo:apollo-runtime:${graphQLVersion}"
     implementation "com.apollographql.apollo:apollo-rx2-support:${graphQLVersion}"
+
+    //okhttp
+    implementation group: 'com.squareup.okhttp', name: 'okhttp', version: '2.7.5'
 }
