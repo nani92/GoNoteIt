@@ -27,9 +27,11 @@
         android:id="@+id/usernameTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:drawableEnd="@drawable/ic_edit_24px"
         android:textColor="@android:color/white"
         android:textSize="@dimen/drawer_user_name_text_size"
         app:layout_constraintBottom_toBottomOf="parent"
-        tools:text="@tools:sample/full_names"/>
+        tools:text="@tools:sample/full_names"
+    android:paddingTop="@dimen/base_margin"/>
 
 </android.support.constraint.ConstraintLayout>
