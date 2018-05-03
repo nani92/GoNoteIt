@@ -20,7 +20,8 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0" app:srcCompat="@drawable/gonoteit_logo"/>
+        app:layout_constraintVertical_bias="1.0"
+        app:srcCompat="@drawable/gonoteit_logo"/>
 
     <TextView
         android:id="@+id/usernameTextView"
@@ -29,6 +30,6 @@
         android:textColor="@android:color/white"
         android:textSize="@dimen/drawer_user_name_text_size"
         app:layout_constraintBottom_toBottomOf="parent"
-        tools:text="@tools:sample/lorem"/>
+        tools:text="@tools:sample/full_names"/>
 
 </android.support.constraint.ConstraintLayout>
