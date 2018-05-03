@@ -1,4 +1,9 @@
 <resources>
     <!--App variables-->
     <string name="app_name">Go Note It</string>
+    <string name="logout">Logout</string>
+    <string name="application_logo">Go Note It logo</string>
+    <string name="about">About</string>
+    <string name="notes">Notes</string>
+    <string name="fav_notes">Favorite Notes</string>
 </resources>

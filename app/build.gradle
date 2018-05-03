@@ -48,4 +48,13 @@ dependencies {
     //graphQL
     implementation "com.apollographql.apollo:apollo-runtime:${graphQLVersion}"
     implementation "com.apollographql.apollo:apollo-rx2-support:${graphQLVersion}"
+
+    //recyclerview
+    implementation "com.android.support:recyclerview-v7:${supportLibVersion}"
+
+    //cardview
+    implementation "com.android.support:cardview-v7:${supportLibVersion}"
+
+    //design
+    implementation "com.android.support:design:${supportLibVersion}"
 }

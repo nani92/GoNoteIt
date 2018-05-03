@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="base_margin">16dp</dimen>
+    <dimen name="note_title_text_size">20sp</dimen>
+    <dimen name="fab_size">56dp</dimen>
+
+    <!--drawer-->
+    <dimen name="drawer_header_height">200dp</dimen>
+    <dimen name="drawer_user_name_text_size">20sp</dimen>
+</resources>
