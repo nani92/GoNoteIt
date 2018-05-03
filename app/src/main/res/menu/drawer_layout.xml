@@ -3,6 +3,7 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/logout"
+            android:icon="@drawable/ic_logout_24px"
             android:title="@string/logout"/>
     </group>
 </menu>
