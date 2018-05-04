@@ -1,7 +1,5 @@
 package eu.napcode.gonoteit.di.components;
 
-import android.arch.lifecycle.ViewModel;
-
 import javax.inject.Singleton;
 
 import dagger.BindsInstance;

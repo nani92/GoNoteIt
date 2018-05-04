@@ -1,4 +1,4 @@
-package eu.napcode.gonoteit.repository;
+package eu.napcode.gonoteit.repository.notes;
 
 import javax.inject.Inject;
 

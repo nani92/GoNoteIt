@@ -4,7 +4,7 @@ import android.arch.lifecycle.ViewModel;
 
 import javax.inject.Inject;
 
-import eu.napcode.gonoteit.repository.NotesRepository;
+import eu.napcode.gonoteit.repository.notes.NotesRepository;
 
 public class MainViewModel extends ViewModel {
 
