@@ -47,6 +47,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private ActivityMainBinding binding;
     private ActionBarDrawerToggle drawerToggle;
 
+    @Inject
+    ApolloClient apolloClient;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -125,14 +128,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void graphQLTry() {
-        OkHttpClient okHttpClient = new OkHttpClient.Builder().build();
-
-        ApolloClient apolloClient = ApolloClient.builder()
-                .serverUrl("http://10.0.0.105:8000/graphql/")
-                .okHttpClient(okHttpClient)
-                .addCustomTypeAdapter(CustomType.GENERICSCALAR, new NoteAdapter())
-                .build();
-
         CompositeDisposable disposables = new CompositeDisposable();
 
         ApolloCall<GetNotesQuery.Data> notesQuery = apolloClient.
