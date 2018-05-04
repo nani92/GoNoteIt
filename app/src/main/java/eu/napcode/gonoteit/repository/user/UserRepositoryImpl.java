@@ -7,4 +7,9 @@ public class UserRepositoryImpl implements UserRepository {
     @Inject
     public UserRepositoryImpl() {
     }
+
+    @Override
+    public void authenticateUser(String login, String password) {
+
+    }
 }

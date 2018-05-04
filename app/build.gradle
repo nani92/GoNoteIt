@@ -66,6 +66,9 @@ dependencies {
 
     //gson
     implementation 'com.google.code.gson:gson:2.8.4'
+
+    //mockito
+    testImplementation group: 'org.mockito', name: 'mockito-all', version: '1.10.19'
 }
 
 apollo {
