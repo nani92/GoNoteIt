@@ -11,13 +11,30 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.MenuItem;
+import android.util.Log;
+
+import com.apollographql.apollo.ApolloCall;
+import com.apollographql.apollo.ApolloClient;
+import com.apollographql.apollo.api.Response;
+import com.apollographql.apollo.rx2.Rx2Apollo;
 
 import javax.inject.Inject;
 
 import dagger.android.AndroidInjection;
+import eu.napcode.gonoteit.GetNotesQuery;
 import eu.napcode.gonoteit.R;
 import eu.napcode.gonoteit.databinding.ActivityMainBinding;
+import eu.napcode.gonoteit.api.Note;
+import eu.napcode.gonoteit.api.NoteAdapter;
 import eu.napcode.gonoteit.di.modules.viewmodel.ViewModelFactory;
+import eu.napcode.gonoteit.model.NoteModel;
+import eu.napcode.gonoteit.type.CustomType;
+import eu.napcode.gonoteit.type.Type;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.observers.DisposableObserver;
+import io.reactivex.schedulers.Schedulers;
+import okhttp3.OkHttpClient;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -42,6 +59,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setSupportActionBar(this.binding.toolbar);
 
         setupDrawer();
+
+
+        graphQLTry();
     }
 
     private void setupDrawer() {
@@ -99,5 +119,49 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             default:
                 return false;
         }
+    }
+
+    private void graphQLTry() {
+        OkHttpClient okHttpClient = new OkHttpClient.Builder().build();
+
+        ApolloClient apolloClient = ApolloClient.builder()
+                .serverUrl("http://10.0.0.105:8000/graphql/")
+                .okHttpClient(okHttpClient)
+                .addCustomTypeAdapter(CustomType.GENERICSCALAR, new NoteAdapter())
+                .build();
+
+        CompositeDisposable disposables = new CompositeDisposable();
+
+        ApolloCall<GetNotesQuery.Data> notesQuery = apolloClient.
+                query(new GetNotesQuery());
+
+        disposables.add(Rx2Apollo.from(notesQuery)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(new DisposableObserver<Response<GetNotesQuery.Data>>() {
+
+                                   @Override
+                                   public void onNext(Response<GetNotesQuery.Data> dataResponse) {
+                                       Log.d("Natalia", "ok ");
+
+                                       for (GetNotesQuery.AllEntity allEntity : dataResponse.data().allEntities()) {
+                                           Log.d("Natalia dupa", allEntity.type().rawValue() + allEntity.data());
+                                           Type type = allEntity.type();
+                                           Log.d("Natali kupa", ((NoteModel)((Note)allEntity.data()).parseNote(type)).getMsg());
+                                       }
+
+                                   }
+
+                                   @Override
+                                   public void onError(Throwable e) {
+                                       Log.e("Natalia", e.getMessage(), e);
+                                   }
+
+                                   @Override
+                                   public void onComplete() {
+
+                                   }
+                               }
+                ));
     }
 }

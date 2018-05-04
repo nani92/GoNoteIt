@@ -1,0 +1,6 @@
+query GetNotesQuery {
+    allEntities {
+       type,
+       data
+     }
+}

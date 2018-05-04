@@ -60,4 +60,14 @@ dependencies {
 
     //design
     implementation "com.android.support:design:${supportLibVersion}"
+
+    //okhttp
+    implementation group: 'com.squareup.okhttp', name: 'okhttp', version: '2.7.5'
+
+    //gson
+    implementation 'com.google.code.gson:gson:2.8.4'
+}
+
+apollo {
+    customTypeMapping['data'] = "eu.napcode.gonoteit.api.Note"
 }
