@@ -1,6 +1,7 @@
-package eu.napcode.gonoteit.main;
+package eu.napcode.gonoteit.ui.main;
 
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.databinding.DataBindingUtil;
 import android.support.annotation.NonNull;
@@ -30,6 +31,7 @@ import eu.napcode.gonoteit.di.modules.viewmodel.ViewModelFactory;
 import eu.napcode.gonoteit.model.NoteModel;
 import eu.napcode.gonoteit.type.CustomType;
 import eu.napcode.gonoteit.type.Type;
+import eu.napcode.gonoteit.ui.login.LoginActivity;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.observers.DisposableObserver;
@@ -60,8 +62,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         setupDrawer();
 
-
         graphQLTry();
+
+        startActivity(new Intent(this, LoginActivity.class));
     }
 
     private void setupDrawer() {

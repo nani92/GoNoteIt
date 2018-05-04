@@ -1,4 +1,4 @@
-package eu.napcode.gonoteit.main;
+package eu.napcode.gonoteit.ui.main;
 
 import android.arch.lifecycle.ViewModel;
 
