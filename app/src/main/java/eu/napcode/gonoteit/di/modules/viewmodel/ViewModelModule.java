@@ -12,6 +12,8 @@ import dagger.Binds;
 import dagger.MapKey;
 import dagger.Module;
 import dagger.multibindings.IntoMap;
+import eu.napcode.gonoteit.ui.login.LoginActivity;
+import eu.napcode.gonoteit.ui.login.LoginViewModel;
 import eu.napcode.gonoteit.ui.main.MainViewModel;
 
 @Module
@@ -29,4 +31,9 @@ public interface ViewModelModule {
     @Binds
     @ViewModelKey(MainViewModel.class)
     abstract ViewModel mainViewModel(MainViewModel viewModel);
+
+    @IntoMap
+    @Binds
+    @ViewModelKey(LoginViewModel.class)
+    abstract ViewModel loginViewModel(LoginViewModel viewModel);
 }
