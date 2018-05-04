@@ -3,12 +3,14 @@ package eu.napcode.gonoteit.main;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.res.Configuration;
 import android.databinding.DataBindingUtil;
+import android.support.annotation.NonNull;
+import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
+import android.view.Gravity;
+import android.view.MenuItem;
 
 import javax.inject.Inject;
 
@@ -17,7 +19,7 @@ import eu.napcode.gonoteit.R;
 import eu.napcode.gonoteit.databinding.ActivityMainBinding;
 import eu.napcode.gonoteit.di.modules.viewmodel.ViewModelFactory;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     @Inject
     ViewModelFactory viewModelFactory;
@@ -49,8 +51,10 @@ public class MainActivity extends AppCompatActivity {
 
         this.binding.drawerLayout.addDrawerListener(this.drawerToggle);
         this.drawerToggle.syncState();
-    }
 
+        this.binding.navigationView.setNavigationItemSelectedListener(this);
+    }
+    
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
@@ -72,6 +76,28 @@ public class MainActivity extends AppCompatActivity {
             this.binding.drawerLayout.closeDrawer(GravityCompat.START);
         } else {
             super.onBackPressed();
+        }
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        this.binding.drawerLayout.closeDrawer(Gravity.START);
+
+        switch (item.getItemId()) {
+            case R.id.notes:
+                //TODO display main board with notes
+                return true;
+            case R.id.fav_notes:
+                //TODO display favorite notes
+                return true;
+            case R.id.about:
+                //TODO display about
+                return true;
+            case R.id.logout:
+                //TODO display logout ensure dialog
+                return true;
+            default:
+                return false;
         }
     }
 }
