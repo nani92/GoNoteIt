@@ -16,6 +16,9 @@ import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import eu.napcode.gonoteit.AuthenticateMutation;
+import eu.napcode.gonoteit.MockRxSchedulers;
+import eu.napcode.gonoteit.auth.StoreAuth;
+import eu.napcode.gonoteit.rx.RxSchedulers;
 import io.reactivex.Observable;
 import io.reactivex.observers.TestObserver;
 import io.reactivex.subscribers.TestSubscriber;
@@ -27,6 +30,9 @@ public class UserRepositoryTest {
     ApolloClient apolloClient;
 
     @Mock
+    StoreAuth storeAuth;
+
+    @Mock
     Response<AuthenticateMutation.Data> response;
 
     @Mock
@@ -36,7 +42,7 @@ public class UserRepositoryTest {
 
     @Before
     public void initial() {
-        userRepository = new UserRepositoryImpl(apolloClient);
+        userRepository = new UserRepositoryImpl(apolloClient, storeAuth, new MockRxSchedulers());
         Mockito.when(apolloClient.mutate(Mockito.any(AuthenticateMutation.class)))
                 .thenReturn(apolloMutationCall);
     }
@@ -62,5 +68,22 @@ public class UserRepositoryTest {
     private ArgumentMatcher getAuthenticateMatcher(final String userName, final String password) {
         return (ArgumentMatcher<AuthenticateMutation>) authenticateMutation -> authenticateMutation.variables().userName().equals(userName) &&
                 authenticateMutation.variables().password().equals(password);
+    }
+
+    @Test
+    public void testStoreUserName() {
+        String userName = "login";
+
+        userRepository.authenticateUser(userName, "");
+
+        Mockito.verify(storeAuth).saveName(userName);
+    }
+
+    @Test
+    public void testStoreToken() {
+        //TODO think of way of creating a response by hand :(
+        userRepository.authenticateUser("havk", "havkhavk");
+
+        Mockito.verify(storeAuth).saveToken(Mockito.anyString());
     }
 }
