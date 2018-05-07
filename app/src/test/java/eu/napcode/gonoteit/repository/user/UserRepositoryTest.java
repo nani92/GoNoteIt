@@ -5,7 +5,6 @@ import com.apollographql.apollo.ApolloMutationCall;
 import com.apollographql.apollo.api.Mutation;
 import com.apollographql.apollo.api.Operation;
 import com.apollographql.apollo.api.Response;
-import com.apollographql.apollo.rx2.Rx2Apollo;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -18,10 +17,6 @@ import org.mockito.junit.MockitoJUnitRunner;
 import eu.napcode.gonoteit.AuthenticateMutation;
 import eu.napcode.gonoteit.MockRxSchedulers;
 import eu.napcode.gonoteit.auth.StoreAuth;
-import eu.napcode.gonoteit.rx.RxSchedulers;
-import io.reactivex.Observable;
-import io.reactivex.observers.TestObserver;
-import io.reactivex.subscribers.TestSubscriber;
 
 @RunWith(MockitoJUnitRunner.class)
 public class UserRepositoryTest {

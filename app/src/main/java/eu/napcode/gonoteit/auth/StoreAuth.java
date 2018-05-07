@@ -1,7 +1,6 @@
 package eu.napcode.gonoteit.auth;
 
 import android.content.SharedPreferences;
-import android.util.Log;
 
 import javax.inject.Inject;
 
