@@ -22,6 +22,7 @@ import com.apollographql.apollo.rx2.Rx2Apollo;
 import javax.inject.Inject;
 
 import dagger.android.AndroidInjection;
+import eu.napcode.gonoteit.AuthenticateMutation;
 import eu.napcode.gonoteit.GetNotesQuery;
 import eu.napcode.gonoteit.R;
 import eu.napcode.gonoteit.databinding.ActivityMainBinding;
@@ -132,6 +133,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         ApolloCall<GetNotesQuery.Data> notesQuery = apolloClient.
                 query(new GetNotesQuery());
+
+        //apolloClient.mutate(new AuthenticateMutation());
 
         disposables.add(Rx2Apollo.from(notesQuery)
                 .subscribeOn(Schedulers.io())
