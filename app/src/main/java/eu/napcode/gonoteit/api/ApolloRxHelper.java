@@ -11,7 +11,7 @@ import io.reactivex.Observable;
 
 /**Wrapper to Rx2Apollo static methods to improve testability*/
 public class ApolloRxHelper {
-    
+
     public ApolloRxHelper() {
     }
 
