@@ -34,6 +34,9 @@ public class LoginActivity extends AppCompatActivity {
         this.viewModel = ViewModelProviders
                 .of(this, this.viewModelFactory)
                 .get(LoginViewModel.class);
+
+        this.viewModel.areInputsValid().observe(this,
+                valid -> this.binding.loginButton.setEnabled(valid));
     }
 
     private void setupInputFields() {
@@ -41,7 +44,7 @@ public class LoginActivity extends AppCompatActivity {
         binding.loginEditText.addTextChangedListener(inputWatcher);
     }
 
-    public TextWatcher inputWatcher = new SimpleTextWatcher(){
+    public TextWatcher inputWatcher = new SimpleTextWatcher() {
 
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
