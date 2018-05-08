@@ -11,6 +11,7 @@ import eu.napcode.gonoteit.di.modules.AppModule;
 import eu.napcode.gonoteit.di.modules.RepositoryModule;
 import eu.napcode.gonoteit.di.modules.RxModule;
 import eu.napcode.gonoteit.di.modules.StorageModule;
+import eu.napcode.gonoteit.di.modules.UtilsModule;
 import eu.napcode.gonoteit.di.modules.viewmodel.ViewModelModule;
 
 @Singleton
@@ -21,7 +22,8 @@ import eu.napcode.gonoteit.di.modules.viewmodel.ViewModelModule;
         RxModule.class,
         StorageModule.class,
         ViewModelModule.class,
-        AppModule.class
+        AppModule.class,
+        UtilsModule.class
 })
 public interface AppComponent {
 
