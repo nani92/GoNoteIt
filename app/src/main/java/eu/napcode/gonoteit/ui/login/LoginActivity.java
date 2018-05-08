@@ -1,6 +1,7 @@
 package eu.napcode.gonoteit.ui.login;
 
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
@@ -10,6 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.TextWatcher;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 
 import javax.inject.Inject;
 
@@ -79,6 +81,17 @@ public class LoginActivity extends AppCompatActivity {
                 Snackbar.make(binding.constraintLayout, R.string.login_error,Snackbar.LENGTH_LONG).show();
             }
         });
+
+        hideKeyboard();
+    }
+
+    private void hideKeyboard() {
+        View view = this.getCurrentFocus();
+
+        if (view != null) {
+            InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
     }
 
     public TextWatcher inputWatcher = new SimpleTextWatcher() {
