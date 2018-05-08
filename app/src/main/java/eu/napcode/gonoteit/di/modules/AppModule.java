@@ -9,6 +9,7 @@ import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
+import eu.napcode.gonoteit.api.ApolloRxHelper;
 import eu.napcode.gonoteit.api.NoteAdapter;
 import eu.napcode.gonoteit.app.GoNoteItApp;
 import eu.napcode.gonoteit.type.CustomType;
@@ -39,5 +40,10 @@ public class AppModule {
     @Provides
     SharedPreferences provideSharedPrefs(Context context) {
         return context.getSharedPreferences("gonoteit", Context.MODE_PRIVATE);
+    }
+
+    @Provides
+    ApolloRxHelper providesApolloRxHelper() {
+        return new ApolloRxHelper();
     }
 }
