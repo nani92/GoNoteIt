@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextWatcher;
+import android.view.View;
+import android.view.inputmethod.EditorInfo;
 
 import javax.inject.Inject;
 
@@ -30,18 +32,25 @@ public class LoginActivity extends AppCompatActivity {
         setupInputFields();
 
         AndroidInjection.inject(this);
-
-        this.viewModel = ViewModelProviders
-                .of(this, this.viewModelFactory)
-                .get(LoginViewModel.class);
-
-        this.viewModel.areInputsValid().observe(this,
-                valid -> this.binding.loginButton.setEnabled(valid));
+        setupViewModel();
     }
 
     private void setupInputFields() {
         binding.passwordEditText.addTextChangedListener(inputWatcher);
         binding.loginEditText.addTextChangedListener(inputWatcher);
+
+        binding.passwordEditText.setOnEditorActionListener((view, actionId, event) -> {
+
+            if (actionId == EditorInfo.IME_ACTION_SEND) {
+                this.viewModel.login();
+
+                return true;
+            }
+
+            return false;
+        });
+
+        this.binding.loginButton.setOnClickListener(view -> this.viewModel.login());
     }
 
     public TextWatcher inputWatcher = new SimpleTextWatcher() {
@@ -52,4 +61,13 @@ public class LoginActivity extends AppCompatActivity {
             viewModel.setPassword(binding.passwordEditText.getText().toString());
         }
     };
+
+    private void setupViewModel() {
+        this.viewModel = ViewModelProviders
+                .of(this, this.viewModelFactory)
+                .get(LoginViewModel.class);
+
+        this.viewModel.areInputsValid().observe(this,
+                valid -> this.binding.loginButton.setEnabled(valid));
+    }
 }

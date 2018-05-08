@@ -61,4 +61,11 @@ public class LoginViewModelTest {
 
         Assert.assertEquals(false, areInputsValid.getValue());
     }
+
+    @Test
+    public void testLogin() {
+        loginViewModel.login();
+
+        Mockito.verify(userRepository).authenticateUser(Mockito.any(), Mockito.any());
+    }
 }

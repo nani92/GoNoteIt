@@ -3,12 +3,14 @@ package eu.napcode.gonoteit.ui.login;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
+
 import javax.inject.Inject;
 
 import eu.napcode.gonoteit.repository.user.UserRepository;
 import timber.log.Timber;
 
 public class LoginViewModel extends ViewModel {
+    //TODO ime
 
     private UserRepository userRepository;
     private UserValidator userValidator;
@@ -48,5 +50,9 @@ public class LoginViewModel extends ViewModel {
     public void setPassword(String password) {
         this.password = password;
         validate();
+    }
+
+    public void login() {
+        userRepository.authenticateUser(login, password);
     }
 }
