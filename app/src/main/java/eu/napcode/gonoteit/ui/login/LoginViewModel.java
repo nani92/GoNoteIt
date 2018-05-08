@@ -3,10 +3,10 @@ package eu.napcode.gonoteit.ui.login;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
-
 import javax.inject.Inject;
 
 import eu.napcode.gonoteit.repository.user.UserRepository;
+import timber.log.Timber;
 
 public class LoginViewModel extends ViewModel {
 
@@ -39,7 +39,10 @@ public class LoginViewModel extends ViewModel {
     }
 
     private void validate() {
-        inputsValid.postValue(userValidator.isUserValid(login, password));
+        boolean valid = userValidator.isUserValid(login, password);
+        Timber.d("Validated input %s and %s. Result: %b", login, password, valid);
+
+        inputsValid.postValue(valid);
     }
 
     public void setPassword(String password) {

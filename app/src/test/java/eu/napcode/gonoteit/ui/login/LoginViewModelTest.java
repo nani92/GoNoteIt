@@ -36,7 +36,6 @@ public class LoginViewModelTest {
     @Before
     public void init() {
         loginViewModel = new LoginViewModel(userRepository, userValidator);
-
     }
 
     @Test
