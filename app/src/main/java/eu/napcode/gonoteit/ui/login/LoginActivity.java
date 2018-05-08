@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import javax.inject.Inject;
 
 import dagger.android.AndroidInjection;
+import eu.napcode.gonoteit.BuildConfig;
 import eu.napcode.gonoteit.R;
 import eu.napcode.gonoteit.databinding.ActivityLoginBinding;
 import eu.napcode.gonoteit.di.modules.viewmodel.ViewModelFactory;
@@ -34,7 +35,7 @@ public class LoginActivity extends AppCompatActivity {
         this.viewModel = ViewModelProviders
                 .of(this, this.viewModelFactory)
                 .get(LoginViewModel.class);
-        //TODO in view model
-        userRepository.authenticateUser("havk", "havkhavk");
+
+        userRepository.authenticateUser(BuildConfig.API_LOGIN, BuildConfig.API_PASSWORD);
     }
 }
