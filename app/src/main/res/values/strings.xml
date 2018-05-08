@@ -14,6 +14,7 @@
     <string name="hint_login">login</string>
     <string name="hint_password">password</string>
     <string name="login">Login</string>
+    <string name="login_error">Error occurred during login. Please try again.</string>
 
     <!--Image descriptions-->
     <string name="application_logo">Go Note It logo</string>

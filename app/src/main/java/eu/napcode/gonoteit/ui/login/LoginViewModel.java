@@ -1,28 +1,34 @@
 package eu.napcode.gonoteit.ui.login;
 
+import android.annotation.SuppressLint;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
 
 import javax.inject.Inject;
 
+import eu.napcode.gonoteit.AuthenticateMutation;
+import eu.napcode.gonoteit.repository.Resource;
 import eu.napcode.gonoteit.repository.user.UserRepository;
+import eu.napcode.gonoteit.rx.RxSchedulers;
 import timber.log.Timber;
 
 public class LoginViewModel extends ViewModel {
-    //TODO ime
 
     private UserRepository userRepository;
     private UserValidator userValidator;
+    private RxSchedulers rxSchedulers;
 
     private String login, password;
 
     private MutableLiveData<Boolean> inputsValid = new MutableLiveData<>();
+    private MutableLiveData<Resource<AuthenticateMutation.Data>> authenticationResource = new MutableLiveData<>();
 
     @Inject
-    public LoginViewModel(UserRepository userRepository, UserValidator userValidator) {
+    public LoginViewModel(UserRepository userRepository, UserValidator userValidator, RxSchedulers rxSchedulers) {
         this.userRepository = userRepository;
         this.userValidator = userValidator;
+        this.rxSchedulers = rxSchedulers;
 
         init();
     }
@@ -52,7 +58,20 @@ public class LoginViewModel extends ViewModel {
         validate();
     }
 
-    public void login() {
-        userRepository.authenticateUser(login, password);
+    @SuppressLint("CheckResult")
+    public MutableLiveData<Resource<AuthenticateMutation.Data>> login() {
+        userRepository
+                .authenticateUser(login, password)
+                .subscribeOn(rxSchedulers.io())
+                .observeOn(rxSchedulers.androidMainThread())
+                .doOnSubscribe(it -> authenticationResource.postValue(Resource.loading(null)))
+                .subscribe(
+                        authMutation -> authenticationResource.postValue(Resource.success(authMutation.data())),
+                        error -> {
+                            authenticationResource.postValue(Resource.error(error));
+                            Timber.d("Login error: %s", error.getLocalizedMessage());
+                        });
+
+        return authenticationResource;
     }
 }

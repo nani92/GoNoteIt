@@ -1,6 +1,5 @@
 package eu.napcode.gonoteit.repository;
 
-
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 

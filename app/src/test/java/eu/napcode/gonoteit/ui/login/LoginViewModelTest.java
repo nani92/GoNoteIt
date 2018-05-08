@@ -14,6 +14,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 
+import eu.napcode.gonoteit.MockRxSchedulers;
 import eu.napcode.gonoteit.repository.user.UserRepository;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -35,7 +36,7 @@ public class LoginViewModelTest {
 
     @Before
     public void init() {
-        loginViewModel = new LoginViewModel(userRepository, userValidator);
+        loginViewModel = new LoginViewModel(userRepository, userValidator, new MockRxSchedulers());
     }
 
     @Test

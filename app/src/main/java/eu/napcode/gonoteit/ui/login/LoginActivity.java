@@ -1,9 +1,11 @@
 package eu.napcode.gonoteit.ui.login;
 
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextWatcher;
 import android.view.View;
@@ -16,6 +18,8 @@ import eu.napcode.gonoteit.R;
 import eu.napcode.gonoteit.app.utils.SimpleTextWatcher;
 import eu.napcode.gonoteit.databinding.ActivityLoginBinding;
 import eu.napcode.gonoteit.di.modules.viewmodel.ViewModelFactory;
+import eu.napcode.gonoteit.repository.Resource;
+import eu.napcode.gonoteit.ui.main.MainActivity;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -42,7 +46,7 @@ public class LoginActivity extends AppCompatActivity {
         binding.passwordEditText.setOnEditorActionListener((view, actionId, event) -> {
 
             if (actionId == EditorInfo.IME_ACTION_SEND) {
-                this.viewModel.login();
+                login();
 
                 return true;
             }
@@ -50,7 +54,31 @@ public class LoginActivity extends AppCompatActivity {
             return false;
         });
 
-        this.binding.loginButton.setOnClickListener(view -> this.viewModel.login());
+        this.binding.loginButton.setOnClickListener(view -> login());
+    }
+
+    private void login() {
+        this.viewModel.login().observe(this, resource -> {
+
+            if (resource.status == Resource.Status.LOADING) {
+                binding.progressBar.setVisibility(View.VISIBLE);
+                binding.loginButton.setEnabled(false);
+            } else {
+                binding.progressBar.setVisibility(View.GONE);
+                binding.loginButton.setEnabled(true);
+            }
+
+            if (resource.status == Resource.Status.SUCCESS) {
+                startActivity(new Intent(this, MainActivity.class));
+                finish();
+
+                return;
+            }
+
+            if (resource.status == Resource.Status.ERROR) {
+                Snackbar.make(binding.constraintLayout, R.string.login_error,Snackbar.LENGTH_LONG).show();
+            }
+        });
     }
 
     public TextWatcher inputWatcher = new SimpleTextWatcher() {
