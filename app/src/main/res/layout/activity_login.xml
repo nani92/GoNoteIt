@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <android.support.constraint.ConstraintLayout
-        android:id="@+id/constraintLayout"
         xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/constraintLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:padding="@dimen/base_margin"
@@ -31,6 +31,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/base_margin"
+            android:textColorHint="@android:color/white"
+            app:hintTextAppearance="@style/LoginInputAppearance"
             app:layout_constraintBottom_toTopOf="@id/passwordTextInputLayout"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
@@ -53,9 +55,12 @@
             android:id="@+id/passwordTextInputLayout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:textColorHint="@android:color/white"
+            app:hintTextAppearance="@style/LoginInputAppearance"
             app:layout_constraintBottom_toTopOf="@id/loginButton"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
+
             app:layout_constraintTop_toBottomOf="@+id/loginTextInputLayout"
             app:passwordToggleEnabled="true">
 

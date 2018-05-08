@@ -20,4 +20,10 @@
         <item name="android:windowBackground">@color/colorPrimary</item>
     </style>
 
+    <style name="LoginInputAppearance" parent="TextAppearance.AppCompat">
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textSize">@dimen/hint_text_size</item>
+    </style>
+
+    <dimen name="hint_text_size">16sp</dimen>
 </resources>
