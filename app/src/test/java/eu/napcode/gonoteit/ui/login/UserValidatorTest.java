@@ -64,4 +64,11 @@ public class UserValidatorTest {
         Assert.assertEquals(false, userValidator.isPasswordValid(""));
         Assert.assertEquals(true, userValidator.isPasswordValid("pass"));
     }
+
+    @Test
+    public void testTokenValidation() {
+        Assert.assertEquals(false, userValidator.isTokenValid(null));
+        Assert.assertEquals(false, userValidator.isTokenValid(""));
+        Assert.assertEquals(true, userValidator.isTokenValid("token"));
+    }
 }

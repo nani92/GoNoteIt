@@ -15,4 +15,8 @@ public class UserValidator extends InputValidator {
     public boolean isPasswordValid(String password) {
         return super.isInputNotEmpty(password);
     }
+
+    public boolean isTokenValid(String token) {
+        return super.isInputNotEmpty(token);
+    }
 }
