@@ -3,6 +3,7 @@ package eu.napcode.gonoteit.repository.user;
 import com.apollographql.apollo.api.Response;
 
 import eu.napcode.gonoteit.AuthenticateMutation;
+import eu.napcode.gonoteit.model.UserModel;
 import io.reactivex.Observable;
 
 public interface UserRepository {
@@ -11,7 +12,5 @@ public interface UserRepository {
 
     void saveUserAuthData(String login, String token);
 
-    boolean isUserLoggedIn();
-
-    String getUserName();
+    UserModel getLoggedInUser();
 }

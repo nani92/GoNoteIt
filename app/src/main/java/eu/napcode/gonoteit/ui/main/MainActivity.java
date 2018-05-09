@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.util.Log;
+import android.view.View;
 
 import com.apollographql.apollo.ApolloCall;
 import com.apollographql.apollo.ApolloClient;
@@ -26,8 +27,10 @@ import eu.napcode.gonoteit.GetNotesQuery;
 import eu.napcode.gonoteit.R;
 import eu.napcode.gonoteit.databinding.ActivityMainBinding;
 import eu.napcode.gonoteit.api.Note;
+import eu.napcode.gonoteit.databinding.DrawerHeaderBinding;
 import eu.napcode.gonoteit.di.modules.viewmodel.ViewModelFactory;
 import eu.napcode.gonoteit.model.NoteModel;
+import eu.napcode.gonoteit.model.UserModel;
 import eu.napcode.gonoteit.type.Type;
 import eu.napcode.gonoteit.ui.login.LoginActivity;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -42,6 +45,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private MainViewModel mainViewModel;
     private ActivityMainBinding binding;
+    private DrawerHeaderBinding headerBinding;
     private ActionBarDrawerToggle drawerToggle;
 
     @Inject
@@ -51,6 +55,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
+        this.headerBinding = DataBindingUtil.inflate(getLayoutInflater(), R.layout.drawer_header, binding.navigationView, false);
 
         AndroidInjection.inject(this);
 
@@ -61,11 +66,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setSupportActionBar(this.binding.toolbar);
 
         setupDrawer();
+        setupUser();
 
         graphQLTry();
     }
 
     private void setupDrawer() {
+        this.binding.navigationView.addHeaderView(headerBinding.getRoot());
+
         this.drawerToggle = new ActionBarDrawerToggle(this,
                 this.binding.drawerLayout, this.binding.toolbar,
                 R.string.open_drawer, R.string.close_drawer);
@@ -75,7 +83,35 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         this.binding.navigationView.setNavigationItemSelectedListener(this);
     }
-    
+
+    private void setupUser() {
+        this.mainViewModel.getLoggedInUser().observe(this, this::processUser);
+    }
+
+    private void processUser(UserModel user) {
+
+        if (user == null) {
+            setViewsForNotLoggedInUser();
+
+            return;
+        }
+
+        setViewsForLoggedInUser(user);
+    }
+
+    private void setViewsForNotLoggedInUser() {
+        headerBinding.usernameTextView.setText(R.string.not_logged_in);
+        headerBinding.usernameTextView.setCompoundDrawables(null, null, null, null);
+        headerBinding.loginButton.setVisibility(View.VISIBLE);
+        headerBinding.loginButton.setOnClickListener(v -> startActivity(new Intent(MainActivity.this, LoginActivity.class)));
+    }
+
+    private void setViewsForLoggedInUser(UserModel user) {
+        headerBinding.usernameTextView.setText(user.getUserName());
+        headerBinding.usernameTextView.setCompoundDrawables(null, null, getDrawable(R.drawable.ic_edit_24px), null);
+        headerBinding.loginButton.setVisibility(View.GONE);
+    }
+
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
@@ -140,7 +176,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                                        for (GetNotesQuery.AllEntity allEntity : dataResponse.data().allEntities()) {
                                            Log.d("Natalia dupa", allEntity.type().rawValue() + allEntity.data());
                                            Type type = allEntity.type();
-                                           Log.d("Natali kupa", ((NoteModel)((Note)allEntity.data()).parseNote(type)).getMsg());
+                                           Log.d("Natali kupa", ((NoteModel) ((Note) allEntity.data()).parseNote(type)).getMsg());
                                        }
 
                                    }

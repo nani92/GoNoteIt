@@ -11,6 +11,7 @@ import javax.inject.Inject;
 import eu.napcode.gonoteit.AuthenticateMutation;
 import eu.napcode.gonoteit.api.ApolloRxHelper;
 import eu.napcode.gonoteit.auth.StoreAuth;
+import eu.napcode.gonoteit.model.UserModel;
 import io.reactivex.Observable;
 
 public class UserRepositoryImpl implements UserRepository {
@@ -42,14 +43,18 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public boolean isUserLoggedIn() {
+    public UserModel getLoggedInUser() {
+
+        if (isUserLoggedIn()) {
+            return new UserModel(storeAuth.getUserName());
+        }
+
+        return null;
+    }
+
+    private boolean isUserLoggedIn() {
         String token = storeAuth.getToken();
 
         return token != null && token.length() > 0;
-    }
-
-    @Override
-    public String getUserName() {
-        return storeAuth.getUserName();
     }
 }

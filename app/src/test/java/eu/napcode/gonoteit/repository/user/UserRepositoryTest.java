@@ -102,21 +102,15 @@ public class UserRepositoryTest {
     public void shouldReturnNotLoggedInUser() {
         Mockito.when(storeAuth.getToken()).thenReturn("");
 
-        Assert.assertEquals(false, userRepository.isUserLoggedIn());
+        Assert.assertEquals(null, userRepository.getLoggedInUser());
     }
 
     @Test
     public void shouldReturnLoggedInUser() {
+        String username = "name";
         Mockito.when(storeAuth.getToken()).thenReturn("token");
+        Mockito.when(storeAuth.getUserName()).thenReturn(username);
 
-        Assert.assertEquals(true, userRepository.isUserLoggedIn());
-    }
-
-    @Test
-    public void shouldReturnUserName() {
-        String userName = "name";
-        Mockito.when(storeAuth.getUserName()).thenReturn(userName);
-
-        Assert.assertEquals(userName, userRepository.getUserName());
+        Assert.assertEquals(username, userRepository.getLoggedInUser().getUserName());
     }
 }
