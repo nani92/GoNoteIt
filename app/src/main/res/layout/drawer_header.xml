@@ -28,10 +28,22 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:drawableEnd="@drawable/ic_edit_24px"
+        android:paddingTop="@dimen/base_margin"
         android:textColor="@android:color/white"
         android:textSize="@dimen/drawer_user_name_text_size"
+        app:layout_constraintBottom_toTopOf="@id/loginButton"
+        tools:text="@tools:sample/full_names"/>
+
+    <Button
+        android:id="@+id/loginButton"
+        style="@style/Base.Widget.AppCompat.Button.Colored"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/login"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
-        tools:text="@tools:sample/full_names"
-    android:paddingTop="@dimen/base_margin"/>
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        tools:visibility="visible"/>
 
 </android.support.constraint.ConstraintLayout>

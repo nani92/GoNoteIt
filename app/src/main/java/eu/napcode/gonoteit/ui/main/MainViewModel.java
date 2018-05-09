@@ -15,5 +15,5 @@ public class MainViewModel extends ViewModel {
         this.userRepository = userRepository;
     }
 
-    
+
 }
