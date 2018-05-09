@@ -6,6 +6,7 @@ import android.content.res.Configuration;
 import android.databinding.DataBindingUtil;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -104,12 +105,25 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         headerBinding.usernameTextView.setCompoundDrawables(null, null, null, null);
         headerBinding.loginButton.setVisibility(View.VISIBLE);
         headerBinding.loginButton.setOnClickListener(v -> startActivity(new Intent(MainActivity.this, LoginActivity.class)));
+
+        binding.navigationView.getMenu().findItem(R.id.logout).setVisible(false);
+
+        showLoginSnackbar();
+    }
+
+    private void showLoginSnackbar() {
+        Snackbar snackbar = Snackbar.make(binding.drawerLayout, R.string.not_logged_in, Snackbar.LENGTH_LONG);
+        snackbar.setAction(R.string.login, v -> startActivity(new Intent(MainActivity.this, LoginActivity.class)));
+
+        snackbar.show();
     }
 
     private void setViewsForLoggedInUser(UserModel user) {
         headerBinding.usernameTextView.setText(user.getUserName());
         headerBinding.usernameTextView.setCompoundDrawables(null, null, getDrawable(R.drawable.ic_edit_24px), null);
         headerBinding.loginButton.setVisibility(View.GONE);
+
+        binding.navigationView.getMenu().findItem(R.id.logout).setVisible(true);
     }
 
     @Override
