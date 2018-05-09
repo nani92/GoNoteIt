@@ -17,7 +17,8 @@
     <string name="login_error">Error occurred during login. Please try again.</string>
     <string name="not_logged_in">You are not logged in.</string>
 
+    <string name="logout_message">Are you sure you want to log out?</string>
+
     <!--Image descriptions-->
     <string name="application_logo">Go Note It logo</string>
-    <string name="logout_message">Are you sure you want to log out?</string>
 </resources>

@@ -28,4 +28,11 @@ public class MainViewModelTest {
 
         Mockito.verify(userRepository).getLoggedInUser();
     }
+
+    @Test
+    public void testLogoutUser() {
+        userRepository.logoutUser();
+
+        Mockito.verify(userRepository).logoutUser();
+    }
 }

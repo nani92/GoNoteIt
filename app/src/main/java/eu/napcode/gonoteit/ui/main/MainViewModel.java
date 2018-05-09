@@ -11,6 +11,7 @@ import eu.napcode.gonoteit.repository.user.UserRepository;
 public class MainViewModel extends ViewModel {
 
     private UserRepository userRepository;
+    private MutableLiveData<UserModel> loggedInUser = new MutableLiveData<>();
 
     @Inject
     public MainViewModel(UserRepository userRepository) {
@@ -18,10 +19,14 @@ public class MainViewModel extends ViewModel {
     }
 
     public MutableLiveData<UserModel> getLoggedInUser() {
-        MutableLiveData<UserModel> loggedInUser = new MutableLiveData<>();
-
         loggedInUser.postValue(userRepository.getLoggedInUser());
 
         return loggedInUser;
+    }
+
+    public void logoutUser() {
+        userRepository.logoutUser();
+
+        getLoggedInUser();
     }
 }

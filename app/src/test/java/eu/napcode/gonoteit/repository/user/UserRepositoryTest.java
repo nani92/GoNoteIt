@@ -20,7 +20,6 @@ import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import eu.napcode.gonoteit.AuthenticateMutation;
-import eu.napcode.gonoteit.MockRxSchedulers;
 import eu.napcode.gonoteit.api.ApolloRxHelper;
 import eu.napcode.gonoteit.auth.StoreAuth;
 import io.reactivex.Observable;
@@ -112,5 +111,12 @@ public class UserRepositoryTest {
         Mockito.when(storeAuth.getUserName()).thenReturn(username);
 
         Assert.assertEquals(username, userRepository.getLoggedInUser().getUserName());
+    }
+
+    @Test
+    public void testLogoutUser() {
+        userRepository.logoutUser();
+
+        Mockito.verify(storeAuth).saveToken(null);
     }
 }

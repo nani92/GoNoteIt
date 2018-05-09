@@ -13,4 +13,6 @@ public interface UserRepository {
     void saveUserAuthData(String login, String token);
 
     UserModel getLoggedInUser();
+
+    void logoutUser();
 }

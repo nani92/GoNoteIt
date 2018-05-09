@@ -52,6 +52,11 @@ public class UserRepositoryImpl implements UserRepository {
         return null;
     }
 
+    @Override
+    public void logoutUser() {
+        storeAuth.saveToken(null);
+    }
+
     private boolean isUserLoggedIn() {
         String token = storeAuth.getToken();
 

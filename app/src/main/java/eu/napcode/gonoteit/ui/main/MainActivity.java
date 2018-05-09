@@ -178,9 +178,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         AlertDialog dialog = new AlertDialog.Builder(this)
                 .setTitle(R.string.logout)
                 .setMessage(R.string.logout_message)
-                .setPositiveButton(R.string.logout, (dialog1, which) -> {
-                    //TODO logout
-                })
+                .setPositiveButton(R.string.logout, (dialog1, which) -> mainViewModel.logoutUser())
                 .setNegativeButton(android.R.string.cancel, (dialog12, which) -> {})
                 .create();
 
