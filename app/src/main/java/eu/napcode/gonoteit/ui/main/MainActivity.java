@@ -63,8 +63,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setupDrawer();
 
         graphQLTry();
-
-        startActivity(new Intent(this, LoginActivity.class));
     }
 
     private void setupDrawer() {

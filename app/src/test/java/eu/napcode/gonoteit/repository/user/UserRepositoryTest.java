@@ -8,6 +8,7 @@ import com.apollographql.apollo.api.Mutation;
 import com.apollographql.apollo.api.Operation;
 import com.apollographql.apollo.api.Response;
 
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -49,7 +50,7 @@ public class UserRepositoryTest {
 
     @Before
     public void initial() {
-        userRepository = new UserRepositoryImpl(apolloClient, storeAuth, new MockRxSchedulers(), apolloRxHelper);
+        userRepository = new UserRepositoryImpl(apolloClient, storeAuth, apolloRxHelper);
         Mockito.when(apolloClient.mutate(Mockito.any(AuthenticateMutation.class)))
                 .thenReturn(apolloMutationCall);
         Mockito.when(apolloRxHelper.from((ApolloMutationCall<AuthenticateMutation.Data>) Mockito.any()))
@@ -95,5 +96,27 @@ public class UserRepositoryTest {
         userRepository.saveUserAuthData("", token);
 
         Mockito.verify(storeAuth).saveToken(token);
+    }
+
+    @Test
+    public void shouldReturnNotLoggedInUser() {
+        Mockito.when(storeAuth.getToken()).thenReturn("");
+
+        Assert.assertEquals(false, userRepository.isUserLoggedIn());
+    }
+
+    @Test
+    public void shouldReturnLoggedInUser() {
+        Mockito.when(storeAuth.getToken()).thenReturn("token");
+
+        Assert.assertEquals(true, userRepository.isUserLoggedIn());
+    }
+
+    @Test
+    public void shouldReturnUserName() {
+        String userName = "name";
+        Mockito.when(storeAuth.getUserName()).thenReturn(userName);
+
+        Assert.assertEquals(userName, userRepository.getUserName());
     }
 }

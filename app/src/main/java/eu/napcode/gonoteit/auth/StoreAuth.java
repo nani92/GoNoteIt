@@ -31,4 +31,16 @@ public class StoreAuth {
                 .putString(TOKEN_KEY, token)
                 .apply();
     }
+
+    public String getUserName() {
+        Timber.d("Retrieving user name");
+
+        return sharedPreferences.getString(USER_NAME_KEY, "");
+    }
+
+    public String getToken() {
+        Timber.d("Retrieving token");
+
+        return sharedPreferences.getString(TOKEN_KEY, "");
+    }
 }

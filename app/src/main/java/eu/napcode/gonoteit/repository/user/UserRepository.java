@@ -9,5 +9,9 @@ public interface UserRepository {
 
     Observable<Response<AuthenticateMutation.Data>> authenticateUser(String login, String password);
 
-    public void saveUserAuthData(String login, String token);
+    void saveUserAuthData(String login, String token);
+
+    boolean isUserLoggedIn();
+
+    String getUserName();
 }
