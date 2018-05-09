@@ -19,4 +19,5 @@
 
     <!--Image descriptions-->
     <string name="application_logo">Go Note It logo</string>
+    <string name="logout_message">Are you sure you want to log out?</string>
 </resources>

@@ -1,6 +1,7 @@
 package eu.napcode.gonoteit.ui.main;
 
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.databinding.DataBindingUtil;
@@ -9,6 +10,7 @@ import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -165,11 +167,24 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 //TODO display about
                 return true;
             case R.id.logout:
-                //TODO display logout ensure dialog
+                displayLogoutDialogFragment();
                 return true;
             default:
                 return false;
         }
+    }
+
+    private void displayLogoutDialogFragment() {
+        AlertDialog dialog = new AlertDialog.Builder(this)
+                .setTitle(R.string.logout)
+                .setMessage(R.string.logout_message)
+                .setPositiveButton(R.string.logout, (dialog1, which) -> {
+                    //TODO logout
+                })
+                .setNegativeButton(android.R.string.cancel, (dialog12, which) -> {})
+                .create();
+
+        dialog.show();
     }
 
     private void graphQLTry() {
