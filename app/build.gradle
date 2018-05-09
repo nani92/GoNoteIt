@@ -1,6 +1,10 @@
 apply plugin: 'com.android.application'
 apply plugin: 'com.apollographql.android'
 
+def localPropertiesFile = rootProject.file("local.properties")
+def localProperties = new Properties()
+localProperties.load(new FileInputStream(localPropertiesFile))
+
 android {
     compileSdkVersion 27
     defaultConfig {
@@ -10,6 +14,8 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        buildConfigField "String", "API_LOGIN", localProperties['api.login']
+        buildConfigField "String", "API_PASSWORD", localProperties['api.password']
     }
     buildTypes {
         release {
@@ -19,6 +25,10 @@ android {
     }
     dataBinding {
         enabled = true
+    }
+    compileOptions {
+        targetCompatibility 1.8
+        sourceCompatibility 1.8
     }
 }
 
@@ -66,6 +76,15 @@ dependencies {
 
     //gson
     implementation 'com.google.code.gson:gson:2.8.4'
+
+    //mockito
+    testImplementation group: 'org.mockito', name: 'mockito-core', version: '2.18.3'
+
+    //timber logging
+    implementation 'com.jakewharton.timber:timber:4.7.0'
+
+    //live data testing
+    implementation "android.arch.core:core-testing:${archComponentsVersion}"
 }
 
 apollo {

@@ -1,17 +1,22 @@
-package eu.napcode.gonoteit.main;
+package eu.napcode.gonoteit.ui.main;
 
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.databinding.DataBindingUtil;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.util.Log;
+import android.view.View;
 
 import com.apollographql.apollo.ApolloCall;
 import com.apollographql.apollo.ApolloClient;
@@ -25,16 +30,16 @@ import eu.napcode.gonoteit.GetNotesQuery;
 import eu.napcode.gonoteit.R;
 import eu.napcode.gonoteit.databinding.ActivityMainBinding;
 import eu.napcode.gonoteit.api.Note;
-import eu.napcode.gonoteit.api.NoteAdapter;
+import eu.napcode.gonoteit.databinding.DrawerHeaderBinding;
 import eu.napcode.gonoteit.di.modules.viewmodel.ViewModelFactory;
 import eu.napcode.gonoteit.model.NoteModel;
-import eu.napcode.gonoteit.type.CustomType;
+import eu.napcode.gonoteit.model.UserModel;
 import eu.napcode.gonoteit.type.Type;
+import eu.napcode.gonoteit.ui.login.LoginActivity;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
-import okhttp3.OkHttpClient;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -43,12 +48,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private MainViewModel mainViewModel;
     private ActivityMainBinding binding;
+    private DrawerHeaderBinding headerBinding;
     private ActionBarDrawerToggle drawerToggle;
+
+    @Inject
+    ApolloClient apolloClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
+        this.headerBinding = DataBindingUtil.inflate(getLayoutInflater(), R.layout.drawer_header, binding.navigationView, false);
 
         AndroidInjection.inject(this);
 
@@ -59,12 +69,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setSupportActionBar(this.binding.toolbar);
 
         setupDrawer();
-
+        setupUser();
 
         graphQLTry();
     }
 
     private void setupDrawer() {
+        this.binding.navigationView.addHeaderView(headerBinding.getRoot());
+
         this.drawerToggle = new ActionBarDrawerToggle(this,
                 this.binding.drawerLayout, this.binding.toolbar,
                 R.string.open_drawer, R.string.close_drawer);
@@ -74,7 +86,48 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         this.binding.navigationView.setNavigationItemSelectedListener(this);
     }
-    
+
+    private void setupUser() {
+        this.mainViewModel.getLoggedInUser().observe(this, this::processUser);
+    }
+
+    private void processUser(UserModel user) {
+
+        if (user == null) {
+            setViewsForNotLoggedInUser();
+
+            return;
+        }
+
+        setViewsForLoggedInUser(user);
+    }
+
+    private void setViewsForNotLoggedInUser() {
+        headerBinding.usernameTextView.setText(R.string.not_logged_in);
+        headerBinding.usernameTextView.setCompoundDrawables(null, null, null, null);
+        headerBinding.loginButton.setVisibility(View.VISIBLE);
+        headerBinding.loginButton.setOnClickListener(v -> startActivity(new Intent(MainActivity.this, LoginActivity.class)));
+
+        binding.navigationView.getMenu().findItem(R.id.logout).setVisible(false);
+
+        showLoginSnackbar();
+    }
+
+    private void showLoginSnackbar() {
+        Snackbar snackbar = Snackbar.make(binding.drawerLayout, R.string.not_logged_in, Snackbar.LENGTH_LONG);
+        snackbar.setAction(R.string.login, v -> startActivity(new Intent(MainActivity.this, LoginActivity.class)));
+
+        snackbar.show();
+    }
+
+    private void setViewsForLoggedInUser(UserModel user) {
+        headerBinding.usernameTextView.setText(user.getUserName());
+        headerBinding.usernameTextView.setCompoundDrawables(null, null, getDrawable(R.drawable.ic_edit_24px), null);
+        headerBinding.loginButton.setVisibility(View.GONE);
+
+        binding.navigationView.getMenu().findItem(R.id.logout).setVisible(true);
+    }
+
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
@@ -114,22 +167,25 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 //TODO display about
                 return true;
             case R.id.logout:
-                //TODO display logout ensure dialog
+                displayLogoutDialogFragment();
                 return true;
             default:
                 return false;
         }
     }
 
+    private void displayLogoutDialogFragment() {
+        AlertDialog dialog = new AlertDialog.Builder(this)
+                .setTitle(R.string.logout)
+                .setMessage(R.string.logout_message)
+                .setPositiveButton(R.string.logout, (dialog1, which) -> mainViewModel.logoutUser())
+                .setNegativeButton(android.R.string.cancel, (dialog12, which) -> {})
+                .create();
+
+        dialog.show();
+    }
+
     private void graphQLTry() {
-        OkHttpClient okHttpClient = new OkHttpClient.Builder().build();
-
-        ApolloClient apolloClient = ApolloClient.builder()
-                .serverUrl("http://10.0.0.105:8000/graphql/")
-                .okHttpClient(okHttpClient)
-                .addCustomTypeAdapter(CustomType.GENERICSCALAR, new NoteAdapter())
-                .build();
-
         CompositeDisposable disposables = new CompositeDisposable();
 
         ApolloCall<GetNotesQuery.Data> notesQuery = apolloClient.
@@ -147,7 +203,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                                        for (GetNotesQuery.AllEntity allEntity : dataResponse.data().allEntities()) {
                                            Log.d("Natalia dupa", allEntity.type().rawValue() + allEntity.data());
                                            Type type = allEntity.type();
-                                           Log.d("Natali kupa", ((NoteModel)((Note)allEntity.data()).parseNote(type)).getMsg());
+                                           Log.d("Natali kupa", ((NoteModel) ((Note) allEntity.data()).parseNote(type)).getMsg());
                                        }
 
                                    }

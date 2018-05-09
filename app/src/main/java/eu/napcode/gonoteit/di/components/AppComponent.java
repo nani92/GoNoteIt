@@ -1,7 +1,5 @@
 package eu.napcode.gonoteit.di.components;
 
-import android.arch.lifecycle.ViewModel;
-
 import javax.inject.Singleton;
 
 import dagger.BindsInstance;
@@ -9,9 +7,11 @@ import dagger.Component;
 import dagger.android.AndroidInjectionModule;
 import eu.napcode.gonoteit.app.GoNoteItApp;
 import eu.napcode.gonoteit.di.modules.ActivityModule;
+import eu.napcode.gonoteit.di.modules.AppModule;
 import eu.napcode.gonoteit.di.modules.RepositoryModule;
 import eu.napcode.gonoteit.di.modules.RxModule;
 import eu.napcode.gonoteit.di.modules.StorageModule;
+import eu.napcode.gonoteit.di.modules.UtilsModule;
 import eu.napcode.gonoteit.di.modules.viewmodel.ViewModelModule;
 
 @Singleton
@@ -21,7 +21,9 @@ import eu.napcode.gonoteit.di.modules.viewmodel.ViewModelModule;
         RepositoryModule.class,
         RxModule.class,
         StorageModule.class,
-        ViewModelModule.class
+        ViewModelModule.class,
+        AppModule.class,
+        UtilsModule.class
 })
 public interface AppComponent {
 

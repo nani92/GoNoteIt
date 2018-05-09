@@ -1,11 +1,24 @@
 <resources>
     <!--App variables-->
     <string name="app_name">Go Note It</string>
+
+    <!--Menu-->
     <string name="logout">Logout</string>
-    <string name="application_logo">Go Note It logo</string>
     <string name="about">About</string>
     <string name="notes">Notes</string>
     <string name="fav_notes">Favorite Notes</string>
     <string name="open_drawer">Open drawer</string>
     <string name="close_drawer">Close drawer</string>
+
+    <!--Login Screen-->
+    <string name="hint_login">login</string>
+    <string name="hint_password">password</string>
+    <string name="login">Login</string>
+    <string name="login_error">Error occurred during login. Please try again.</string>
+    <string name="not_logged_in">You are not logged in.</string>
+
+    <string name="logout_message">Are you sure you want to log out?</string>
+
+    <!--Image descriptions-->
+    <string name="application_logo">Go Note It logo</string>
 </resources>

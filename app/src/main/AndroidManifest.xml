@@ -15,7 +15,7 @@
         android:theme="@style/AppTheme">
 
         <activity
-            android:name=".main.MainActivity"
+            android:name=".ui.main.MainActivity"
             android:theme="@style/AppTheme.NoActionBar">
 
             <intent-filter>
@@ -25,6 +25,9 @@
             </intent-filter>
         </activity>
 
+        <activity
+            android:theme="@style/LoginTheme"
+            android:name=".ui.login.LoginActivity"/>
     </application>
 
 </manifest>

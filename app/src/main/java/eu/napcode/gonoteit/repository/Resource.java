@@ -1,8 +1,9 @@
 package eu.napcode.gonoteit.repository;
 
-
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+
+import com.apollographql.apollo.api.Error;
 
 import static eu.napcode.gonoteit.repository.Resource.Status.ERROR;
 import static eu.napcode.gonoteit.repository.Resource.Status.LOADING;
@@ -31,6 +32,10 @@ public class Resource<T> {
 
     public static <T> Resource<T> error(Throwable throwable) {
         return new Resource<>(ERROR, null, throwable.getLocalizedMessage());
+    }
+
+    public static <T> Resource<T> error(Error error) {
+        return new Resource<>(ERROR, null, error.message());
     }
 
     public static <T> Resource<T> loading(@Nullable T data) {
