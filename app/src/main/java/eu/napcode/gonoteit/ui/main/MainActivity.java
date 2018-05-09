@@ -22,22 +22,18 @@ import com.apollographql.apollo.rx2.Rx2Apollo;
 import javax.inject.Inject;
 
 import dagger.android.AndroidInjection;
-import eu.napcode.gonoteit.AuthenticateMutation;
 import eu.napcode.gonoteit.GetNotesQuery;
 import eu.napcode.gonoteit.R;
 import eu.napcode.gonoteit.databinding.ActivityMainBinding;
 import eu.napcode.gonoteit.api.Note;
-import eu.napcode.gonoteit.api.NoteAdapter;
 import eu.napcode.gonoteit.di.modules.viewmodel.ViewModelFactory;
 import eu.napcode.gonoteit.model.NoteModel;
-import eu.napcode.gonoteit.type.CustomType;
 import eu.napcode.gonoteit.type.Type;
 import eu.napcode.gonoteit.ui.login.LoginActivity;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
-import okhttp3.OkHttpClient;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -133,8 +129,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         ApolloCall<GetNotesQuery.Data> notesQuery = apolloClient.
                 query(new GetNotesQuery());
-
-        //apolloClient.mutate(new AuthenticateMutation());
 
         disposables.add(Rx2Apollo.from(notesQuery)
                 .subscribeOn(Schedulers.io())

@@ -37,18 +37,12 @@ public class UserRepositoryImpl implements UserRepository {
         ApolloCall<AuthenticateMutation.Data> authMutation = apolloClient
                 .mutate(new AuthenticateMutation(login, password));
 
-        Observable<Response<AuthenticateMutation.Data>> authObservable = apolloRxHelper.from(authMutation);
-        authObservable.subscribeOn(rxSchedulers.io())
-                .observeOn(rxSchedulers.androidMainThread())
-                .subscribe(
-                        dataResponse -> {
-                            storeAuth.saveToken(dataResponse.data().tokenAuth().token());
-                            storeAuth.saveName(login);
-                        },
-                        error-> {
-                            Timber.d("Auth error %s", error.getLocalizedMessage());
-                        });
+        return apolloRxHelper.from(authMutation);
+    }
 
-        return authObservable;
+    @Override
+    public void saveUserAuthData(String login, String token) {
+        storeAuth.saveToken(token);
+        storeAuth.saveName(login);
     }
 }

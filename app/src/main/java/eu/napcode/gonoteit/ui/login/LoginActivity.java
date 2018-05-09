@@ -78,7 +78,13 @@ public class LoginActivity extends AppCompatActivity {
             }
 
             if (resource.status == Resource.Status.ERROR) {
-                Snackbar.make(binding.constraintLayout, R.string.login_error,Snackbar.LENGTH_LONG).show();
+                String message = resource.message;
+
+                if (resource.message == null) {
+                    message = getString(R.string.login_error);
+                }
+
+                Snackbar.make(binding.constraintLayout, message, Snackbar.LENGTH_LONG).show();
             }
         });
 
@@ -89,7 +95,7 @@ public class LoginActivity extends AppCompatActivity {
         View view = this.getCurrentFocus();
 
         if (view != null) {
-            InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
     }

@@ -82,23 +82,18 @@ public class UserRepositoryTest {
     @Test
     public void testStoreUserName() {
         String userName = "login";
-        Mockito.when(response.data())
-                .thenReturn(new AuthenticateMutation.Data(new AuthenticateMutation.TokenAuth("", "")));
 
+        userRepository.saveUserAuthData(userName, "");
 
-        userRepository.authenticateUser(userName, "");
-
-        Mockito.verify(storeAuth, Mockito.after(1000)).saveName(userName);
+        Mockito.verify(storeAuth).saveName(userName);
     }
 
     @Test
     public void testStoreToken() {
         String token = "VeryRandomStringToken";
-        Mockito.when(response.data())
-                .thenReturn(new AuthenticateMutation.Data(new AuthenticateMutation.TokenAuth("", token)));
 
-        userRepository.authenticateUser("", "");
+        userRepository.saveUserAuthData("", token);
 
-        Mockito.verify(storeAuth, Mockito.after(100)).saveToken(token);
+        Mockito.verify(storeAuth).saveToken(token);
     }
 }

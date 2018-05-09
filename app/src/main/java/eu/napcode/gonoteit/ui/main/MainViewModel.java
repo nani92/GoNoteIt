@@ -4,15 +4,15 @@ import android.arch.lifecycle.ViewModel;
 
 import javax.inject.Inject;
 
-import eu.napcode.gonoteit.repository.notes.NotesRepository;
+import eu.napcode.gonoteit.repository.user.UserRepository;
 
 public class MainViewModel extends ViewModel {
 
-    private NotesRepository notesRepository;
+    private UserRepository userRepository;
 
     @Inject
-    public MainViewModel(NotesRepository notesRepository) {
-        this.notesRepository = notesRepository;
+    public MainViewModel(UserRepository userRepository) {
+        this.userRepository = userRepository;
     }
 
 
