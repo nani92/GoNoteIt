@@ -8,6 +8,7 @@ import dagger.android.AndroidInjectionModule;
 import eu.napcode.gonoteit.app.GoNoteItApp;
 import eu.napcode.gonoteit.di.modules.ActivityModule;
 import eu.napcode.gonoteit.di.modules.AppModule;
+import eu.napcode.gonoteit.di.modules.FragmentModule;
 import eu.napcode.gonoteit.di.modules.RepositoryModule;
 import eu.napcode.gonoteit.di.modules.RxModule;
 import eu.napcode.gonoteit.di.modules.StorageModule;
@@ -23,7 +24,8 @@ import eu.napcode.gonoteit.di.modules.viewmodel.ViewModelModule;
         StorageModule.class,
         ViewModelModule.class,
         AppModule.class,
-        UtilsModule.class
+        UtilsModule.class,
+        FragmentModule.class
 })
 public interface AppComponent {
 

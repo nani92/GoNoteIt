@@ -8,6 +8,7 @@ import android.databinding.DataBindingUtil;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
@@ -36,6 +37,7 @@ import eu.napcode.gonoteit.model.NoteModel;
 import eu.napcode.gonoteit.model.UserModel;
 import eu.napcode.gonoteit.type.Type;
 import eu.napcode.gonoteit.ui.login.LoginActivity;
+import eu.napcode.gonoteit.ui.notes.NotesFragment;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.observers.DisposableObserver;
@@ -158,7 +160,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         switch (item.getItemId()) {
             case R.id.notes:
-                //TODO display main board with notes
+                displayFragment(new NotesFragment());
+
                 return true;
             case R.id.fav_notes:
                 //TODO display favorite notes
@@ -168,10 +171,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 return true;
             case R.id.logout:
                 displayLogoutDialogFragment();
+
                 return true;
             default:
                 return false;
         }
+    }
+
+    private void displayFragment(Fragment fragment) {
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.mainContainerFrame, fragment)
+                .commit();
     }
 
     private void displayLogoutDialogFragment() {
