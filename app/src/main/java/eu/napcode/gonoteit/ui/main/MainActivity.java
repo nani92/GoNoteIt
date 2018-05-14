@@ -1,7 +1,6 @@
 package eu.napcode.gonoteit.ui.main;
 
 import android.arch.lifecycle.ViewModelProviders;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.databinding.DataBindingUtil;
@@ -33,7 +32,7 @@ import eu.napcode.gonoteit.databinding.ActivityMainBinding;
 import eu.napcode.gonoteit.api.Note;
 import eu.napcode.gonoteit.databinding.DrawerHeaderBinding;
 import eu.napcode.gonoteit.di.modules.viewmodel.ViewModelFactory;
-import eu.napcode.gonoteit.model.NoteModel;
+import eu.napcode.gonoteit.model.note.NoteModel;
 import eu.napcode.gonoteit.model.UserModel;
 import eu.napcode.gonoteit.type.Type;
 import eu.napcode.gonoteit.ui.login.LoginActivity;

@@ -50,8 +50,10 @@ public class UserRepositoryTest {
     @Before
     public void initial() {
         userRepository = new UserRepositoryImpl(apolloClient, storeAuth, apolloRxHelper);
+
         Mockito.when(apolloClient.mutate(Mockito.any(AuthenticateMutation.class)))
                 .thenReturn(apolloMutationCall);
+
         Mockito.when(apolloRxHelper.from((ApolloMutationCall<AuthenticateMutation.Data>) Mockito.any()))
                 .thenReturn(Observable.just(response));
     }

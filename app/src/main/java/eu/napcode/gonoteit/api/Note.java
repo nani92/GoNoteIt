@@ -2,7 +2,7 @@ package eu.napcode.gonoteit.api;
 
 import com.google.gson.Gson;
 
-import eu.napcode.gonoteit.model.NoteModel;
+import eu.napcode.gonoteit.model.note.NoteModel;
 import eu.napcode.gonoteit.type.Type;
 
 public class Note {

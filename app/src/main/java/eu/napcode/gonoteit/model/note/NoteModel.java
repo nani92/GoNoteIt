@@ -1,4 +1,4 @@
-package eu.napcode.gonoteit.model;
+package eu.napcode.gonoteit.model.note;
 
 public class NoteModel {
 

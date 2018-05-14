@@ -9,6 +9,7 @@
         tools:context=".ui.main.MainActivity">
 
         <android.support.v7.widget.RecyclerView
+            android:id="@+id/recyclerView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             tools:layoutManager="android.support.v7.widget.GridLayoutManager"
