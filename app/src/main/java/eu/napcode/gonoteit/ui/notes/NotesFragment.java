@@ -12,12 +12,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.List;
+
 import javax.inject.Inject;
 
 import dagger.android.support.AndroidSupportInjection;
 import eu.napcode.gonoteit.R;
 import eu.napcode.gonoteit.databinding.FragmentBoardBinding;
 import eu.napcode.gonoteit.di.modules.viewmodel.ViewModelFactory;
+import eu.napcode.gonoteit.model.note.NoteModel;
+import eu.napcode.gonoteit.repository.Resource;
 import eu.napcode.gonoteit.ui.main.MainViewModel;
 
 public class NotesFragment extends Fragment {
@@ -44,12 +48,19 @@ public class NotesFragment extends Fragment {
                 .get(NotesViewModel.class);
 
         setupRecyclerView();
+        this.viewModel.getNotes().observe(this, this::processNotesResponse);
+    }
+
+    private void processNotesResponse(Resource<List<NoteModel>> listResource) {
+
+        if (listResource.status == Resource.Status.SUCCESS) {
+            this.binding.recyclerView.setAdapter(new NotesAdapter(listResource.data));
+        }
     }
 
     private void setupRecyclerView() {
         //ToDO grid/linear changes no of columns depends on orientation and size
         this.binding.recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        
     }
 
     @Nullable
