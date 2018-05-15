@@ -28,6 +28,8 @@
         <activity
             android:theme="@style/LoginTheme"
             android:name=".ui.login.LoginActivity"/>
+
+        <activity android:name=".ui.create.CreateActivity"/>
     </application>
 
 </manifest>

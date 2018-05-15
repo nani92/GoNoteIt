@@ -2,6 +2,7 @@ package eu.napcode.gonoteit.di.modules;
 
 import dagger.Module;
 import dagger.android.ContributesAndroidInjector;
+import eu.napcode.gonoteit.ui.create.CreateActivity;
 import eu.napcode.gonoteit.ui.login.LoginActivity;
 import eu.napcode.gonoteit.ui.main.MainActivity;
 
@@ -13,4 +14,7 @@ public interface ActivityModule {
 
     @ContributesAndroidInjector
     LoginActivity bindLoginActivity();
+
+    @ContributesAndroidInjector
+    CreateActivity bindCreateActivity();
 }

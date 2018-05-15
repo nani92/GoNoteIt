@@ -21,4 +21,7 @@
 
     <!--Image descriptions-->
     <string name="application_logo">Go Note It logo</string>
+    <string name="title">Note Title</string>
+    <string name="create_note">Create Note</string>
+    <string name="your_note">Type in your note here</string>
 </resources>
