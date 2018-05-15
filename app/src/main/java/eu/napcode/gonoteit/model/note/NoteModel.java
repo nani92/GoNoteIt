@@ -2,13 +2,22 @@ package eu.napcode.gonoteit.model.note;
 
 public class NoteModel {
 
-    String msg;
+    private String title;
+    private String content;
 
-    public String getMsg() {
-        return msg;
+    public String getTitle() {
+        return title;
     }
 
-    public void setMsg(String msg) {
-        this.msg = msg;
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
     }
 }

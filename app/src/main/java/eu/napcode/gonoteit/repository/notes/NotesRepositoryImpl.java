@@ -13,8 +13,10 @@ import eu.napcode.gonoteit.api.Note;
 import eu.napcode.gonoteit.auth.StoreAuth;
 import eu.napcode.gonoteit.model.note.NoteModel;
 import eu.napcode.gonoteit.rx.RxSchedulers;
+import eu.napcode.gonoteit.type.Type;
 import io.reactivex.Flowable;
 import io.reactivex.Observable;
+import io.reactivex.functions.Predicate;
 
 public class NotesRepositoryImpl implements NotesRepository {
 
@@ -36,6 +38,7 @@ public class NotesRepositoryImpl implements NotesRepository {
         return apolloRxHelper.from(apolloClient.query(new GetNotesQuery()))
                 .flatMap(dataResponse -> Observable.fromArray(dataResponse.data().allEntities()))
                 .flatMapIterable(listOfEntities -> listOfEntities)
+                .filter(allEntity -> allEntity.type() != Type.NONE)
                 .map(allEntity -> ((NoteModel) ((Note) allEntity.data()).parseNote(allEntity.type())))
                 .toList()
                 .toFlowable();
