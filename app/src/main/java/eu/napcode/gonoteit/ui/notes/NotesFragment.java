@@ -6,6 +6,7 @@ import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
@@ -22,7 +23,7 @@ import eu.napcode.gonoteit.databinding.FragmentBoardBinding;
 import eu.napcode.gonoteit.di.modules.viewmodel.ViewModelFactory;
 import eu.napcode.gonoteit.model.note.NoteModel;
 import eu.napcode.gonoteit.repository.Resource;
-import eu.napcode.gonoteit.ui.main.MainViewModel;
+import eu.napcode.gonoteit.repository.Resource.Status;
 
 public class NotesFragment extends Fragment {
 
@@ -52,9 +53,15 @@ public class NotesFragment extends Fragment {
     }
 
     private void processNotesResponse(Resource<List<NoteModel>> listResource) {
+        boolean loading = listResource.status == Status.LOADING;
+        binding.progressBar.setVisibility(loading ? View.VISIBLE : View.GONE);
 
-        if (listResource.status == Resource.Status.SUCCESS) {
-            this.binding.recyclerView.setAdapter(new NotesAdapter(listResource.data));
+        if (listResource.status == Status.SUCCESS) {
+            binding.recyclerView.setAdapter(new NotesAdapter(listResource.data));
+        }
+
+        if (listResource.status == Status.ERROR){
+            Snackbar.make(binding.constraintLayout, listResource.message, Snackbar.LENGTH_LONG).show();
         }
     }
 
