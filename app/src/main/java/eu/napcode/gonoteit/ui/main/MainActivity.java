@@ -1,13 +1,13 @@
 package eu.napcode.gonoteit.ui.main;
 
 import android.arch.lifecycle.ViewModelProviders;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.databinding.DataBindingUtil;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
@@ -15,31 +15,20 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.MenuItem;
-import android.util.Log;
 import android.view.View;
 
-import com.apollographql.apollo.ApolloCall;
 import com.apollographql.apollo.ApolloClient;
-import com.apollographql.apollo.api.Response;
-import com.apollographql.apollo.rx2.Rx2Apollo;
 
 import javax.inject.Inject;
 
 import dagger.android.AndroidInjection;
-import eu.napcode.gonoteit.GetNotesQuery;
 import eu.napcode.gonoteit.R;
 import eu.napcode.gonoteit.databinding.ActivityMainBinding;
-import eu.napcode.gonoteit.api.Note;
 import eu.napcode.gonoteit.databinding.DrawerHeaderBinding;
 import eu.napcode.gonoteit.di.modules.viewmodel.ViewModelFactory;
-import eu.napcode.gonoteit.model.NoteModel;
 import eu.napcode.gonoteit.model.UserModel;
-import eu.napcode.gonoteit.type.Type;
 import eu.napcode.gonoteit.ui.login.LoginActivity;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.observers.DisposableObserver;
-import io.reactivex.schedulers.Schedulers;
+import eu.napcode.gonoteit.ui.notes.NotesFragment;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -70,8 +59,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         setupDrawer();
         setupUser();
-
-        graphQLTry();
     }
 
     private void setupDrawer() {
@@ -158,7 +145,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         switch (item.getItemId()) {
             case R.id.notes:
-                //TODO display main board with notes
+                displayFragment(new NotesFragment());
+
                 return true;
             case R.id.fav_notes:
                 //TODO display favorite notes
@@ -168,10 +156,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 return true;
             case R.id.logout:
                 displayLogoutDialogFragment();
+
                 return true;
             default:
                 return false;
         }
+    }
+
+    private void displayFragment(Fragment fragment) {
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.mainContainerFrame, fragment)
+                .commit();
     }
 
     private void displayLogoutDialogFragment() {
@@ -179,45 +175,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 .setTitle(R.string.logout)
                 .setMessage(R.string.logout_message)
                 .setPositiveButton(R.string.logout, (dialog1, which) -> mainViewModel.logoutUser())
-                .setNegativeButton(android.R.string.cancel, (dialog12, which) -> {})
+                .setNegativeButton(android.R.string.cancel, (dialog12, which) -> {
+                })
                 .create();
 
         dialog.show();
-    }
-
-    private void graphQLTry() {
-        CompositeDisposable disposables = new CompositeDisposable();
-
-        ApolloCall<GetNotesQuery.Data> notesQuery = apolloClient.
-                query(new GetNotesQuery());
-
-        disposables.add(Rx2Apollo.from(notesQuery)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeWith(new DisposableObserver<Response<GetNotesQuery.Data>>() {
-
-                                   @Override
-                                   public void onNext(Response<GetNotesQuery.Data> dataResponse) {
-                                       Log.d("Natalia", "ok ");
-
-                                       for (GetNotesQuery.AllEntity allEntity : dataResponse.data().allEntities()) {
-                                           Log.d("Natalia dupa", allEntity.type().rawValue() + allEntity.data());
-                                           Type type = allEntity.type();
-                                           Log.d("Natali kupa", ((NoteModel) ((Note) allEntity.data()).parseNote(type)).getMsg());
-                                       }
-
-                                   }
-
-                                   @Override
-                                   public void onError(Throwable e) {
-                                       Log.e("Natalia", e.getMessage(), e);
-                                   }
-
-                                   @Override
-                                   public void onComplete() {
-
-                                   }
-                               }
-                ));
     }
 }

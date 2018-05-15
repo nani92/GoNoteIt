@@ -2,19 +2,19 @@ package eu.napcode.gonoteit.app;
 
 import android.app.Activity;
 import android.app.Application;
-import android.app.Fragment;
+import android.support.v4.app.Fragment;
 
 import javax.inject.Inject;
 
 import dagger.android.AndroidInjector;
 import dagger.android.DispatchingAndroidInjector;
 import dagger.android.HasActivityInjector;
-import dagger.android.HasFragmentInjector;
+import dagger.android.support.HasSupportFragmentInjector;
 import eu.napcode.gonoteit.BuildConfig;
 import eu.napcode.gonoteit.di.components.DaggerAppComponent;
 import timber.log.Timber;
 
-public class GoNoteItApp extends Application implements HasActivityInjector, HasFragmentInjector {
+public class GoNoteItApp extends Application implements HasActivityInjector, HasSupportFragmentInjector {
 
     @Inject
     DispatchingAndroidInjector<Activity> dispatchingAndroidInjector;
@@ -51,7 +51,7 @@ public class GoNoteItApp extends Application implements HasActivityInjector, Has
     }
 
     @Override
-    public AndroidInjector<Fragment> fragmentInjector() {
+    public AndroidInjector<Fragment> supportFragmentInjector() {
         return this.dispatchingAndroidFragmentInjector;
     }
 }

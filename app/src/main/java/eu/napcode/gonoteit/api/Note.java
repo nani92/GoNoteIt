@@ -2,7 +2,7 @@ package eu.napcode.gonoteit.api;
 
 import com.google.gson.Gson;
 
-import eu.napcode.gonoteit.model.NoteModel;
+import eu.napcode.gonoteit.model.note.NoteModel;
 import eu.napcode.gonoteit.type.Type;
 
 public class Note {
@@ -18,10 +18,15 @@ public class Note {
     }
 
     public <T> T parseNote(Type type) {
-        return (T) getNoteModel();
+        return (T) getNoteModel(type);
     }
 
-    private NoteModel getNoteModel() {
+    private NoteModel getNoteModel(Type type) {
+
+        if (type == Type.NONE) {
+            return null;
+        }
+
         Gson gson = new Gson();
 
         return gson.fromJson(noteString, NoteModel.class);
