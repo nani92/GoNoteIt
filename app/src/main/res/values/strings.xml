@@ -24,4 +24,5 @@
     <string name="title">Note Title</string>
     <string name="create_note">Create Note</string>
     <string name="your_note">Type in your note here</string>
+    <string name="error_with_saving_note">We encountered error during saving your note.</string>
 </resources>
