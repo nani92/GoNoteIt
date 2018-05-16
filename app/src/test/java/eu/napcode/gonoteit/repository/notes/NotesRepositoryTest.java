@@ -18,6 +18,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 import java.util.Arrays;
 import java.util.List;
 
+import eu.napcode.gonoteit.CreateNoteMutation;
 import eu.napcode.gonoteit.GetNotesQuery;
 import eu.napcode.gonoteit.MockRxSchedulers;
 import eu.napcode.gonoteit.api.ApolloRxHelper;
@@ -51,12 +52,6 @@ public class NotesRepositoryTest {
     @Mock
     Response<GetNotesQuery.Data> getNotesResponse;
 
-    @Mock
-    GetNotesQuery.Data data;
-
-    @Mock
-    GetNotesQuery.AllEntity allEntity;
-
     @Before
     public void init() {
         this.notesRepository = new NotesRepositoryImpl(apolloClient, storeAuth, apolloRxHelper);
@@ -88,5 +83,12 @@ public class NotesRepositoryTest {
         notesRepository.getNotes().subscribe(notesSubscriber);
 
         notesSubscriber.assertSubscribed();
+    }
+
+    @Test
+    public void testCallNoteMutation() {
+        notesRepository.createNote(new NoteModel());
+
+        Mockito.verify(apolloClient).mutate(Mockito.any(CreateNoteMutation.class));
     }
 }

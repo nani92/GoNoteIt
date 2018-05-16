@@ -1,11 +1,14 @@
 package eu.napcode.gonoteit.repository.notes;
 
 import com.apollographql.apollo.ApolloClient;
+import com.apollographql.apollo.api.Input;
+import com.apollographql.apollo.api.Response;
 
 import java.util.List;
 
 import javax.inject.Inject;
 
+import eu.napcode.gonoteit.CreateNoteMutation;
 import eu.napcode.gonoteit.GetNotesQuery;
 import eu.napcode.gonoteit.api.ApolloRxHelper;
 import eu.napcode.gonoteit.api.Note;
@@ -15,7 +18,7 @@ import eu.napcode.gonoteit.type.Type;
 import io.reactivex.Flowable;
 import io.reactivex.Observable;
 
-public class NotesRepositoryImpl implements NotesRepository {
+public class  NotesRepositoryImpl implements NotesRepository {
 
     private StoreAuth storeAuth;
     private ApolloClient apolloClient;
@@ -39,5 +42,14 @@ public class NotesRepositoryImpl implements NotesRepository {
                 .map(allEntity -> ((NoteModel) ((Note) allEntity.data()).parseNote(allEntity.type())))
                 .toList()
                 .toFlowable();
+    }
+
+    @Override
+    public Observable<Response<CreateNoteMutation.Data>> createNote(NoteModel noteModel) {
+        //TODO add token to query
+        Input<String> title = Input.fromNullable(noteModel.getTitle());
+        Input<String> content = Input.fromNullable(noteModel.getContent());
+
+        return apolloRxHelper.from(apolloClient.mutate(new CreateNoteMutation(title, content)));
     }
 }
