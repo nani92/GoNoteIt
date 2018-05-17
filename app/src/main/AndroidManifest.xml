@@ -28,6 +28,11 @@
         <activity
             android:theme="@style/LoginTheme"
             android:name=".ui.login.LoginActivity"/>
+
+        <provider
+            android:name=".provider.NotesContentProvider"
+            android:authorities="eu.napcode.gonoteit.provider"
+            android:exported="false"/>
     </application>
 
 </manifest>
