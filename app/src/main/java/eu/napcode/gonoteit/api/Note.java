@@ -17,18 +17,20 @@ public class Note {
         return noteString;
     }
 
-    public <T> T parseNote(Type type) {
-        return (T) getNoteModel(type);
+    public <T> T parseNote(Type type, Object uuid) {
+        return (T) getNoteModel(type, uuid.toString());
     }
 
-    private NoteModel getNoteModel(Type type) {
+    private NoteModel getNoteModel(Type type, String uuid) {
 
         if (type == Type.NONE) {
             return null;
         }
 
         Gson gson = new Gson();
+        NoteModel noteModel = gson.fromJson(noteString, NoteModel.class);
+        noteModel.setId(uuid);
 
-        return gson.fromJson(noteString, NoteModel.class);
+        return noteModel;
     }
 }

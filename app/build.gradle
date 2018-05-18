@@ -89,4 +89,5 @@ dependencies {
 
 apollo {
     customTypeMapping['data'] = "eu.napcode.gonoteit.api.Note"
+    customTypeMapping['uuid'] = "java.lang.String"
 }
