@@ -1,7 +1,5 @@
 package eu.napcode.gonoteit.repository.notes;
 
-import com.apollographql.apollo.ApolloClient;
-import com.apollographql.apollo.api.Input;
 import com.apollographql.apollo.api.Response;
 
 import java.util.List;
@@ -9,47 +7,43 @@ import java.util.List;
 import javax.inject.Inject;
 
 import eu.napcode.gonoteit.CreateNoteMutation;
-import eu.napcode.gonoteit.GetNotesQuery;
-import eu.napcode.gonoteit.api.ApolloRxHelper;
-import eu.napcode.gonoteit.api.Note;
-import eu.napcode.gonoteit.auth.StoreAuth;
 import eu.napcode.gonoteit.model.note.NoteModel;
-import eu.napcode.gonoteit.type.Type;
+import eu.napcode.gonoteit.utils.NetworkHelper;
 import io.reactivex.Flowable;
 import io.reactivex.Observable;
 
 public class  NotesRepositoryImpl implements NotesRepository {
 
-    private StoreAuth storeAuth;
-    private ApolloClient apolloClient;
-    private ApolloRxHelper apolloRxHelper;
+    private NotesRepositoryLocalImpl notesRepositoryLocal;
+    private NotesRepositoryRemoteImpl notesRepositoryRemote;
+    private NetworkHelper networkHelper;
 
     @Inject
-    public NotesRepositoryImpl(ApolloClient apolloClient, StoreAuth storeAuth, ApolloRxHelper apolloRxHelper) {
-        this.apolloClient = apolloClient;
-        this.storeAuth = storeAuth;
-        this.apolloRxHelper = apolloRxHelper;
+    public NotesRepositoryImpl(NotesRepositoryRemoteImpl notesRepositoryRemote,
+                               NotesRepositoryLocalImpl notesRepositoryLocal,
+                               NetworkHelper networkHelper) {
+        this.notesRepositoryLocal = notesRepositoryLocal;
+        this.notesRepositoryRemote = notesRepositoryRemote;
+        this.networkHelper = networkHelper;
     }
 
     @Override
     public Flowable<List<NoteModel>> getNotes() {
-        //TODO add token to query
 
-        return apolloRxHelper.from(apolloClient.query(new GetNotesQuery()))
-                .flatMap(dataResponse -> Observable.fromArray(dataResponse.data().allEntities()))
-                .flatMapIterable(listOfEntities -> listOfEntities)
-                .filter(allEntity -> allEntity.type() != Type.NONE)
-                .map(allEntity -> ((NoteModel) ((Note) allEntity.data()).parseNote(allEntity.type())))
-                .toList()
-                .toFlowable();
+        if (networkHelper.isNetworkAvailable()) {
+            return this.notesRepositoryRemote.getNotes();
+        } else {
+             return this.notesRepositoryLocal.getNotes();
+        }
     }
 
     @Override
     public Observable<Response<CreateNoteMutation.Data>> createNote(NoteModel noteModel) {
-        //TODO add token to query
-        Input<String> title = Input.fromNullable(noteModel.getTitle());
-        Input<String> content = Input.fromNullable(noteModel.getContent());
 
-        return apolloRxHelper.from(apolloClient.mutate(new CreateNoteMutation(title, content)));
+        if (networkHelper.isNetworkAvailable()) {
+            return notesRepositoryRemote.createNote(noteModel);
+        } else {
+            return notesRepositoryLocal.createNote(noteModel);
+        }
     }
 }

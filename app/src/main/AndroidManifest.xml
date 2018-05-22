@@ -4,6 +4,7 @@
     package="eu.napcode.gonoteit">
 
     <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:name=".app.GoNoteItApp"
@@ -30,6 +31,12 @@
             android:name=".ui.login.LoginActivity"/>
 
         <activity android:name=".ui.create.CreateActivity"/>
+
+        <provider
+            android:name=".provider.NotesContentProvider"
+            android:authorities="eu.napcode.gonoteit.provider"
+            android:exported="false"/>
+
     </application>
 
 </manifest>

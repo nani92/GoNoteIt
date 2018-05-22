@@ -11,7 +11,7 @@ import eu.napcode.gonoteit.repository.user.UserRepositoryImpl;
 public interface RepositoryModule {
 
     @Binds
-    NotesRepository notesRepository(NotesRepositoryImpl recipesRepository);
+    NotesRepository notesRepository(NotesRepositoryImpl notesRepository);
 
     @Binds
     UserRepository userRepository(UserRepositoryImpl userRepository);

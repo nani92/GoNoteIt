@@ -12,6 +12,8 @@ import eu.napcode.gonoteit.model.note.NoteModel;
 import eu.napcode.gonoteit.repository.Resource;
 import eu.napcode.gonoteit.repository.notes.NotesRepository;
 import eu.napcode.gonoteit.rx.RxSchedulers;
+import io.reactivex.functions.Action;
+import timber.log.Timber;
 
 public class NotesViewModel extends ViewModel {
 
@@ -22,7 +24,7 @@ public class NotesViewModel extends ViewModel {
     @Inject
     public NotesViewModel(NotesRepository notesRepository, RxSchedulers rxSchedulers) {
         this.notesRepository = notesRepository;
-        this.rxSchedulers =rxSchedulers;
+        this.rxSchedulers = rxSchedulers;
     }
 
     @SuppressLint("CheckResult")
