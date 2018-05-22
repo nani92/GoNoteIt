@@ -24,6 +24,7 @@ import eu.napcode.gonoteit.api.ApolloRxHelper;
 import eu.napcode.gonoteit.auth.StoreAuth;
 import eu.napcode.gonoteit.model.note.NoteModel;
 import eu.napcode.gonoteit.type.Type;
+import eu.napcode.gonoteit.utils.NetworkHelper;
 import io.reactivex.Observable;
 import io.reactivex.subscribers.TestSubscriber;
 
@@ -37,56 +38,36 @@ public class NotesRepositoryTest {
     public TestRule rule = new InstantTaskExecutorRule();
 
     @Mock
-    ApolloClient apolloClient;
+    NotesRepositoryLocalImpl notesRepositoryLocal;
 
     @Mock
-    StoreAuth storeAuth;
+    NotesRepositoryRemoteImpl notesRepositoryRemote;
 
     @Mock
-    ApolloRxHelper apolloRxHelper;
-
-    @Mock
-    ApolloQueryCall<GetNotesQuery.Data> apolloGetNotesCall;
-
-    @Mock
-    Response<GetNotesQuery.Data> getNotesResponse;
-
-    @Mock
-    GetNotesQuery.Data data;
-
-    @Mock
-    GetNotesQuery.AllEntity allEntity;
+    NetworkHelper networkHelper;
 
     @Before
     public void init() {
-        this.notesRepository = new NotesRepositoryImpl(apolloClient, storeAuth, apolloRxHelper);
-
-        Mockito.when(apolloClient.query(Mockito.any(GetNotesQuery.class)))
-                .thenReturn(apolloGetNotesCall);
-
-        Mockito.when(apolloRxHelper.from(apolloGetNotesCall))
-                .thenReturn(Observable.just(getNotesResponse));
+        this.notesRepository = new NotesRepositoryImpl(notesRepositoryRemote, notesRepositoryLocal, networkHelper);
     }
 
     @Test
-    public void testCallGetNotesQuery() {
-        notesRepository.getNotes();
+    public void testCallRemoteGetNotesQuery() {
+        Mockito.when(networkHelper.isNetworkAvailable())
+                .thenReturn(true);
 
-        Mockito.verify(apolloClient).query(Mockito.any(GetNotesQuery.class));
+        this.notesRepository.getNotes();
+
+        Mockito.verify(notesRepositoryRemote).getNotes();
     }
 
     @Test
-    public void testCallIntoRx() {
-        notesRepository.getNotes();
+    public void testCallLocalGetNotesQuery() {
+        Mockito.when(networkHelper.isNetworkAvailable())
+                .thenReturn(false);
 
-        Mockito.verify(apolloRxHelper).from(apolloGetNotesCall);
-    }
+        this.notesRepository.getNotes();
 
-    @Test
-    public void testReturnNotes() {
-        TestSubscriber<List<NoteModel>> notesSubscriber = new TestSubscriber<>();
-        notesRepository.getNotes().subscribe(notesSubscriber);
-
-        notesSubscriber.assertSubscribed();
+        Mockito.verify(notesRepositoryLocal).getNotes();
     }
 }
