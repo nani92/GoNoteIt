@@ -21,4 +21,5 @@
 
     <!--Image descriptions-->
     <string name="application_logo">Go Note It logo</string>
+    <string name="add_note_widget">Add Note Widget</string>
 </resources>
