@@ -71,7 +71,7 @@ public class CreateActivity extends AppCompatActivity {
 
     private void showError(String message) {
 
-        if (message != null) {
+        if (message == null) {
             message = getString(R.string.error_with_saving_note);
         }
 
