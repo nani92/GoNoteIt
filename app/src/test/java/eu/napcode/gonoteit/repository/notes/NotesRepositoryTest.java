@@ -24,6 +24,7 @@ import eu.napcode.gonoteit.api.ApolloRxHelper;
 import eu.napcode.gonoteit.auth.StoreAuth;
 import eu.napcode.gonoteit.model.note.NoteModel;
 import eu.napcode.gonoteit.type.Type;
+import eu.napcode.gonoteit.utils.NetworkHelper;
 import io.reactivex.Observable;
 import io.reactivex.subscribers.TestSubscriber;
 
@@ -57,15 +58,46 @@ public class NotesRepositoryTest {
     @Mock
     GetNotesQuery.AllEntity allEntity;
 
+    /*** New **/
+
+    @Mock
+    NotesRepositoryLocalImpl notesRepositoryLocal;
+
+    @Mock
+    NotesRepositoryRemoteImpl notesRepositoryRemote;
+
+    @Mock
+    NetworkHelper networkHelper;
+
     @Before
     public void init() {
-        this.notesRepository = new NotesRepositoryImpl(apolloClient, storeAuth, apolloRxHelper);
+        this.notesRepository = new NotesRepositoryImpl(notesRepositoryRemote, notesRepositoryLocal, networkHelper);
 
         Mockito.when(apolloClient.query(Mockito.any(GetNotesQuery.class)))
                 .thenReturn(apolloGetNotesCall);
 
         Mockito.when(apolloRxHelper.from(apolloGetNotesCall))
                 .thenReturn(Observable.just(getNotesResponse));
+    }
+
+    @Test
+    public void testCallRemoteGetNotesQuery() {
+        Mockito.when(networkHelper.isNetworkAvailable())
+                .thenReturn(true);
+
+        this.notesRepository.getNotes();
+
+        Mockito.verify(notesRepositoryRemote).getNotes();
+    }
+
+    @Test
+    public void testCallLocalGetNotesQuery() {
+        Mockito.when(networkHelper.isNetworkAvailable())
+                .thenReturn(false);
+
+        this.notesRepository.getNotes();
+
+        Mockito.verify(notesRepositoryLocal).getNotes();
     }
 
     @Test

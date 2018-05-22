@@ -1,12 +1,13 @@
 package eu.napcode.gonoteit.model.note;
 
 import eu.napcode.gonoteit.dao.NoteEntity;
-import timber.log.Timber;
 
 public class NoteModel {
 
+    public NoteModel() {
+    }
+
     public NoteModel(NoteEntity noteEntity) {
-        Timber.d("Note entity" + noteEntity.getId());
         this.id = noteEntity.getId();
         this.title = noteEntity.getTitle();
         this.content = noteEntity.getContent();
