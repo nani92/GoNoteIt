@@ -38,29 +38,6 @@ public class NotesRepositoryTest {
     public TestRule rule = new InstantTaskExecutorRule();
 
     @Mock
-    ApolloClient apolloClient;
-
-    @Mock
-    StoreAuth storeAuth;
-
-    @Mock
-    ApolloRxHelper apolloRxHelper;
-
-    @Mock
-    ApolloQueryCall<GetNotesQuery.Data> apolloGetNotesCall;
-
-    @Mock
-    Response<GetNotesQuery.Data> getNotesResponse;
-
-    @Mock
-    GetNotesQuery.Data data;
-
-    @Mock
-    GetNotesQuery.AllEntity allEntity;
-
-    /*** New **/
-
-    @Mock
     NotesRepositoryLocalImpl notesRepositoryLocal;
 
     @Mock
@@ -72,12 +49,6 @@ public class NotesRepositoryTest {
     @Before
     public void init() {
         this.notesRepository = new NotesRepositoryImpl(notesRepositoryRemote, notesRepositoryLocal, networkHelper);
-
-        Mockito.when(apolloClient.query(Mockito.any(GetNotesQuery.class)))
-                .thenReturn(apolloGetNotesCall);
-
-        Mockito.when(apolloRxHelper.from(apolloGetNotesCall))
-                .thenReturn(Observable.just(getNotesResponse));
     }
 
     @Test
@@ -98,27 +69,5 @@ public class NotesRepositoryTest {
         this.notesRepository.getNotes();
 
         Mockito.verify(notesRepositoryLocal).getNotes();
-    }
-
-    @Test
-    public void testCallGetNotesQuery() {
-        notesRepository.getNotes();
-
-        Mockito.verify(apolloClient).query(Mockito.any(GetNotesQuery.class));
-    }
-
-    @Test
-    public void testCallIntoRx() {
-        notesRepository.getNotes();
-
-        Mockito.verify(apolloRxHelper).from(apolloGetNotesCall);
-    }
-
-    @Test
-    public void testReturnNotes() {
-        TestSubscriber<List<NoteModel>> notesSubscriber = new TestSubscriber<>();
-        notesRepository.getNotes().subscribe(notesSubscriber);
-
-        notesSubscriber.assertSubscribed();
     }
 }
