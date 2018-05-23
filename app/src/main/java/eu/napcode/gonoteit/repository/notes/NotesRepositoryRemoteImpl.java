@@ -51,9 +51,8 @@ public class NotesRepositoryRemoteImpl implements NotesRepository {
 
     @Override
     public Observable<Response<CreateNoteMutation.Data>> createNote(NoteModel noteModel) {
-        Input<String> title = Input.fromNullable(noteModel.getTitle());
-        Input<String> content = Input.fromNullable(noteModel.getContent());
+        Note note = new Note(noteModel);
 
-        return apolloRxHelper.from(apolloClient.mutate(new CreateNoteMutation(title, content)));
+        return apolloRxHelper.from(apolloClient.mutate(new CreateNoteMutation(note.getNoteString())));
     }
 }

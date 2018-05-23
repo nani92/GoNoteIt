@@ -13,6 +13,11 @@ public class Note {
         this.noteString = noteString;
     }
 
+    public Note(NoteModel noteModel) {
+        Gson gson = new Gson();
+        this.noteString = gson.toJson(noteModel);
+    }
+
     public String getNoteString() {
         return noteString;
     }
