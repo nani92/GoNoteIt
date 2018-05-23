@@ -1,6 +1,5 @@
 package eu.napcode.gonoteit.ui.create;
 
-import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
@@ -20,6 +19,8 @@ import eu.napcode.gonoteit.repository.Resource.Status;
 import eu.napcode.gonoteit.repository.Resource;
 
 public class CreateActivity extends AppCompatActivity {
+
+    //TODO: add back nav
 
     @Inject
     ViewModelFactory viewModelFactory;
