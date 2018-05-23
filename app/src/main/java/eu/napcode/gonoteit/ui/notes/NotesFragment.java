@@ -52,6 +52,12 @@ public class NotesFragment extends Fragment {
                 .get(NotesViewModel.class);
 
         setupViews();
+      }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
         this.viewModel.getNotes().observe(this, this::processNotesResponse);
     }
 

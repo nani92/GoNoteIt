@@ -19,6 +19,7 @@ import eu.napcode.gonoteit.model.note.NoteModel;
 import eu.napcode.gonoteit.type.Type;
 import io.reactivex.Flowable;
 import io.reactivex.Observable;
+import timber.log.Timber;
 
 public class NotesRepositoryRemoteImpl implements NotesRepository {
 
@@ -43,8 +44,13 @@ public class NotesRepositoryRemoteImpl implements NotesRepository {
                 .flatMap(dataResponse -> Observable.fromArray(dataResponse.data().allEntities()))
                 .flatMapIterable(listOfEntities -> listOfEntities)
                 .filter(allEntity -> allEntity.type() != Type.NONE)
-                .map(allEntity -> ((NoteModel) ((Note) allEntity.data()).parseNote(allEntity.type(), allEntity.uuid())))
-                .doOnEach(noteModelNotification -> noteDao.insertNote(new NoteEntity(noteModelNotification.getValue())))
+                .map(allEntity -> (NoteModel) ((Note) allEntity.data()).parseNote(allEntity.type(), allEntity.uuid()))
+                .doOnEach(noteModelNotification -> {
+
+                    if (noteModelNotification.getValue() != null) {
+                        noteDao.insertNote(new NoteEntity(noteModelNotification.getValue()));
+                    }
+                })
                 .toList()
                 .toFlowable();
     }
