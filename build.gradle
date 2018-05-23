@@ -7,6 +7,7 @@ ext {
     roomVersion = "1.0.0"
     daggerVersion = "2.15"
     graphQLVersion = "0.5.0"
+    okhttp3Version = "3.10.0"
 }
 
 buildscript {

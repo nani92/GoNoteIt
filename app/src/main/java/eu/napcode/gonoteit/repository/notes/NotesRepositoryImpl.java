@@ -1,18 +1,18 @@
 package eu.napcode.gonoteit.repository.notes;
 
-import java.util.ArrayList;
-import java.util.Arrays;
+import com.apollographql.apollo.api.Response;
+
 import java.util.List;
 
 import javax.inject.Inject;
 
-import eu.napcode.gonoteit.dao.NoteEntity;
+import eu.napcode.gonoteit.CreateNoteMutation;
 import eu.napcode.gonoteit.model.note.NoteModel;
 import eu.napcode.gonoteit.utils.NetworkHelper;
 import io.reactivex.Flowable;
-import timber.log.Timber;
+import io.reactivex.Observable;
 
-public class NotesRepositoryImpl implements NotesRepository {
+public class  NotesRepositoryImpl implements NotesRepository {
 
     private NotesRepositoryLocalImpl notesRepositoryLocal;
     private NotesRepositoryRemoteImpl notesRepositoryRemote;
@@ -34,6 +34,16 @@ public class NotesRepositoryImpl implements NotesRepository {
             return this.notesRepositoryRemote.getNotes();
         } else {
              return this.notesRepositoryLocal.getNotes();
+        }
+    }
+
+    @Override
+    public Observable<Response<CreateNoteMutation.Data>> createNote(NoteModel noteModel) {
+
+        if (networkHelper.isNetworkAvailable()) {
+            return notesRepositoryRemote.createNote(noteModel);
+        } else {
+            return notesRepositoryLocal.createNote(noteModel);
         }
     }
 }

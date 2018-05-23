@@ -1,11 +1,14 @@
 package eu.napcode.gonoteit.repository.notes;
 
 import com.apollographql.apollo.ApolloClient;
+import com.apollographql.apollo.api.Input;
+import com.apollographql.apollo.api.Response;
 
 import java.util.List;
 
 import javax.inject.Inject;
 
+import eu.napcode.gonoteit.CreateNoteMutation;
 import eu.napcode.gonoteit.GetNotesQuery;
 import eu.napcode.gonoteit.api.ApolloRxHelper;
 import eu.napcode.gonoteit.api.Note;
@@ -16,6 +19,7 @@ import eu.napcode.gonoteit.model.note.NoteModel;
 import eu.napcode.gonoteit.type.Type;
 import io.reactivex.Flowable;
 import io.reactivex.Observable;
+import timber.log.Timber;
 
 public class NotesRepositoryRemoteImpl implements NotesRepository {
 
@@ -40,9 +44,21 @@ public class NotesRepositoryRemoteImpl implements NotesRepository {
                 .flatMap(dataResponse -> Observable.fromArray(dataResponse.data().allEntities()))
                 .flatMapIterable(listOfEntities -> listOfEntities)
                 .filter(allEntity -> allEntity.type() != Type.NONE)
-                .map(allEntity -> ((NoteModel) ((Note) allEntity.data()).parseNote(allEntity.type(), allEntity.uuid())))
-                .doOnEach(noteModelNotification -> noteDao.insertNote(new NoteEntity(noteModelNotification.getValue())))
+                .map(allEntity -> (NoteModel) ((Note) allEntity.data()).parseNote(allEntity.type(), allEntity.uuid()))
+                .doOnEach(noteModelNotification -> {
+
+                    if (noteModelNotification.getValue() != null) {
+                        noteDao.insertNote(new NoteEntity(noteModelNotification.getValue()));
+                    }
+                })
                 .toList()
                 .toFlowable();
+    }
+
+    @Override
+    public Observable<Response<CreateNoteMutation.Data>> createNote(NoteModel noteModel) {
+        Note note = new Note(noteModel);
+
+        return apolloRxHelper.from(apolloClient.mutate(new CreateNoteMutation(note.getNoteString())));
     }
 }

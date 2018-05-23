@@ -72,7 +72,7 @@ dependencies {
     implementation "com.android.support:design:${supportLibVersion}"
 
     //okhttp
-    implementation group: 'com.squareup.okhttp', name: 'okhttp', version: '2.7.5'
+    implementation group: 'com.squareup.okhttp3', name: 'okhttp', version: "${okhttp3Version}"
 
     //gson
     implementation 'com.google.code.gson:gson:2.8.4'
@@ -85,6 +85,9 @@ dependencies {
 
     //live data testing
     implementation "android.arch.core:core-testing:${archComponentsVersion}"
+
+    //http logging interceptor
+    implementation group: 'com.squareup.okhttp3', name: 'logging-interceptor', version: "${okhttp3Version}"
 }
 
 apollo {

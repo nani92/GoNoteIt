@@ -2,6 +2,7 @@ package eu.napcode.gonoteit.ui.notes;
 
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -24,6 +25,8 @@ import eu.napcode.gonoteit.di.modules.viewmodel.ViewModelFactory;
 import eu.napcode.gonoteit.model.note.NoteModel;
 import eu.napcode.gonoteit.repository.Resource;
 import eu.napcode.gonoteit.repository.Resource.Status;
+import eu.napcode.gonoteit.ui.create.CreateActivity;
+import eu.napcode.gonoteit.ui.main.MainActivity;
 
 public class NotesFragment extends Fragment {
 
@@ -48,7 +51,13 @@ public class NotesFragment extends Fragment {
                 .of(this, this.viewModelFactory)
                 .get(NotesViewModel.class);
 
-        setupRecyclerView();
+        setupViews();
+      }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
         this.viewModel.getNotes().observe(this, this::processNotesResponse);
     }
 
@@ -63,6 +72,13 @@ public class NotesFragment extends Fragment {
         if (listResource.status == Status.ERROR){
             Snackbar.make(binding.constraintLayout, listResource.message, Snackbar.LENGTH_LONG).show();
         }
+    }
+
+    private void setupViews() {
+        setupRecyclerView();
+
+        this.binding.createFab.setOnClickListener(v ->
+                startActivity(new Intent(NotesFragment.this.getContext(), CreateActivity.class)));
     }
 
     private void setupRecyclerView() {

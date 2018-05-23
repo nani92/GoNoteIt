@@ -21,5 +21,14 @@
 
     <!--Image descriptions-->
     <string name="application_logo">Go Note It logo</string>
+
+    <string name="title">Note Title</string>
+    <string name="create_note">Create Note</string>
+    <string name="your_note">Type in your note here</string>
+    <string name="error_with_saving_note">We encountered error during saving your note.</string>
+
+    <!--Widgets-->
     <string name="add_note_widget">Add Note Widget</string>
+    <string name="add_note">Add note</string>
+
 </resources>

@@ -30,6 +30,8 @@
             android:theme="@style/LoginTheme"
             android:name=".ui.login.LoginActivity"/>
 
+        <activity android:name=".ui.create.CreateActivity"/>
+
         <provider
             android:name=".provider.NotesContentProvider"
             android:authorities="eu.napcode.gonoteit.provider"
@@ -46,8 +48,9 @@
 
             <meta-data
                 android:name="android.appwidget.provider"
-                android:resource="@xml/single_note_widget_info" />
+                android:resource="@xml/widget_add_note_info" />
         </receiver>
+
     </application>
 
 </manifest>

@@ -2,17 +2,20 @@ package eu.napcode.gonoteit.repository.notes;
 
 import com.apollographql.apollo.ApolloClient;
 import com.apollographql.apollo.ApolloQueryCall;
+import com.apollographql.apollo.api.Input;
 import com.apollographql.apollo.api.Response;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.ArgumentMatcher;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import java.util.List;
 
+import eu.napcode.gonoteit.CreateNoteMutation;
 import eu.napcode.gonoteit.GetNotesQuery;
 import eu.napcode.gonoteit.api.ApolloRxHelper;
 import eu.napcode.gonoteit.auth.StoreAuth;
@@ -83,5 +86,44 @@ public class NotesRepositoryRemoteImplTest {
         notesRepositoryRemote.getNotes().subscribe(notesSubscriber);
 
         notesSubscriber.assertSubscribed();
+    }
+
+    @Test
+    public void testCallNoteMutation() {
+        notesRepositoryRemote.createNote(new NoteModel());
+
+        Mockito.verify(apolloClient).mutate(Mockito.any(CreateNoteMutation.class));
+    }
+
+    @Test
+    public void testCreateNoteSendingProvidedContentValue() {
+        NoteModel noteModel = new NoteModel();
+        noteModel.setTitle("test title");
+        noteModel.setContent("test content");
+
+        notesRepositoryRemote.createNote(noteModel);
+
+        Mockito.verify(apolloClient).mutate(
+                Mockito.argThat((ArgumentMatcher<CreateNoteMutation>) argument -> {
+                    Input<String> content = argument.variables().content();
+
+                    return content.defined && content.value.equals(noteModel.getContent());
+                }));
+    }
+
+    @Test
+    public void testCreateNoteSendingProvidedTitleValue() {
+        NoteModel noteModel = new NoteModel();
+        noteModel.setTitle("test title");
+        noteModel.setContent("test content");
+
+        notesRepositoryRemote.createNote(noteModel);
+
+        Mockito.verify(apolloClient).mutate(
+                Mockito.argThat((ArgumentMatcher<CreateNoteMutation>) argument -> {
+                    Input<String> title = argument.variables().title();
+
+                    return title.defined && title.value.equals(noteModel.getTitle());
+                }));
     }
 }

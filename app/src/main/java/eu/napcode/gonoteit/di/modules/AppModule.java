@@ -17,6 +17,7 @@ import eu.napcode.gonoteit.app.GoNoteItApp;
 import eu.napcode.gonoteit.type.CustomType;
 import eu.napcode.gonoteit.utils.NetworkHelper;
 import okhttp3.OkHttpClient;
+import okhttp3.logging.HttpLoggingInterceptor;
 
 import static eu.napcode.gonoteit.api.ApiConsts.API_URL;
 
@@ -31,7 +32,12 @@ public class AppModule {
     @Singleton
     @Provides
     ApolloClient provideGoNoteItClient() {
-        OkHttpClient okHttpClient = new OkHttpClient.Builder().build();
+        HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor();
+        httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+
+        OkHttpClient okHttpClient = new OkHttpClient.Builder()
+                .addInterceptor(httpLoggingInterceptor)
+                .build();
 
         return ApolloClient.builder()
                 .serverUrl(API_URL)
