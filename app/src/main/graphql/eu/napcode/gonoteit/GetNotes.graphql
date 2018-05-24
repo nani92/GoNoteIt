@@ -2,6 +2,7 @@ query GetNotesQuery {
     allEntities {
        type,
        data,
+       id,
        uuid
      }
 }

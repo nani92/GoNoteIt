@@ -8,20 +8,30 @@ public class NoteModel {
     }
 
     public NoteModel(NoteEntity noteEntity) {
-        this.id = noteEntity.getId();
+        this.uuid = noteEntity.getUuid();
         this.title = noteEntity.getTitle();
         this.content = noteEntity.getContent();
+        this.id = noteEntity.getId();
     }
 
-    private String id;
+    private String uuid;
     private String title;
     private String content;
+    private int id;
 
-    public String getId() {
+    public String getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
+    }
+
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 

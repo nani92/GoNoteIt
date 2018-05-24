@@ -4,3 +4,4 @@ mutation createNote($data: String!) {
   ok
  }
 }
+

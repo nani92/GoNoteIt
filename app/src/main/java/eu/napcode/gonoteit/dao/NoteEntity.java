@@ -16,6 +16,7 @@ public class NoteEntity {
 
     public static final String TABLE_NAME = "notes";
 
+    public static final String COLUMN_UUID = "UUID";
     public static final String COLUMN_ID = "ID";
     public static final String COLUMN_TITLE = "title";
     public static final String COLUMN_CONTENT = "content";
@@ -24,15 +25,20 @@ public class NoteEntity {
     }
 
     public NoteEntity(NoteModel noteModel) {
-        this.setId(noteModel.getId());
+        this.setUuid(noteModel.getUuid());
         this.setTitle(noteModel.getTitle());
         this.setContent(noteModel.getContent());
+        this.setId(noteModel.getId());
     }
 
     @NonNull
     @PrimaryKey
+    @ColumnInfo(name = COLUMN_UUID)
+    String uuid;
+
+    @NonNull
     @ColumnInfo(name = COLUMN_ID)
-    String id;
+    int id;
 
     @Nullable
     @ColumnInfo(name = COLUMN_TITLE)
@@ -42,11 +48,20 @@ public class NoteEntity {
     @ColumnInfo(name = COLUMN_CONTENT)
     private String content;
 
-    public String getId() {
+    public String getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
+    }
+
+    @NonNull
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(@NonNull int id) {
         this.id = id;
     }
 
