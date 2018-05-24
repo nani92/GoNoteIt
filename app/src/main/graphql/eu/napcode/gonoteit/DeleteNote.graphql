@@ -1,0 +1,5 @@
+mutation deleteNote($id: Int!) {
+ deleteEntity(id: $id) {
+  deleted
+ }
+}
