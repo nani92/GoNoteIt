@@ -14,10 +14,12 @@ import eu.napcode.gonoteit.model.note.NoteModel;
 
 public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NoteViewHolder> {
 
+    private final DeleteNoteListener deleteNoteListener;
     private List<NoteModel> notes;
 
-    public NotesAdapter(List<NoteModel> notes) {
+    public NotesAdapter(List<NoteModel> notes, DeleteNoteListener deleteNoteListener) {
         this.notes = notes;
+        this.deleteNoteListener = deleteNoteListener;
     }
 
     @NonNull
@@ -35,9 +37,10 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NoteViewHold
 
         holder.itemNoteBinding.noteTextView.setText(note.getContent());
         holder.itemNoteBinding.noteTitleTextView.setText(note.getTitle());
+
+        holder.itemNoteBinding.deleteNoteButton.setOnClickListener(v -> deleteNoteListener.onDeleteNote(note.getId()));
     }
 
-    @Override
     public int getItemCount() {
         return this.notes.size();
     }
@@ -51,5 +54,9 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NoteViewHold
 
             this.itemNoteBinding = itemNoteBinding;
         }
+    }
+
+    public interface DeleteNoteListener {
+        void onDeleteNote(Long id);
     }
 }
