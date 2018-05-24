@@ -1,7 +1,6 @@
 package eu.napcode.gonoteit.repository.notes;
 
 import com.apollographql.apollo.ApolloClient;
-import com.apollographql.apollo.api.Input;
 import com.apollographql.apollo.api.Response;
 
 import java.util.List;
@@ -19,7 +18,6 @@ import eu.napcode.gonoteit.model.note.NoteModel;
 import eu.napcode.gonoteit.type.Type;
 import io.reactivex.Flowable;
 import io.reactivex.Observable;
-import timber.log.Timber;
 
 public class NotesRepositoryRemoteImpl implements NotesRepository {
 
@@ -44,7 +42,7 @@ public class NotesRepositoryRemoteImpl implements NotesRepository {
                 .flatMap(dataResponse -> Observable.fromArray(dataResponse.data().allEntities()))
                 .flatMapIterable(listOfEntities -> listOfEntities)
                 .filter(allEntity -> allEntity.type() != Type.NONE)
-                .map(allEntity -> (NoteModel) ((Note) allEntity.data()).parseNote(allEntity.type(), allEntity.uuid()))
+                .map(allEntity -> (NoteModel) ((Note) allEntity.data()).parseNote(allEntity.type(), allEntity.uuid(), allEntity.id()))
                 .doOnEach(noteModelNotification -> {
 
                     if (noteModelNotification.getValue() != null) {

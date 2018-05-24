@@ -22,11 +22,11 @@ public class Note {
         return noteString;
     }
 
-    public <T> T parseNote(Type type, Object uuid, int id) {
+    public <T> T parseNote(Type type, Object uuid, Long id) {
         return (T) getNoteModel(type, uuid.toString(), id);
     }
 
-    private NoteModel getNoteModel(Type type, String uuid, int id) {
+    private NoteModel getNoteModel(Type type, String uuid, Long id) {
 
         if (type == Type.NONE) {
             return null;

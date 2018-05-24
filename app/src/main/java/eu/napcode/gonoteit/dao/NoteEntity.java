@@ -38,7 +38,7 @@ public class NoteEntity {
 
     @NonNull
     @ColumnInfo(name = COLUMN_ID)
-    int id;
+    Long id;
 
     @Nullable
     @ColumnInfo(name = COLUMN_TITLE)
@@ -57,11 +57,11 @@ public class NoteEntity {
     }
 
     @NonNull
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(@NonNull int id) {
+    public void setId(@NonNull Long id) {
         this.id = id;
     }
 

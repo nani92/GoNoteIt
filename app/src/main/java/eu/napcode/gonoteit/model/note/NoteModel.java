@@ -17,7 +17,7 @@ public class NoteModel {
     private String uuid;
     private String title;
     private String content;
-    private int id;
+    private Long id;
 
     public String getUuid() {
         return uuid;
@@ -27,11 +27,11 @@ public class NoteModel {
         this.uuid = uuid;
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
