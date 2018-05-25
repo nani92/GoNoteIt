@@ -26,9 +26,8 @@ import eu.napcode.gonoteit.model.note.NoteModel;
 import eu.napcode.gonoteit.repository.Resource;
 import eu.napcode.gonoteit.repository.Resource.Status;
 import eu.napcode.gonoteit.ui.create.CreateActivity;
-import eu.napcode.gonoteit.ui.main.MainActivity;
 
-public class NotesFragment extends Fragment {
+public class NotesFragment extends Fragment implements NotesAdapter.DeleteNoteListener {
 
     @Inject
     ViewModelFactory viewModelFactory;
@@ -66,7 +65,7 @@ public class NotesFragment extends Fragment {
         binding.progressBar.setVisibility(loading ? View.VISIBLE : View.GONE);
 
         if (listResource.status == Status.SUCCESS) {
-            binding.recyclerView.setAdapter(new NotesAdapter(listResource.data));
+            binding.recyclerView.setAdapter(new NotesAdapter(listResource.data, this));
         }
 
         if (listResource.status == Status.ERROR){
@@ -92,5 +91,16 @@ public class NotesFragment extends Fragment {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_board, container, false);
 
         return binding.getRoot();
+    }
+
+    @Override
+    public void onDeleteNote(Long id) {
+        viewModel.deleteNote(id).observe(this, this::processDeleteResponse);
+    }
+
+    private void processDeleteResponse(Resource<Boolean> booleanResource) {
+        //TODO positon of RV should be saved
+        boolean loading = booleanResource.status == Status.LOADING;
+        binding.progressBar.setVisibility(loading ? View.VISIBLE : View.GONE);
     }
 }

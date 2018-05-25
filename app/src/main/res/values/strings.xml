@@ -30,5 +30,6 @@
     <!--Widgets-->
     <string name="add_note_widget">Add Note Widget</string>
     <string name="add_note">Add note</string>
+    <string name="delete_note_action">Delete note]</string>
 
 </resources>

@@ -5,16 +5,12 @@ import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
 
-import com.apollographql.apollo.api.Response;
-
 import javax.inject.Inject;
 
-import eu.napcode.gonoteit.CreateNoteMutation;
 import eu.napcode.gonoteit.model.note.NoteModel;
 import eu.napcode.gonoteit.repository.Resource;
 import eu.napcode.gonoteit.repository.notes.NotesRepository;
 import eu.napcode.gonoteit.rx.RxSchedulers;
-import io.reactivex.Observable;
 
 public class CreateViewModel extends ViewModel {
 
@@ -34,10 +30,10 @@ public class CreateViewModel extends ViewModel {
                 .subscribeOn(rxSchedulers.io())
                 .observeOn(rxSchedulers.androidMainThread())
                 .doOnSubscribe(it -> createNoteLiveData.postValue(Resource.loading(null)))
+                .filter(response -> response.data() != null && response.data().createEntity() != null)
+                .singleOrError()
                 .subscribe(response -> {
-                            if (response.data() == null ||
-                                    response.data().createEntity() == null ||
-                                    response.data().createEntity().ok() == false) {
+                            if (response.data().createEntity().ok() == false) {
                                 createNoteLiveData.postValue(Resource.error(new Throwable()));
                             } else {
                                 createNoteLiveData.postValue(Resource.success(null));

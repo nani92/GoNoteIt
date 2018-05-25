@@ -22,11 +22,11 @@ public class Note {
         return noteString;
     }
 
-    public <T> T parseNote(Type type, Object uuid) {
-        return (T) getNoteModel(type, uuid.toString());
+    public <T> T parseNote(Type type, Object uuid, Long id) {
+        return (T) getNoteModel(type, uuid.toString(), id);
     }
 
-    private NoteModel getNoteModel(Type type, String uuid) {
+    private NoteModel getNoteModel(Type type, String uuid, Long id) {
 
         if (type == Type.NONE) {
             return null;
@@ -34,7 +34,8 @@ public class Note {
 
         Gson gson = new Gson();
         NoteModel noteModel = gson.fromJson(noteString, NoteModel.class);
-        noteModel.setId(uuid);
+        noteModel.setUuid(uuid);
+        noteModel.setId(id);
 
         return noteModel;
     }

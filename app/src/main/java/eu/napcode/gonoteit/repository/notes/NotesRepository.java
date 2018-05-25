@@ -5,7 +5,9 @@ import com.apollographql.apollo.api.Response;
 import java.util.List;
 
 import eu.napcode.gonoteit.CreateNoteMutation;
+import eu.napcode.gonoteit.DeleteNoteMutation;
 import eu.napcode.gonoteit.model.note.NoteModel;
+import io.reactivex.Completable;
 import io.reactivex.Flowable;
 import io.reactivex.Observable;
 
@@ -14,4 +16,6 @@ public interface NotesRepository {
     Flowable<List<NoteModel>> getNotes();
 
     Observable<Response<CreateNoteMutation.Data>> createNote(NoteModel noteModel);
+
+    Observable<Response<DeleteNoteMutation.Data>> deleteNote(Long id);
 }
