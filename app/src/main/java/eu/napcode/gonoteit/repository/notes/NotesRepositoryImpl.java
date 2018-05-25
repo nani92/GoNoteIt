@@ -7,6 +7,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import eu.napcode.gonoteit.CreateNoteMutation;
+import eu.napcode.gonoteit.DeleteNoteMutation;
 import eu.napcode.gonoteit.model.note.NoteModel;
 import eu.napcode.gonoteit.utils.NetworkHelper;
 import io.reactivex.Flowable;
@@ -44,6 +45,16 @@ public class  NotesRepositoryImpl implements NotesRepository {
             return notesRepositoryRemote.createNote(noteModel);
         } else {
             return notesRepositoryLocal.createNote(noteModel);
+        }
+    }
+
+    @Override
+    public Observable<Response<DeleteNoteMutation.Data>> deleteNote(Long id) {
+
+        if (networkHelper.isNetworkAvailable()) {
+            return notesRepositoryRemote.deleteNote(id);
+        } else {
+            return notesRepositoryLocal.deleteNote(id);
         }
     }
 }

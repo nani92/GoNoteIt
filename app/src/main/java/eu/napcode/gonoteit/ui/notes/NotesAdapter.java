@@ -13,6 +13,7 @@ import eu.napcode.gonoteit.databinding.ItemNoteBinding;
 import eu.napcode.gonoteit.model.note.NoteModel;
 
 public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NoteViewHolder> {
+    //TODO swipe to delete
 
     private final DeleteNoteListener deleteNoteListener;
     private List<NoteModel> notes;

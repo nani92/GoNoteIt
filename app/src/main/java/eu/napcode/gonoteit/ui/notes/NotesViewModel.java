@@ -1,6 +1,7 @@
 package eu.napcode.gonoteit.ui.notes;
 
 import android.annotation.SuppressLint;
+import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
 
@@ -28,7 +29,7 @@ public class NotesViewModel extends ViewModel {
     }
 
     @SuppressLint("CheckResult")
-    public MutableLiveData<Resource<List<NoteModel>>> getNotes() {
+    public LiveData<Resource<List<NoteModel>>> getNotes() {
         notesRepository.getNotes()
                 .observeOn(rxSchedulers.io())
                 .subscribeOn(rxSchedulers.androidMainThread())
@@ -37,5 +38,29 @@ public class NotesViewModel extends ViewModel {
                         throwable -> notesLiveData.postValue(Resource.error(throwable)));
 
         return notesLiveData;
+    }
+
+    @SuppressLint("CheckResult")
+    public LiveData<Resource<Boolean>> deleteNote(Long id) {
+        MutableLiveData<Resource<Boolean>> deleted = new MutableLiveData<>();
+
+        notesRepository.deleteNote(id)
+                .observeOn(rxSchedulers.io())
+                .subscribeOn(rxSchedulers.androidMainThread())
+                .doOnSubscribe(it -> deleted.postValue(Resource.loading(null)))
+                .filter(response -> response.data() != null && response.data().deleteEntity() != null)
+                .singleOrError()
+                .subscribe(dataResponse -> {
+
+                            if (dataResponse.data().deleteEntity().deleted()) {
+                                deleted.postValue(Resource.success(true));
+                                getNotes();
+                            } else {
+                                deleted.postValue(Resource.error(new Throwable()));
+                            }
+                        },
+                        error -> deleted.postValue(Resource.error(error)));
+
+        return deleted;
     }
 }

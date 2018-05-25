@@ -1,14 +1,21 @@
 package eu.napcode.gonoteit.dao;
 
 import android.arch.persistence.room.Dao;
+import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.OnConflictStrategy;
 import android.arch.persistence.room.Query;
 
+import org.junit.Test;
+
 import java.util.List;
 
 import io.reactivex.Flowable;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Action;
+import io.reactivex.functions.Consumer;
 
+import static eu.napcode.gonoteit.dao.NoteEntity.COLUMN_ID;
 import static eu.napcode.gonoteit.dao.NoteEntity.TABLE_NAME;
 
 @Dao
@@ -19,4 +26,10 @@ public interface NoteDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertNote(NoteEntity noteEntity);
+
+    @Query("DELETE FROM " + TABLE_NAME)
+    void removeAll();
+
+    @Query("DELETE FROM " + TABLE_NAME + " WHERE " + COLUMN_ID + " = :id")
+    void removeNote(Long id);
 }

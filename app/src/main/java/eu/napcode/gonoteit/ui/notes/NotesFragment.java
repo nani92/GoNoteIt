@@ -10,7 +10,6 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,8 +26,6 @@ import eu.napcode.gonoteit.model.note.NoteModel;
 import eu.napcode.gonoteit.repository.Resource;
 import eu.napcode.gonoteit.repository.Resource.Status;
 import eu.napcode.gonoteit.ui.create.CreateActivity;
-import eu.napcode.gonoteit.ui.main.MainActivity;
-import timber.log.Timber;
 
 public class NotesFragment extends Fragment implements NotesAdapter.DeleteNoteListener {
 
@@ -98,6 +95,12 @@ public class NotesFragment extends Fragment implements NotesAdapter.DeleteNoteLi
 
     @Override
     public void onDeleteNote(Long id) {
-        Timber.d("Delete " + id);
+        viewModel.deleteNote(id).observe(this, this::processDeleteResponse);
+    }
+
+    private void processDeleteResponse(Resource<Boolean> booleanResource) {
+        //TODO positon of RV should be saved
+        boolean loading = booleanResource.status == Status.LOADING;
+        binding.progressBar.setVisibility(loading ? View.VISIBLE : View.GONE);
     }
 }

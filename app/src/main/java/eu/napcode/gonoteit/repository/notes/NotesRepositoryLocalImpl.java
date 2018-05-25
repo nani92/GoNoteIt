@@ -8,6 +8,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import eu.napcode.gonoteit.CreateNoteMutation;
+import eu.napcode.gonoteit.DeleteNoteMutation;
 import eu.napcode.gonoteit.dao.NoteDao;
 import eu.napcode.gonoteit.dao.NoteEntity;
 import eu.napcode.gonoteit.model.note.NoteModel;
@@ -39,6 +40,13 @@ public class NotesRepositoryLocalImpl implements NotesRepository {
 
     @Override
     public Observable<Response<CreateNoteMutation.Data>> createNote(NoteModel noteModel) {
+        //TODO implement save note offline
         return Observable.error(new Throwable("Saving note offline is not implemented yet."));
+    }
+
+    @Override
+    public Observable<Response<DeleteNoteMutation.Data>> deleteNote(Long id) {
+        //TODO implement delete note offline
+        return Observable.error(new Throwable("Deleting note offline is not implemented yet."));
     }
 }
