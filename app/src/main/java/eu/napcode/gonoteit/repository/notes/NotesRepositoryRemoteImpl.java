@@ -9,6 +9,7 @@ import javax.inject.Inject;
 
 import eu.napcode.gonoteit.CreateNoteMutation;
 import eu.napcode.gonoteit.DeleteNoteMutation;
+import eu.napcode.gonoteit.GetNoteByIdQuery;
 import eu.napcode.gonoteit.GetNotesQuery;
 import eu.napcode.gonoteit.api.ApolloRxHelper;
 import eu.napcode.gonoteit.api.Note;
@@ -71,5 +72,14 @@ public class NotesRepositoryRemoteImpl implements NotesRepository {
     @Override
     public Observable<Response<DeleteNoteMutation.Data>> deleteNote(Long id) {
         return apolloRxHelper.from(apolloClient.mutate(new DeleteNoteMutation(id)));
+    }
+
+    @Override
+    public Observable<NoteModel> getNote(Long id) {
+        return apolloRxHelper.from(apolloClient.query(new GetNoteByIdQuery(id)))
+                .map(dataResponse -> dataResponse.data().entity())
+                .map(entity -> (NoteModel) ((Note)entity.data()).parseNote(entity.type(), entity.uuid(), entity.id()));
+
+
     }
 }

@@ -6,3 +6,12 @@ query GetNotesQuery {
        uuid
      }
 }
+
+query GetNoteByIdQuery($id: Int!) {
+    entity(id : $id) {
+        type,
+        data,
+        id,
+        uuid
+    }
+}

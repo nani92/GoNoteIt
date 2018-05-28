@@ -28,6 +28,8 @@ import eu.napcode.gonoteit.repository.Resource.Status;
 import eu.napcode.gonoteit.ui.create.CreateActivity;
 import eu.napcode.gonoteit.ui.note.NoteActivity;
 
+import static eu.napcode.gonoteit.ui.note.NoteActivity.NOTE_ID_KEY;
+
 public class NotesFragment extends Fragment implements NotesAdapter.NoteListener {
 
     @Inject
@@ -101,7 +103,10 @@ public class NotesFragment extends Fragment implements NotesAdapter.NoteListener
 
     @Override
     public void onClickNote(Long id) {
-        startActivity(new Intent(getContext(), NoteActivity.class));
+        Intent intent = new Intent(getContext(), NoteActivity.class);
+        intent.putExtra(NOTE_ID_KEY, id);
+
+        startActivity(intent);
     }
 
     private void processDeleteResponse(Resource<Boolean> booleanResource) {
