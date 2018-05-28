@@ -57,4 +57,14 @@ public class  NotesRepositoryImpl implements NotesRepository {
             return notesRepositoryLocal.deleteNote(id);
         }
     }
+
+    @Override
+    public Observable<NoteModel> getNote(Long id) {
+
+        if (networkHelper.isNetworkAvailable()) {
+            return notesRepositoryRemote.getNote(id);
+        } else {
+            return notesRepositoryLocal.getNote(id);
+        }
+    }
 }

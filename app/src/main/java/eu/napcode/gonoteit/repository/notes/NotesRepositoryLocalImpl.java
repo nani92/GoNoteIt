@@ -49,4 +49,10 @@ public class NotesRepositoryLocalImpl implements NotesRepository {
         //TODO implement delete note offline
         return Observable.error(new Throwable("Deleting note offline is not implemented yet."));
     }
+
+    @Override
+    public Observable<NoteModel> getNote(Long id) {
+        //TODO get from notedao
+        return Observable.error(new Throwable("Not available offline"));
+    }
 }

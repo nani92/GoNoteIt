@@ -26,8 +26,11 @@ import eu.napcode.gonoteit.model.note.NoteModel;
 import eu.napcode.gonoteit.repository.Resource;
 import eu.napcode.gonoteit.repository.Resource.Status;
 import eu.napcode.gonoteit.ui.create.CreateActivity;
+import eu.napcode.gonoteit.ui.note.NoteActivity;
 
-public class NotesFragment extends Fragment implements NotesAdapter.DeleteNoteListener {
+import static eu.napcode.gonoteit.ui.note.NoteActivity.NOTE_ID_KEY;
+
+public class NotesFragment extends Fragment implements NotesAdapter.NoteListener {
 
     @Inject
     ViewModelFactory viewModelFactory;
@@ -96,6 +99,14 @@ public class NotesFragment extends Fragment implements NotesAdapter.DeleteNoteLi
     @Override
     public void onDeleteNote(Long id) {
         viewModel.deleteNote(id).observe(this, this::processDeleteResponse);
+    }
+
+    @Override
+    public void onClickNote(Long id) {
+        Intent intent = new Intent(getContext(), NoteActivity.class);
+        intent.putExtra(NOTE_ID_KEY, id);
+
+        startActivity(intent);
     }
 
     private void processDeleteResponse(Resource<Boolean> booleanResource) {
