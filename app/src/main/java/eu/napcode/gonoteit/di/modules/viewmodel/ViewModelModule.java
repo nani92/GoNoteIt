@@ -15,6 +15,7 @@ import dagger.multibindings.IntoMap;
 import eu.napcode.gonoteit.ui.create.CreateViewModel;
 import eu.napcode.gonoteit.ui.login.LoginViewModel;
 import eu.napcode.gonoteit.ui.main.MainViewModel;
+import eu.napcode.gonoteit.ui.note.NoteViewModel;
 import eu.napcode.gonoteit.ui.notes.NotesViewModel;
 
 @Module
@@ -48,4 +49,9 @@ public interface ViewModelModule {
     @Binds
     @ViewModelKey(CreateViewModel.class)
     abstract ViewModel createViewModel(CreateViewModel viewModel);
+
+    @IntoMap
+    @Binds
+    @ViewModelKey(NoteViewModel.class)
+    abstract ViewModel noteViewModel(NoteViewModel viewModel);
 }

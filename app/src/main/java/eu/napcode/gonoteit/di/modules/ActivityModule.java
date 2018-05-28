@@ -5,6 +5,7 @@ import dagger.android.ContributesAndroidInjector;
 import eu.napcode.gonoteit.ui.create.CreateActivity;
 import eu.napcode.gonoteit.ui.login.LoginActivity;
 import eu.napcode.gonoteit.ui.main.MainActivity;
+import eu.napcode.gonoteit.ui.note.NoteActivity;
 
 @Module
 public interface ActivityModule {
@@ -17,4 +18,7 @@ public interface ActivityModule {
 
     @ContributesAndroidInjector
     CreateActivity bindCreateActivity();
+
+    @ContributesAndroidInjector
+    NoteActivity bindNoteActivity();
 }
