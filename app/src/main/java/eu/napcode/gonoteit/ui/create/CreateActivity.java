@@ -17,6 +17,7 @@ import eu.napcode.gonoteit.di.modules.viewmodel.ViewModelFactory;
 import eu.napcode.gonoteit.model.note.NoteModel;
 import eu.napcode.gonoteit.repository.Resource.Status;
 import eu.napcode.gonoteit.repository.Resource;
+import pl.aprilapps.easyphotopicker.EasyImage;
 
 public class CreateActivity extends AppCompatActivity {
 
@@ -42,6 +43,10 @@ public class CreateActivity extends AppCompatActivity {
         binding.createNoteButton.setOnClickListener(v ->
                 createViewModel.createNote(getNoteModelFromInputs())
                 .observe(this, this::processResponse)
+        );
+
+        binding.addImageButton.setOnClickListener(v ->
+                EasyImage.openGallery(this, 0)
         );
     }
 
