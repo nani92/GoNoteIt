@@ -1,12 +1,19 @@
 package eu.napcode.gonoteit.ui.create;
 
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+
+import com.bumptech.glide.Glide;
+
+import java.io.File;
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -17,6 +24,7 @@ import eu.napcode.gonoteit.di.modules.viewmodel.ViewModelFactory;
 import eu.napcode.gonoteit.model.note.NoteModel;
 import eu.napcode.gonoteit.repository.Resource.Status;
 import eu.napcode.gonoteit.repository.Resource;
+import pl.aprilapps.easyphotopicker.DefaultCallback;
 import pl.aprilapps.easyphotopicker.EasyImage;
 
 public class CreateActivity extends AppCompatActivity {
@@ -42,7 +50,7 @@ public class CreateActivity extends AppCompatActivity {
 
         binding.createNoteButton.setOnClickListener(v ->
                 createViewModel.createNote(getNoteModelFromInputs())
-                .observe(this, this::processResponse)
+                        .observe(this, this::processResponse)
         );
 
         binding.addImageButton.setOnClickListener(v ->
@@ -91,4 +99,38 @@ public class CreateActivity extends AppCompatActivity {
 
         return noteModel;
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        EasyImage.handleActivityResult(requestCode, resultCode, data, this, getImageCallback);
+    }
+
+    private DefaultCallback getImageCallback = new DefaultCallback() {
+
+        @Override
+        public void onImagePickerError(Exception e, EasyImage.ImageSource source, int type) {
+            Snackbar.make(binding.constraintLayout, R.string.error_with_capture_image, Snackbar.LENGTH_LONG).show();
+        }
+
+        @Override
+        public void onImagesPicked(List<File> imagesFiles, EasyImage.ImageSource source, int type) {
+
+            if (imagesFiles != null && imagesFiles.size() > 0) {
+                displayImage(imagesFiles.get(0));
+            } else {
+                Snackbar.make(binding.constraintLayout, R.string.error_image_not_found, Snackbar.LENGTH_LONG).show();
+            }
+        }
+    };
+
+    private void displayImage(File file) {
+        Glide.with(this)
+                .load(file)
+                .into(binding.attachmentImageView);
+
+        binding.attachmentCardView.setVisibility(View.VISIBLE);
+    }
+
 }

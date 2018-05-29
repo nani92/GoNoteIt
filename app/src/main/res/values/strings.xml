@@ -31,5 +31,7 @@
     <string name="add_note_widget">Add Note Widget</string>
     <string name="add_note">Add note</string>
     <string name="delete_note_action">Delete note]</string>
+    <string name="error_with_capture_image">Couldn\'t capture your image.</string>
+    <string name="error_image_not_found">Image not found</string>
 
 </resources>

@@ -1,74 +1,128 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <android.support.constraint.ConstraintLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/constraintLayout"
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="@dimen/base_margin">
+        android:fillViewport="true">
 
-        <EditText
-            android:id="@+id/titleEditText"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:hint="@string/title"
-            android:maxLines="2"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/constraintLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="@dimen/base_margin">
 
-        <EditText
-            android:id="@+id/contentEditText"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginBottom="@dimen/base_margin"
-            android:layout_marginTop="@dimen/base_margin"
-            android:gravity="start"
-            android:hint="@string/your_note"
-            app:layout_constraintBottom_toTopOf="@id/createNoteButton"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/titleEditText"/>
+            <EditText
+                android:id="@+id/titleEditText"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:hint="@string/title"
+                android:maxLines="2"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/>
 
-        <Button
-            android:id="@+id/createNoteButton"
-            style="@style/Base.Widget.AppCompat.Button.Colored"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
-            android:text="@string/create_note"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintLeft_toRightOf="@id/addImageButton"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/addImageButton"/>
+            <EditText
+                android:id="@+id/contentEditText"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/base_margin"
+                android:layout_marginTop="@dimen/base_margin"
+                android:gravity="start"
+                android:hint="@string/your_note"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/titleEditText"/>
 
-        <ProgressBar
-            android:id="@+id/progressBar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:visibility="visible"/>
+            <android.support.v7.widget.CardView
+                android:id="@+id/attachmentCardView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/contentEditText"
+                tools:visibility="visible">
 
-        <ImageButton
-            android:id="@+id/addImageButton"
-            style="@style/Base.Widget.AppCompat.Button.Colored"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="0dp"
-            android:src="@drawable/ic_image"
-            android:tint="@android:color/white"
-            app:layout_constraintBottom_toBottomOf="@id/createNoteButton"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="@id/createNoteButton"/>
+                <android.support.constraint.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/base_margin">
 
-    </android.support.constraint.ConstraintLayout>
+                    <ImageView
+                        android:id="@+id/attachmentImageView"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:src="@drawable/ic_delete_black_24dp"/>
+
+                    <android.support.design.widget.FloatingActionButton
+                        android:id="@+id/removeImageButton"
+                        android:layout_width="@dimen/fab_size"
+                        android:layout_height="@dimen/fab_size"
+                        android:layout_marginRight="@dimen/small_margin"
+                        android:layout_marginTop="@dimen/small_margin"
+                        android:src="@drawable/ic_delete_black_24dp"
+                        android:tint="@android:color/white"
+                        app:layout_constraintRight_toRightOf="@id/attachmentImageView"
+                        app:layout_constraintTop_toTopOf="@id/attachmentImageView"/>
+                </android.support.constraint.ConstraintLayout>
+
+            </android.support.v7.widget.CardView>
+
+            <Button
+                android:id="@+id/createNoteButton"
+                style="@style/Base.Widget.AppCompat.Button.Colored"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:text="@string/create_note"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintLeft_toRightOf="@id/addImageButton"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/addImageButton"
+                app:layout_constraintTop_toBottomOf="@id/contentBarrier"
+                app:layout_constraintVertical_bias="1"/>
+
+            <ProgressBar
+                android:id="@+id/progressBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:visibility="visible"/>
+
+            <ImageButton
+                android:id="@+id/addImageButton"
+                style="@style/Base.Widget.AppCompat.Button.Colored"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="0dp"
+                android:src="@drawable/ic_image"
+                android:tint="@android:color/white"
+                app:layout_constraintBottom_toBottomOf="@id/createNoteButton"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="@id/createNoteButton"/>
+
+            <android.support.constraint.Barrier
+                android:id="@+id/contentBarrier"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:barrierDirection="bottom"
+                app:constraint_referenced_ids="attachmentCardView, contentEditText"
+                tools:layout_editor_absoluteX="16dp"
+                tools:layout_editor_absoluteY="120dp"/>
+
+        </android.support.constraint.ConstraintLayout>
+    </ScrollView>
 </layout>

@@ -11,4 +11,5 @@
     <dimen name="single_note_widget_min_height">72dp</dimen>
     <dimen name="single_note_widget_min_width">146dp</dimen>
     <dimen name="bigger_margin">30dp</dimen>
+    <dimen name="small_margin">8dp</dimen>
 </resources>
