@@ -59,7 +59,7 @@
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintRight_toRightOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        tools:src="@drawable/ic_delete_black_24dp"/>
+                        tools:src="@drawable/gonoteit_logo"/>
 
                     <android.support.design.widget.FloatingActionButton
                         android:id="@+id/removeImageButton"

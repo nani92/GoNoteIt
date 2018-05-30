@@ -88,12 +88,16 @@ public class NoteActivity extends AppCompatActivity {
         binding.noteTitleTextView.setText(noteModel.getTitle());
 
         if (!TextUtils.isEmpty(noteModel.getImageBase64())) {
-            Glide.with(this)
-                    .load(ImageUtils.decodeBase64ToBitmap(noteModel.getImageBase64()))
-                    .into(binding.imageView);
-
-            binding.imageView.setVisibility(VISIBLE);
+            displayImage(noteModel);
         }
+    }
+
+    private void displayImage(NoteModel noteModel) {
+        Glide.with(this)
+                .load(ImageUtils.decodeBase64ToBitmap(noteModel.getImageBase64()))
+                .into(binding.imageView);
+
+        binding.imageView.setVisibility(VISIBLE);
     }
 
 }
