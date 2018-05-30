@@ -3,6 +3,8 @@ package eu.napcode.gonoteit.ui.create;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -24,8 +26,11 @@ import eu.napcode.gonoteit.di.modules.viewmodel.ViewModelFactory;
 import eu.napcode.gonoteit.model.note.NoteModel;
 import eu.napcode.gonoteit.repository.Resource.Status;
 import eu.napcode.gonoteit.repository.Resource;
+import eu.napcode.gonoteit.utils.ImageUtils;
 import pl.aprilapps.easyphotopicker.DefaultCallback;
 import pl.aprilapps.easyphotopicker.EasyImage;
+
+import static android.graphics.Bitmap.CompressFormat.JPEG;
 
 public class CreateActivity extends AppCompatActivity {
 
@@ -96,6 +101,9 @@ public class CreateActivity extends AppCompatActivity {
         NoteModel noteModel = new NoteModel();
         noteModel.setTitle(binding.titleEditText.getText().toString());
         noteModel.setContent(binding.contentEditText.getText().toString());
+
+        BitmapDrawable imageDrawable = (BitmapDrawable) binding.attachmentImageView.getDrawable();
+        noteModel.setImageBase64(ImageUtils.encodeBitmapToBase64(imageDrawable.getBitmap(), JPEG, 100));
 
         return noteModel;
     }
