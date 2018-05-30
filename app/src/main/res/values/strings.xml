@@ -33,5 +33,8 @@
     <string name="delete_note_action">Delete note]</string>
     <string name="error_with_capture_image">Couldn\'t capture your image.</string>
     <string name="error_image_not_found">Image not found</string>
+    <string name="image_view_for_attachment">Image View for attachment. If it\'s visible then there
+        is attachment.
+    </string>
 
 </resources>
