@@ -101,11 +101,19 @@ public class CreateActivity extends AppCompatActivity {
         NoteModel noteModel = new NoteModel();
         noteModel.setTitle(binding.titleEditText.getText().toString());
         noteModel.setContent(binding.contentEditText.getText().toString());
+        setImageForNote(noteModel);
+
+        return noteModel;
+    }
+
+    private void setImageForNote(NoteModel noteModel) {
+
+        if (binding.attachmentCardView.getVisibility() == View.GONE) {
+            return;
+        }
 
         BitmapDrawable imageDrawable = (BitmapDrawable) binding.attachmentImageView.getDrawable();
         noteModel.setImageBase64(ImageUtils.encodeBitmapToBase64(imageDrawable.getBitmap(), JPEG, 100));
-
-        return noteModel;
     }
 
     @Override
