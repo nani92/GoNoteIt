@@ -13,6 +13,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
 import com.bumptech.glide.Glide;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 
 import java.io.File;
 import java.util.List;
@@ -39,6 +41,9 @@ public class CreateActivity extends AppCompatActivity {
     @Inject
     ViewModelFactory viewModelFactory;
 
+    @Inject
+    Tracker tracker;
+
     private ActivityCreateBinding binding;
     private CreateViewModel createViewModel;
 
@@ -53,14 +58,24 @@ public class CreateActivity extends AppCompatActivity {
                 .of(this, this.viewModelFactory)
                 .get(CreateViewModel.class);
 
-        binding.createNoteButton.setOnClickListener(v ->
-                createViewModel.createNote(getNoteModelFromInputs())
-                        .observe(this, this::processResponse)
+        binding.createNoteButton.setOnClickListener(v -> {
+                    createViewModel.createNote(getNoteModelFromInputs())
+                            .observe(this, this::processResponse);
+
+                    tracker.send(new HitBuilders.EventBuilder()
+                            .setCategory("Action")
+                            .setAction("Create note")
+                            .build());
+                }
         );
 
         binding.addImageButton.setOnClickListener(v ->
                 EasyImage.openGallery(this, 0)
         );
+
+
+        tracker.setScreenName("Create note screen");
+        tracker.send(new HitBuilders.ScreenViewBuilder().build());
     }
 
     private void processResponse(Resource resource) {

@@ -18,6 +18,8 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.apollographql.apollo.ApolloClient;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 
 import javax.inject.Inject;
 
@@ -35,13 +37,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Inject
     ViewModelFactory viewModelFactory;
 
+    @Inject
+    Tracker tracker;
+
     private MainViewModel mainViewModel;
     private ActivityMainBinding binding;
     private DrawerHeaderBinding headerBinding;
     private ActionBarDrawerToggle drawerToggle;
-
-    @Inject
-    ApolloClient apolloClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +62,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setupDrawer();
         setupUser();
         displayFragment(new NotesFragment());
+
+        tracker.setScreenName("Main Activity");
+        tracker.send(new HitBuilders.ScreenViewBuilder().build());
     }
 
     private void setupDrawer() {

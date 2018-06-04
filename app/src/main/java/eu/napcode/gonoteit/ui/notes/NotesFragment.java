@@ -14,6 +14,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
+
 import java.util.List;
 
 import javax.inject.Inject;
@@ -34,6 +37,9 @@ public class NotesFragment extends Fragment implements NotesAdapter.NoteListener
 
     @Inject
     ViewModelFactory viewModelFactory;
+
+    @Inject
+    Tracker tracker;
 
     private FragmentBoardBinding binding;
 
@@ -56,6 +62,9 @@ public class NotesFragment extends Fragment implements NotesAdapter.NoteListener
         setupViews();
 
         this.viewModel.getNotes().observe(this, this::processNotesResponse);
+
+        tracker.setScreenName("Displaying notes");
+        tracker.send(new HitBuilders.ScreenViewBuilder().build());
       }
 
     private void processNotesResponse(Resource<List<NoteModel>> listResource) {

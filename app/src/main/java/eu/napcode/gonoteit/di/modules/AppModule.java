@@ -5,11 +5,14 @@ import android.content.SharedPreferences;
 
 import com.apollographql.apollo.ApolloClient;
 import com.apollographql.apollo.response.CustomTypeAdapter;
+import com.google.android.gms.analytics.GoogleAnalytics;
+import com.google.android.gms.analytics.Tracker;
 
 import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
+import eu.napcode.gonoteit.R;
 import eu.napcode.gonoteit.api.ApolloRxHelper;
 import eu.napcode.gonoteit.api.NoteAdapter;
 import eu.napcode.gonoteit.api.UUIDAdapter;
@@ -60,5 +63,10 @@ public class AppModule {
     @Provides
     NetworkHelper providesNetworkHelper(Context context) {
         return new NetworkHelper(context);
+    }
+
+    @Provides
+    Tracker providesTracker(Context context) {
+        return GoogleAnalytics.getInstance(context).newTracker(R.xml.global_tracker);
     }
 }

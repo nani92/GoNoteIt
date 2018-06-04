@@ -13,6 +13,9 @@ import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
+
 import javax.inject.Inject;
 
 import dagger.android.AndroidInjection;
@@ -28,6 +31,9 @@ public class LoginActivity extends AppCompatActivity {
     @Inject
     ViewModelFactory viewModelFactory;
 
+    @Inject
+    Tracker tracker;
+
     private LoginViewModel viewModel;
     private ActivityLoginBinding binding;
 
@@ -39,6 +45,9 @@ public class LoginActivity extends AppCompatActivity {
 
         AndroidInjection.inject(this);
         setupViewModel();
+
+        tracker.setScreenName("Login Screen");
+        tracker.send(new HitBuilders.ScreenViewBuilder().build());
     }
 
     private void setupInputFields() {
