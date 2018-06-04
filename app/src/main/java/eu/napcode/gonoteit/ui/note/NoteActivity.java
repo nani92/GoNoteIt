@@ -8,6 +8,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 
@@ -84,11 +85,20 @@ public class NoteActivity extends AppCompatActivity {
 
 
     private void displayNote(NoteModel noteModel) {
-        binding.noteTextView.setText(noteModel.getContent());
-        binding.noteTitleTextView.setText(noteModel.getTitle());
+        displayTextInTextView(noteModel.getTitle(), binding.noteTitleTextView);
+        displayTextInTextView(noteModel.getContent(), binding.noteTextView);
 
         if (!TextUtils.isEmpty(noteModel.getImageBase64())) {
             displayImage(noteModel);
+        }
+    }
+
+    private void displayTextInTextView(String text, TextView textView) {
+
+        if (TextUtils.isEmpty(text)) {
+            textView.setVisibility(GONE);
+        } else {
+            textView.setText(text);
         }
     }
 
