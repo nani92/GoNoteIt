@@ -8,8 +8,8 @@
     <dimen name="drawer_header_height">200dp</dimen>
     <dimen name="drawer_user_name_text_size">20sp</dimen>
     <dimen name="base_text_size">22sp</dimen>
-    <dimen name="single_note_widget_min_height">72dp</dimen>
-    <dimen name="single_note_widget_min_width">146dp</dimen>
+    <dimen name="add_note_widget_min_height">72dp</dimen>
+    <dimen name="add_note_widget_min_width">146dp</dimen>
     <dimen name="bigger_margin">30dp</dimen>
     <dimen name="small_margin">8dp</dimen>
 </resources>
