@@ -18,12 +18,17 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.apollographql.apollo.ApolloClient;
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.InterstitialAd;
+import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
 
 import javax.inject.Inject;
 
 import dagger.android.AndroidInjection;
+import eu.napcode.gonoteit.BuildConfig;
 import eu.napcode.gonoteit.R;
 import eu.napcode.gonoteit.databinding.ActivityMainBinding;
 import eu.napcode.gonoteit.databinding.DrawerHeaderBinding;
@@ -65,6 +70,23 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         tracker.setScreenName("Main Activity");
         tracker.send(new HitBuilders.ScreenViewBuilder().build());
+
+        showAd();
+    }
+
+    private void showAd() {
+        MobileAds.initialize(this, BuildConfig.ADMOB_ID);
+        InterstitialAd interstitialAd = new InterstitialAd(this);
+        interstitialAd.setAdUnitId(getString(R.string.add_id));
+        interstitialAd.loadAd(new AdRequest.Builder().build());
+        interstitialAd.setAdListener(new AdListener() {
+
+            @Override
+            public void onAdLoaded() {
+                super.onAdLoaded();
+                interstitialAd.show();
+            }
+        });
     }
 
     private void setupDrawer() {
