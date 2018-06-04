@@ -13,7 +13,7 @@ import eu.napcode.gonoteit.utils.NetworkHelper;
 import io.reactivex.Flowable;
 import io.reactivex.Observable;
 
-public class  NotesRepositoryImpl implements NotesRepository {
+public class NotesRepositoryImpl implements NotesRepository {
 
     private NotesRepositoryLocalImpl notesRepositoryLocal;
     private NotesRepositoryRemoteImpl notesRepositoryRemote;
@@ -34,7 +34,7 @@ public class  NotesRepositoryImpl implements NotesRepository {
         if (networkHelper.isNetworkAvailable()) {
             return this.notesRepositoryRemote.getNotes();
         } else {
-             return this.notesRepositoryLocal.getNotes();
+            return this.notesRepositoryLocal.getNotes();
         }
     }
 

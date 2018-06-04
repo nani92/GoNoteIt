@@ -54,14 +54,9 @@ public class NotesFragment extends Fragment implements NotesAdapter.NoteListener
                 .get(NotesViewModel.class);
 
         setupViews();
-      }
-
-    @Override
-    public void onResume() {
-        super.onResume();
 
         this.viewModel.getNotes().observe(this, this::processNotesResponse);
-    }
+      }
 
     private void processNotesResponse(Resource<List<NoteModel>> listResource) {
         boolean loading = listResource.status == Status.LOADING;
