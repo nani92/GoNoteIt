@@ -88,6 +88,13 @@ dependencies {
 
     //http logging interceptor
     implementation group: 'com.squareup.okhttp3', name: 'logging-interceptor', version: "${okhttp3Version}"
+
+    //easy image
+    implementation 'com.github.jkwiecien:EasyImage:2.0.4'
+
+    //glide
+    implementation "com.github.bumptech.glide:glide:${glideVersion}"
+    annotationProcessor "com.github.bumptech.glide:compiler:${glideVersion}"
 }
 
 apollo {

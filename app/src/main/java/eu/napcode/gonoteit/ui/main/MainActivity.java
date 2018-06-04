@@ -59,6 +59,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         setupDrawer();
         setupUser();
+        displayFragment(new NotesFragment());
     }
 
     private void setupDrawer() {

@@ -12,12 +12,14 @@ public class NoteModel {
         this.title = noteEntity.getTitle();
         this.content = noteEntity.getContent();
         this.id = noteEntity.getId();
+        this.imageBase64 = noteEntity.getImageBase64();
     }
 
     private String uuid;
     private String title;
     private String content;
     private Long id;
+    private String imageBase64;
 
     public String getUuid() {
         return uuid;
@@ -49,5 +51,13 @@ public class NoteModel {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    public String getImageBase64() {
+        return imageBase64;
+    }
+
+    public void setImageBase64(String imageBase64) {
+        this.imageBase64 = imageBase64;
     }
 }
