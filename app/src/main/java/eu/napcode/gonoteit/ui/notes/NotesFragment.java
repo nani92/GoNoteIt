@@ -22,6 +22,7 @@ import javax.inject.Inject;
 
 import dagger.android.support.AndroidSupportInjection;
 import eu.napcode.gonoteit.R;
+import eu.napcode.gonoteit.api.NoteAdapter;
 import eu.napcode.gonoteit.databinding.FragmentBoardBinding;
 import eu.napcode.gonoteit.di.modules.viewmodel.ViewModelFactory;
 import eu.napcode.gonoteit.model.note.NoteModel;
@@ -44,6 +45,7 @@ public class NotesFragment extends Fragment implements NotesAdapter.NoteListener
     private FragmentBoardBinding binding;
 
     private NotesViewModel viewModel;
+    private NotesAdapter notesAdapter;
 
     @Override
     public void onAttach(Context context) {
@@ -70,7 +72,9 @@ public class NotesFragment extends Fragment implements NotesAdapter.NoteListener
     }
 
     private void displayNotes(PagedList<NoteModel> noteModels) {
-        binding.recyclerView.setAdapter(new NotesAdapter(noteModels, this));
+        NotesAdapter notesAdapter = new NotesAdapter(this);
+        notesAdapter.submitList(noteModels);
+        binding.recyclerView.setAdapter(notesAdapter);
     }
 
     private void processResource(Resource resource) {

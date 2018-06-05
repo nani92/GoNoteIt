@@ -1,17 +1,16 @@
 package eu.napcode.gonoteit.ui.notes;
 
+import android.arch.paging.PagedListAdapter;
 import android.databinding.DataBindingUtil;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintSet;
+import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 
 import com.bumptech.glide.Glide;
-
-import java.util.List;
 
 import eu.napcode.gonoteit.R;
 import eu.napcode.gonoteit.databinding.ItemNoteBinding;
@@ -24,14 +23,13 @@ import static android.support.constraint.ConstraintSet.RIGHT;
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 
-public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NoteViewHolder> {
+public class NotesAdapter extends PagedListAdapter<NoteModel, NotesAdapter.NoteViewHolder> {
     //TODO swipe to delete
 
-    private final NoteListener noteListener;
-    private List<NoteModel> notes;
+    private NoteListener noteListener;
 
-    public NotesAdapter(List<NoteModel> notes, NoteListener noteListener) {
-        this.notes = notes;
+    public NotesAdapter(NoteListener noteListener) {
+        super(DIFF_CALLBACK);
         this.noteListener = noteListener;
     }
 
@@ -46,7 +44,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NoteViewHold
 
     @Override
     public void onBindViewHolder(@NonNull NoteViewHolder holder, int position) {
-        NoteModel note = notes.get(position);
+        NoteModel note = super.getItem(position);
 
         holder.itemNoteBinding.noteTextView.setText(note.getContent());
         holder.itemNoteBinding.noteTitleTextView.setText(note.getTitle());
@@ -87,10 +85,6 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NoteViewHold
         constraintSet.applyTo(holder.itemNoteBinding.constraintLayout);
     }
 
-    public int getItemCount() {
-        return this.notes.size();
-    }
-
     public class NoteViewHolder extends RecyclerView.ViewHolder {
 
         public final ItemNoteBinding itemNoteBinding;
@@ -107,4 +101,19 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NoteViewHold
 
         void onClickNote(Long id);
     }
+
+    public static final DiffUtil.ItemCallback<NoteModel> DIFF_CALLBACK =
+            new DiffUtil.ItemCallback<NoteModel>() {
+
+                @Override
+                public boolean areItemsTheSame(@NonNull NoteModel oldNoteModel, @NonNull NoteModel newNoteModel) {
+                    return oldNoteModel.getId().equals(newNoteModel.getId());
+                }
+
+                @Override
+                public boolean areContentsTheSame(
+                        @NonNull NoteModel oldNoteModel, @NonNull NoteModel newNoteModel) {
+                   return oldNoteModel.equals(newNoteModel);
+                }
+            };
 }
