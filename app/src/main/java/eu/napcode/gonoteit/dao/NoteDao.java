@@ -1,19 +1,10 @@
 package eu.napcode.gonoteit.dao;
 
+import android.arch.paging.DataSource;
 import android.arch.persistence.room.Dao;
-import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.OnConflictStrategy;
 import android.arch.persistence.room.Query;
-
-import org.junit.Test;
-
-import java.util.List;
-
-import io.reactivex.Flowable;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Action;
-import io.reactivex.functions.Consumer;
 
 import static eu.napcode.gonoteit.dao.NoteEntity.COLUMN_ID;
 import static eu.napcode.gonoteit.dao.NoteEntity.TABLE_NAME;
@@ -22,7 +13,7 @@ import static eu.napcode.gonoteit.dao.NoteEntity.TABLE_NAME;
 public interface NoteDao {
 
     @Query("SELECT * FROM " + TABLE_NAME)
-    Flowable<List<NoteEntity>> getAllNoteEntities();
+    DataSource.Factory<Integer, NoteEntity> getAllNoteEntities();
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertNote(NoteEntity noteEntity);

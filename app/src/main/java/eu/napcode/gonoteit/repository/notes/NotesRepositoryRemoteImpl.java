@@ -1,5 +1,7 @@
 package eu.napcode.gonoteit.repository.notes;
 
+import android.annotation.SuppressLint;
+
 import com.apollographql.apollo.ApolloClient;
 import com.apollographql.apollo.api.Response;
 
@@ -17,29 +19,26 @@ import eu.napcode.gonoteit.auth.StoreAuth;
 import eu.napcode.gonoteit.dao.NoteDao;
 import eu.napcode.gonoteit.dao.NoteEntity;
 import eu.napcode.gonoteit.model.note.NoteModel;
-import eu.napcode.gonoteit.rx.RxSchedulers;
 import eu.napcode.gonoteit.type.Type;
 import io.reactivex.Flowable;
 import io.reactivex.Observable;
 
-public class NotesRepositoryRemoteImpl implements NotesRepository {
+public class NotesRepositoryRemoteImpl {
 
-    private final RxSchedulers rxSchedulers;
     private StoreAuth storeAuth;
     private ApolloClient apolloClient;
     private ApolloRxHelper apolloRxHelper;
     private NoteDao noteDao;
 
     @Inject
-    public NotesRepositoryRemoteImpl(ApolloClient apolloClient, StoreAuth storeAuth, ApolloRxHelper apolloRxHelper, NoteDao noteDao, RxSchedulers rxSchedulers) {
+    public NotesRepositoryRemoteImpl(ApolloClient apolloClient, StoreAuth storeAuth, ApolloRxHelper apolloRxHelper, NoteDao noteDao) {
         this.apolloClient = apolloClient;
         this.storeAuth = storeAuth;
         this.apolloRxHelper = apolloRxHelper;
         this.noteDao = noteDao;
-        this.rxSchedulers = rxSchedulers;
     }
 
-    @Override
+    @SuppressLint("CheckResult")
     public Flowable<List<NoteModel>> getNotes() {
         //TODO add token to query
 
@@ -62,19 +61,18 @@ public class NotesRepositoryRemoteImpl implements NotesRepository {
                 .toFlowable();
     }
 
-    @Override
     public Observable<Response<CreateNoteMutation.Data>> createNote(NoteModel noteModel) {
         Note note = new Note(noteModel);
 
         return apolloRxHelper.from(apolloClient.mutate(new CreateNoteMutation(note.getNoteString())));
     }
 
-    @Override
+
     public Observable<Response<DeleteNoteMutation.Data>> deleteNote(Long id) {
         return apolloRxHelper.from(apolloClient.mutate(new DeleteNoteMutation(id)));
     }
 
-    @Override
+
     public Observable<NoteModel> getNote(Long id) {
         return apolloRxHelper.from(apolloClient.query(new GetNoteByIdQuery(id)))
                 .map(dataResponse -> dataResponse.data().entity())

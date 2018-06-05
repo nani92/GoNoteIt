@@ -1,6 +1,7 @@
 package eu.napcode.gonoteit.ui.notes;
 
 import android.arch.lifecycle.ViewModelProviders;
+import android.arch.paging.PagedList;
 import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
@@ -17,8 +18,6 @@ import android.view.ViewGroup;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
 
-import java.util.List;
-
 import javax.inject.Inject;
 
 import dagger.android.support.AndroidSupportInjection;
@@ -26,6 +25,7 @@ import eu.napcode.gonoteit.R;
 import eu.napcode.gonoteit.databinding.FragmentBoardBinding;
 import eu.napcode.gonoteit.di.modules.viewmodel.ViewModelFactory;
 import eu.napcode.gonoteit.model.note.NoteModel;
+import eu.napcode.gonoteit.model.note.NotesResult;
 import eu.napcode.gonoteit.repository.Resource;
 import eu.napcode.gonoteit.repository.Resource.Status;
 import eu.napcode.gonoteit.ui.create.CreateActivity;
@@ -61,22 +61,28 @@ public class NotesFragment extends Fragment implements NotesAdapter.NoteListener
 
         setupViews();
 
-        this.viewModel.getNotes().observe(this, this::processNotesResponse);
+        NotesResult notesResult = this.viewModel.getNotes();
+        notesResult.getNotes().observe(this, this::displayNotes);
+        notesResult.getResource().observe(this, this::processResource);
 
         tracker.setScreenName("Displaying notes");
         tracker.send(new HitBuilders.ScreenViewBuilder().build());
-      }
+    }
 
-    private void processNotesResponse(Resource<List<NoteModel>> listResource) {
-        boolean loading = listResource.status == Status.LOADING;
+    private void displayNotes(PagedList<NoteModel> noteModels) {
+        binding.recyclerView.setAdapter(new NotesAdapter(noteModels, this));
+    }
+
+    private void processResource(Resource resource) {
+        //TODO display pb in appbar
+        boolean loading = resource.status == Status.LOADING;
         binding.progressBar.setVisibility(loading ? View.VISIBLE : View.GONE);
 
-        if (listResource.status == Status.SUCCESS) {
-            binding.recyclerView.setAdapter(new NotesAdapter(listResource.data, this));
+        if (resource.status == Status.SUCCESS) {
         }
 
-        if (listResource.status == Status.ERROR){
-            Snackbar.make(binding.constraintLayout, listResource.message, Snackbar.LENGTH_LONG).show();
+        if (resource.status == Status.ERROR) {
+            Snackbar.make(binding.constraintLayout, resource.message, Snackbar.LENGTH_LONG).show();
         }
     }
 

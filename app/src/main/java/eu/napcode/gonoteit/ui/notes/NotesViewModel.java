@@ -4,12 +4,14 @@ import android.annotation.SuppressLint;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
+import android.arch.paging.PagedList;
 
 import java.util.List;
 
 import javax.inject.Inject;
 
 import eu.napcode.gonoteit.model.note.NoteModel;
+import eu.napcode.gonoteit.model.note.NotesResult;
 import eu.napcode.gonoteit.repository.Resource;
 import eu.napcode.gonoteit.repository.notes.NotesRepository;
 import eu.napcode.gonoteit.rx.RxSchedulers;
@@ -18,7 +20,7 @@ import timber.log.Timber;
 
 public class NotesViewModel extends ViewModel {
 
-    private MutableLiveData<Resource<List<NoteModel>>> notesLiveData = new MutableLiveData<>();
+    private NotesResult notesResult;
     private NotesRepository notesRepository;
     private RxSchedulers rxSchedulers;
 
@@ -28,16 +30,8 @@ public class NotesViewModel extends ViewModel {
         this.rxSchedulers = rxSchedulers;
     }
 
-    @SuppressLint("CheckResult")
-    public LiveData<Resource<List<NoteModel>>> getNotes() {
-        notesRepository.getNotes()
-                .observeOn(rxSchedulers.io())
-                .subscribeOn(rxSchedulers.androidMainThread())
-                .doOnSubscribe(it -> notesLiveData.postValue(Resource.loading(null)))
-                .subscribe(notes -> notesLiveData.postValue(Resource.success(notes)),
-                        throwable -> notesLiveData.postValue(Resource.error(throwable)));
-
-        return notesLiveData;
+    public NotesResult getNotes() {
+        return notesRepository.getNotes();
     }
 
     @SuppressLint("CheckResult")
