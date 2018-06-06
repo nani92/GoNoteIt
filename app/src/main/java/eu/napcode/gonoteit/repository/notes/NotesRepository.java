@@ -1,22 +1,20 @@
 package eu.napcode.gonoteit.repository.notes;
 
-import com.apollographql.apollo.api.Response;
+import android.arch.lifecycle.LiveData;
 
-import java.util.List;
-
-import eu.napcode.gonoteit.CreateNoteMutation;
-import eu.napcode.gonoteit.DeleteNoteMutation;
+import eu.napcode.gonoteit.data.results.DeletedResult;
 import eu.napcode.gonoteit.model.note.NoteModel;
-import io.reactivex.Flowable;
-import io.reactivex.Observable;
+import eu.napcode.gonoteit.data.results.NoteResult;
+import eu.napcode.gonoteit.data.results.NotesResult;
+import eu.napcode.gonoteit.repository.Resource;
 
 public interface NotesRepository {
 
-    Flowable<List<NoteModel>> getNotes();
+    NotesResult getNotes();
 
-    Observable<Response<CreateNoteMutation.Data>> createNote(NoteModel noteModel);
+    LiveData<Resource> createNote(NoteModel noteModel);
 
-    Observable<Response<DeleteNoteMutation.Data>> deleteNote(Long id);
+    DeletedResult deleteNote(Long id);
 
-    Observable<NoteModel> getNote(Long id);
+    NoteResult getNote(Long id);
 }

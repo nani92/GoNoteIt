@@ -17,15 +17,14 @@ import android.view.ViewGroup;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
 
-import java.util.List;
-
 import javax.inject.Inject;
 
 import dagger.android.support.AndroidSupportInjection;
 import eu.napcode.gonoteit.R;
+import eu.napcode.gonoteit.data.results.DeletedResult;
 import eu.napcode.gonoteit.databinding.FragmentBoardBinding;
 import eu.napcode.gonoteit.di.modules.viewmodel.ViewModelFactory;
-import eu.napcode.gonoteit.model.note.NoteModel;
+import eu.napcode.gonoteit.data.results.NotesResult;
 import eu.napcode.gonoteit.repository.Resource;
 import eu.napcode.gonoteit.repository.Resource.Status;
 import eu.napcode.gonoteit.ui.create.CreateActivity;
@@ -44,6 +43,7 @@ public class NotesFragment extends Fragment implements NotesAdapter.NoteListener
     private FragmentBoardBinding binding;
 
     private NotesViewModel viewModel;
+    private NotesAdapter notesAdapter;
 
     @Override
     public void onAttach(Context context) {
@@ -61,22 +61,24 @@ public class NotesFragment extends Fragment implements NotesAdapter.NoteListener
 
         setupViews();
 
-        this.viewModel.getNotes().observe(this, this::processNotesResponse);
+        NotesResult notesResult = this.viewModel.getNotes();
+        notesResult.getNotes().observe(this, noteModels -> notesAdapter.submitList(noteModels));
+        notesResult.getResource().observe(this, this::processResource);
 
         tracker.setScreenName("Displaying notes");
         tracker.send(new HitBuilders.ScreenViewBuilder().build());
-      }
+    }
 
-    private void processNotesResponse(Resource<List<NoteModel>> listResource) {
-        boolean loading = listResource.status == Status.LOADING;
+    private void processResource(Resource resource) {
+        //TODO display pb in appbar
+        boolean loading = resource.status == Status.LOADING;
         binding.progressBar.setVisibility(loading ? View.VISIBLE : View.GONE);
 
-        if (listResource.status == Status.SUCCESS) {
-            binding.recyclerView.setAdapter(new NotesAdapter(listResource.data, this));
+        if (resource.status == Status.SUCCESS) {
         }
 
-        if (listResource.status == Status.ERROR){
-            Snackbar.make(binding.constraintLayout, listResource.message, Snackbar.LENGTH_LONG).show();
+        if (resource.status == Status.ERROR) {
+            Snackbar.make(binding.constraintLayout, resource.message, Snackbar.LENGTH_LONG).show();
         }
     }
 
@@ -90,6 +92,9 @@ public class NotesFragment extends Fragment implements NotesAdapter.NoteListener
     private void setupRecyclerView() {
         //ToDO grid/linear changes no of columns depends on orientation and size
         this.binding.recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+
+        this.notesAdapter = new NotesAdapter(this);
+        this.binding.recyclerView.setAdapter(notesAdapter);
     }
 
     @Nullable
@@ -102,7 +107,8 @@ public class NotesFragment extends Fragment implements NotesAdapter.NoteListener
 
     @Override
     public void onDeleteNote(Long id) {
-        viewModel.deleteNote(id).observe(this, this::processDeleteResponse);
+        DeletedResult deletedResult = viewModel.deleteNote(id);
+        deletedResult.getResource().observe(this, this::processDeleteResponse);
     }
 
     @Override

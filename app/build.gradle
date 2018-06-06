@@ -100,6 +100,9 @@ dependencies {
     //play services
     implementation "com.google.android.gms:play-services-analytics:15.0.2"
     implementation "com.google.android.gms:play-services-ads:15.0.1"
+
+    //pagelist
+    implementation "android.arch.paging:runtime:${pageVersion}"
 }
 
 apollo {

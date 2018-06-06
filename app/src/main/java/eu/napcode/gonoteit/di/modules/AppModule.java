@@ -65,6 +65,7 @@ public class AppModule {
         return new NetworkHelper(context);
     }
 
+    @Singleton
     @Provides
     Tracker providesTracker(Context context) {
         return GoogleAnalytics.getInstance(context).newTracker(R.xml.global_tracker);

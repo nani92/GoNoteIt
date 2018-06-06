@@ -60,4 +60,18 @@ public class NoteModel {
     public void setImageBase64(String imageBase64) {
         this.imageBase64 = imageBase64;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        return obj instanceof NoteModel &&
+                uuid.equals(((NoteModel) obj).uuid) &&
+                id.equals(((NoteModel) obj).id) &&
+                areStringsEqual(title, ((NoteModel) obj).title) &&
+                areStringsEqual(content, ((NoteModel) obj).content) &&
+                areStringsEqual(imageBase64, ((NoteModel) obj).imageBase64);
+    }
+
+    private boolean areStringsEqual(String s, String s2) {
+        return (s == null && s2 == null) || s.equals(s2);
+    }
 }

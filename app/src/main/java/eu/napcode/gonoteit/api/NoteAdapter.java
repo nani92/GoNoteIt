@@ -14,6 +14,6 @@ public class NoteAdapter implements CustomTypeAdapter<Note> {
     @Nonnull
     @Override
     public CustomTypeValue encode(@Nonnull Note note) {
-        return CustomTypeValue.fromRawValue(note.getNoteString());
+        return CustomTypeValue.fromRawValue(note.getNoteDataString());
     }
 }
