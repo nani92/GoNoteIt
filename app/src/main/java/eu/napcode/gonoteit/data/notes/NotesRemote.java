@@ -1,4 +1,4 @@
-package eu.napcode.gonoteit.repository.notes;
+package eu.napcode.gonoteit.data.notes;
 
 import android.annotation.SuppressLint;
 
@@ -50,7 +50,10 @@ public class NotesRemote {
     public Observable<Response<CreateNoteMutation.Data>> createNote(NoteModel noteModel) {
         Note note = new Note(noteModel);
 
-        return apolloRxHelper.from(apolloClient.mutate(new CreateNoteMutation(note.getNoteDataString())));
+        return apolloRxHelper
+                .from(apolloClient.mutate(new CreateNoteMutation(note.getNoteDataString())))
+                .subscribeOn(rxSchedulers.io())
+                .observeOn(rxSchedulers.androidMainThread());
     }
 
     public Observable<Response<DeleteNoteMutation.Data>> deleteNote(Long id) {

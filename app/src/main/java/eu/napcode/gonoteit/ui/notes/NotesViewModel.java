@@ -7,7 +7,7 @@ import android.arch.lifecycle.ViewModel;
 
 import javax.inject.Inject;
 
-import eu.napcode.gonoteit.repository.notes.results.NotesResult;
+import eu.napcode.gonoteit.data.results.NotesResult;
 import eu.napcode.gonoteit.repository.Resource;
 import eu.napcode.gonoteit.repository.notes.NotesRepository;
 import eu.napcode.gonoteit.rx.RxSchedulers;

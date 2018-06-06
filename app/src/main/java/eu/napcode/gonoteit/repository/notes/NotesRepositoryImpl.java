@@ -1,17 +1,19 @@
 package eu.napcode.gonoteit.repository.notes;
 
 import android.annotation.SuppressLint;
+import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 
 import com.apollographql.apollo.api.Response;
 
 import javax.inject.Inject;
 
-import eu.napcode.gonoteit.CreateNoteMutation;
 import eu.napcode.gonoteit.DeleteNoteMutation;
+import eu.napcode.gonoteit.data.notes.NotesLocal;
+import eu.napcode.gonoteit.data.notes.NotesRemote;
 import eu.napcode.gonoteit.model.note.NoteModel;
-import eu.napcode.gonoteit.repository.notes.results.NoteResult;
-import eu.napcode.gonoteit.repository.notes.results.NotesResult;
+import eu.napcode.gonoteit.data.results.NoteResult;
+import eu.napcode.gonoteit.data.results.NotesResult;
 import eu.napcode.gonoteit.repository.Resource;
 import eu.napcode.gonoteit.rx.RxSchedulers;
 import eu.napcode.gonoteit.utils.ErrorMessages;
@@ -43,8 +45,8 @@ public class NotesRepositoryImpl implements NotesRepository {
     public NotesResult getNotes() {
 
         if (networkHelper.isNetworkAvailable()) {
-            updateNotesFromRemote();
-        } else  {
+            updateLocalNotesFromRemote();
+        } else {
             resource.postValue(Resource.error(new Throwable(errorMessages.getOfflineMessage())));
         }
 
@@ -52,7 +54,7 @@ public class NotesRepositoryImpl implements NotesRepository {
     }
 
     @SuppressLint("CheckResult")
-    private void updateNotesFromRemote() {
+    private void updateLocalNotesFromRemote() {
         notesRemote.getNotes()
                 .doOnSubscribe(it -> resource.postValue(Resource.loading(null)))
                 .subscribe(
@@ -65,13 +67,30 @@ public class NotesRepositoryImpl implements NotesRepository {
     }
 
     @Override
-    public Observable<Response<CreateNoteMutation.Data>> createNote(NoteModel noteModel) {
+    public LiveData<Resource> createNote(NoteModel noteModel) {
 
         if (networkHelper.isNetworkAvailable()) {
-            return notesRemote.createNote(noteModel);
+            createNoteOnRemote(noteModel);
         } else {
-            return Observable.error(new Throwable(errorMessages.getCreatingNoteNotImplementedOfflineMessage()));
+            resource.postValue(Resource.error(new Throwable(errorMessages.getCreatingNoteNotImplementedOfflineMessage())));
         }
+
+        return resource;
+    }
+
+    @SuppressLint("CheckResult")
+    private void createNoteOnRemote(NoteModel noteModel) {
+        notesRemote.createNote(noteModel)
+                .doOnSubscribe(it -> resource.postValue(Resource.loading(null)))
+                .filter(response -> response.data() != null)
+                .filter(response -> response.data().createEntity() != null)
+                .filter(response -> response.data().createEntity().ok())
+                .singleOrError()
+                .doOnSuccess(it -> updateLocalNotesFromRemote())
+                .subscribe(
+                        response -> resource.postValue(Resource.success(null)),
+                        error -> resource.postValue(Resource.error(error))
+                );
     }
 
     @Override
@@ -89,8 +108,8 @@ public class NotesRepositoryImpl implements NotesRepository {
     public NoteResult getNote(Long id) {
 
         if (networkHelper.isNetworkAvailable()) {
-            updateNoteFromRemote(id);
-        } else  {
+            updateLocalNoteFromRemote(id);
+        } else {
             resource.postValue(Resource.error(new Throwable(errorMessages.getOfflineMessage())));
         }
 
@@ -98,7 +117,7 @@ public class NotesRepositoryImpl implements NotesRepository {
     }
 
     @SuppressLint("CheckResult")
-    private void updateNoteFromRemote(Long id) {
+    private void updateLocalNoteFromRemote(Long id) {
         notesRemote.getNote(id)
                 .doOnSubscribe(it -> resource.postValue(Resource.loading(null)))
                 .subscribeOn(rxSchedulers.io())

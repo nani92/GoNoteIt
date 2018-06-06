@@ -18,7 +18,7 @@ import eu.napcode.gonoteit.R;
 import eu.napcode.gonoteit.databinding.ActivityNoteBinding;
 import eu.napcode.gonoteit.di.modules.viewmodel.ViewModelFactory;
 import eu.napcode.gonoteit.model.note.NoteModel;
-import eu.napcode.gonoteit.repository.notes.results.NoteResult;
+import eu.napcode.gonoteit.data.results.NoteResult;
 import eu.napcode.gonoteit.repository.Resource;
 import eu.napcode.gonoteit.utils.ImageUtils;
 

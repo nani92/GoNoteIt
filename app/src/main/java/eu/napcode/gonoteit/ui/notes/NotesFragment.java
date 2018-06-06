@@ -23,7 +23,7 @@ import dagger.android.support.AndroidSupportInjection;
 import eu.napcode.gonoteit.R;
 import eu.napcode.gonoteit.databinding.FragmentBoardBinding;
 import eu.napcode.gonoteit.di.modules.viewmodel.ViewModelFactory;
-import eu.napcode.gonoteit.repository.notes.results.NotesResult;
+import eu.napcode.gonoteit.data.results.NotesResult;
 import eu.napcode.gonoteit.repository.Resource;
 import eu.napcode.gonoteit.repository.Resource.Status;
 import eu.napcode.gonoteit.ui.create.CreateActivity;

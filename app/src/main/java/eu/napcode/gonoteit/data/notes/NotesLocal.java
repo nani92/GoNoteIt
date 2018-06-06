@@ -1,4 +1,4 @@
-package eu.napcode.gonoteit.repository.notes;
+package eu.napcode.gonoteit.data.notes;
 
 import android.annotation.SuppressLint;
 import android.arch.lifecycle.LiveData;
@@ -10,7 +10,6 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import eu.napcode.gonoteit.GetNoteByIdQuery.Entity;
 import eu.napcode.gonoteit.GetNotesQuery.AllEntity;
 import eu.napcode.gonoteit.api.Note;
 import eu.napcode.gonoteit.dao.NoteDao;
