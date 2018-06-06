@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.view.Menu;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -47,6 +48,13 @@ public class NoteActivity extends AppCompatActivity {
 
         setupViewModel();
         getNote();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.update_menu, menu);
+
+        return true;
     }
 
     void setupViewModel() {
