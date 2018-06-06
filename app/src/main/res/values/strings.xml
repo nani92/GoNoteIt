@@ -39,4 +39,9 @@
 
     <string name="add_id">ca-app-pub-3940256099942544/1033173712</string>
 
+    <string name="error_not_implemented_offline">%1$s offline is not implemented yet.</string>
+    <string name="creating_note">Creating note</string>
+    <string name="deleting_note">Deleting note</string>
+    <string name="updating_note">Updating note</string>
+
 </resources>

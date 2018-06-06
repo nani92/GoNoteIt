@@ -17,11 +17,13 @@ import eu.napcode.gonoteit.model.note.NoteModel;
 import eu.napcode.gonoteit.model.note.NotesResult;
 import eu.napcode.gonoteit.repository.Resource;
 import eu.napcode.gonoteit.rx.RxSchedulers;
+import eu.napcode.gonoteit.utils.ErrorMessages;
 import eu.napcode.gonoteit.utils.NetworkHelper;
 import io.reactivex.Observable;
 
 public class NotesRepositoryImpl implements NotesRepository {
 
+    private final ErrorMessages errorMessages;
     private RxSchedulers rxSchedulers;
     private NotesRepositoryRemoteImpl notesRepositoryRemote;
     private NetworkHelper networkHelper;
@@ -33,11 +35,13 @@ public class NotesRepositoryImpl implements NotesRepository {
 
     @Inject
     public NotesRepositoryImpl(NotesRepositoryRemoteImpl notesRepositoryRemote,
-                               NetworkHelper networkHelper, NoteDao noteDao, RxSchedulers rxSchedulers) {
+                               NetworkHelper networkHelper, NoteDao noteDao, RxSchedulers rxSchedulers,
+                               ErrorMessages errorMessages) {
         this.notesRepositoryRemote = notesRepositoryRemote;
         this.networkHelper = networkHelper;
         this.noteDao = noteDao;
         this.rxSchedulers = rxSchedulers;
+        this.errorMessages = errorMessages;
     }
 
     @SuppressLint("CheckResult")
@@ -47,7 +51,7 @@ public class NotesRepositoryImpl implements NotesRepository {
                 new LivePagedListBuilder(noteDao.getAllNoteEntities()
                         .map(input -> new NoteModel(input)),
                         PAGE_SIZE)
-                .build();
+                        .build();
 
         notesRepositoryRemote.getNotes()
                 .doOnSubscribe(it -> resource.postValue(Resource.loading(null)))
@@ -68,14 +72,22 @@ public class NotesRepositoryImpl implements NotesRepository {
 
     @Override
     public Observable<Response<CreateNoteMutation.Data>> createNote(NoteModel noteModel) {
-        return notesRepositoryRemote.createNote(noteModel);
 
+        if (networkHelper.isNetworkAvailable()) {
+            return notesRepositoryRemote.createNote(noteModel);
+        } else {
+            return Observable.error(new Throwable(errorMessages.getCreatingNoteNotImplementedOfflineMessage()));
+        }
     }
 
     @Override
     public Observable<Response<DeleteNoteMutation.Data>> deleteNote(Long id) {
-        return notesRepositoryRemote.deleteNote(id);
 
+        if (networkHelper.isNetworkAvailable()) {
+            return notesRepositoryRemote.deleteNote(id);
+        } else  {
+            return Observable.error(new Throwable(errorMessages.getDeletingNoteNotImplementedOfflineMessage()));
+        }
     }
 
     @Override
