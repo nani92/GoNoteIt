@@ -8,11 +8,11 @@ import eu.napcode.gonoteit.repository.Resource;
 public class NotesResult {
 
     LiveData<PagedList<NoteModel>> notes;
-    LiveData<Resource> resourceLiveData;
+    LiveData<Resource> resource;
 
-    public NotesResult(LiveData<PagedList<NoteModel>> notes, LiveData<Resource> resourceLiveData) {
+    public NotesResult(LiveData<PagedList<NoteModel>> notes, LiveData<Resource> resource) {
         this.notes = notes;
-        this.resourceLiveData = resourceLiveData;
+        this.resource = resource;
     }
 
     public LiveData<PagedList<NoteModel>> getNotes() {
@@ -20,6 +20,6 @@ public class NotesResult {
     }
 
     public LiveData<Resource> getResource() {
-        return resourceLiveData;
+        return resource;
     }
 }

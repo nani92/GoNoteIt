@@ -1,5 +1,6 @@
 package eu.napcode.gonoteit.dao;
 
+import android.arch.lifecycle.LiveData;
 import android.arch.paging.DataSource;
 import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Insert;
@@ -23,4 +24,7 @@ public interface NoteDao {
 
     @Query("DELETE FROM " + TABLE_NAME + " WHERE " + COLUMN_ID + " = :id")
     void removeNote(Long id);
+
+    @Query("SELECT * FROM " + TABLE_NAME +" WHERE " + COLUMN_ID + " = :id")
+    LiveData<NoteEntity> getNoteById(Long id);
 }

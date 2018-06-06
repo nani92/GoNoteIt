@@ -3,7 +3,6 @@ package eu.napcode.gonoteit.repository.notes;
 import android.annotation.SuppressLint;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
-import android.arch.paging.LivePagedListBuilder;
 import android.arch.paging.PagedList;
 
 import com.apollographql.apollo.api.Response;
@@ -12,8 +11,8 @@ import javax.inject.Inject;
 
 import eu.napcode.gonoteit.CreateNoteMutation;
 import eu.napcode.gonoteit.DeleteNoteMutation;
-import eu.napcode.gonoteit.dao.NoteDao;
 import eu.napcode.gonoteit.model.note.NoteModel;
+import eu.napcode.gonoteit.model.note.NoteResult;
 import eu.napcode.gonoteit.model.note.NotesResult;
 import eu.napcode.gonoteit.repository.Resource;
 import eu.napcode.gonoteit.rx.RxSchedulers;
@@ -24,22 +23,20 @@ import io.reactivex.Observable;
 public class NotesRepositoryImpl implements NotesRepository {
 
     private final ErrorMessages errorMessages;
+    private final NotesLocal notesLocal;
     private RxSchedulers rxSchedulers;
     private NotesRepositoryRemoteImpl notesRepositoryRemote;
     private NetworkHelper networkHelper;
-    private NoteDao noteDao;
-
-    private static final int PAGE_SIZE = 20;
 
     MutableLiveData<Resource> resource = new MutableLiveData<>();
 
     @Inject
-    public NotesRepositoryImpl(NotesRepositoryRemoteImpl notesRepositoryRemote,
-                               NetworkHelper networkHelper, NoteDao noteDao, RxSchedulers rxSchedulers,
+    public NotesRepositoryImpl(NotesRepositoryRemoteImpl notesRepositoryRemote, NotesLocal notesLocal,
+                               NetworkHelper networkHelper, RxSchedulers rxSchedulers,
                                ErrorMessages errorMessages) {
         this.notesRepositoryRemote = notesRepositoryRemote;
+        this.notesLocal = notesLocal;
         this.networkHelper = networkHelper;
-        this.noteDao = noteDao;
         this.rxSchedulers = rxSchedulers;
         this.errorMessages = errorMessages;
     }
@@ -47,12 +44,6 @@ public class NotesRepositoryImpl implements NotesRepository {
     @SuppressLint("CheckResult")
     @Override
     public NotesResult getNotes() {
-        LiveData<PagedList<NoteModel>> liveData =
-                new LivePagedListBuilder(noteDao.getAllNoteEntities()
-                        .map(input -> new NoteModel(input)),
-                        PAGE_SIZE)
-                        .build();
-
         notesRepositoryRemote.getNotes()
                 .doOnSubscribe(it -> resource.postValue(Resource.loading(null)))
                 .subscribeOn(rxSchedulers.io())
@@ -67,7 +58,7 @@ public class NotesRepositoryImpl implements NotesRepository {
             return this.notesRepositoryLocal.getNotes();
         }*/
 
-        return new NotesResult(liveData, resource);
+        return new NotesResult(notesLocal.getNotes(), resource);
     }
 
     @Override
@@ -85,13 +76,22 @@ public class NotesRepositoryImpl implements NotesRepository {
 
         if (networkHelper.isNetworkAvailable()) {
             return notesRepositoryRemote.deleteNote(id);
-        } else  {
+        } else {
             return Observable.error(new Throwable(errorMessages.getDeletingNoteNotImplementedOfflineMessage()));
         }
     }
 
+    @SuppressLint("CheckResult")
     @Override
-    public Observable<NoteModel> getNote(Long id) {
-        return notesRepositoryRemote.getNote(id);
+    public NoteResult getNote(Long id) {
+        notesRepositoryRemote.getNote(id)
+                .doOnSubscribe(it -> resource.postValue(Resource.loading(null)))
+                .subscribeOn(rxSchedulers.io())
+                .subscribe(
+                        noteModel -> resource.postValue(Resource.success(null)),
+                        error -> resource.postValue(Resource.error(error))
+                );
+
+        return new NoteResult(notesLocal.getNote(id), resource);
     }
 }
