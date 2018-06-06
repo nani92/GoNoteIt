@@ -64,17 +64,11 @@ public class NotesFragment extends Fragment implements NotesAdapter.NoteListener
         setupViews();
 
         NotesResult notesResult = this.viewModel.getNotes();
-        notesResult.getNotes().observe(this, this::displayNotes);
+        notesResult.getNotes().observe(this, noteModels -> notesAdapter.submitList(noteModels));
         notesResult.getResource().observe(this, this::processResource);
 
         tracker.setScreenName("Displaying notes");
         tracker.send(new HitBuilders.ScreenViewBuilder().build());
-    }
-
-    private void displayNotes(PagedList<NoteModel> noteModels) {
-        NotesAdapter notesAdapter = new NotesAdapter(this);
-        notesAdapter.submitList(noteModels);
-        binding.recyclerView.setAdapter(notesAdapter);
     }
 
     private void processResource(Resource resource) {
@@ -100,6 +94,9 @@ public class NotesFragment extends Fragment implements NotesAdapter.NoteListener
     private void setupRecyclerView() {
         //ToDO grid/linear changes no of columns depends on orientation and size
         this.binding.recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+
+        this.notesAdapter = new NotesAdapter(this);
+        this.binding.recyclerView.setAdapter(notesAdapter);
     }
 
     @Nullable

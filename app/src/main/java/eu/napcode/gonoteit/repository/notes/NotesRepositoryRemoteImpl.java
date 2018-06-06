@@ -44,7 +44,7 @@ public class NotesRepositoryRemoteImpl {
 
         return apolloRxHelper.from(apolloClient.query(new GetNotesQuery()))
                 .flatMap(dataResponse -> {
-                    noteDao.removeAll();
+                    //noteDao.removeAll();
 
                     return Observable.fromArray(dataResponse.data().allEntities());
                 })
@@ -67,17 +67,13 @@ public class NotesRepositoryRemoteImpl {
         return apolloRxHelper.from(apolloClient.mutate(new CreateNoteMutation(note.getNoteString())));
     }
 
-
     public Observable<Response<DeleteNoteMutation.Data>> deleteNote(Long id) {
         return apolloRxHelper.from(apolloClient.mutate(new DeleteNoteMutation(id)));
     }
-
 
     public Observable<NoteModel> getNote(Long id) {
         return apolloRxHelper.from(apolloClient.query(new GetNoteByIdQuery(id)))
                 .map(dataResponse -> dataResponse.data().entity())
                 .map(entity -> (NoteModel) ((Note)entity.data()).parseNote(entity.type(), entity.uuid(), entity.id()));
-
-
     }
 }

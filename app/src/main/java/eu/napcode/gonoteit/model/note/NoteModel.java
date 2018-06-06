@@ -66,8 +66,12 @@ public class NoteModel {
         return obj instanceof NoteModel &&
                 uuid.equals(((NoteModel) obj).uuid) &&
                 id.equals(((NoteModel) obj).id) &&
-                title.equals(((NoteModel) obj).title) &&
-                content.equals(((NoteModel) obj).content) &&
-                imageBase64.equals(((NoteModel) obj).imageBase64);
+                areStringsEqual(title, ((NoteModel) obj).title) &&
+                areStringsEqual(content, ((NoteModel) obj).content) &&
+                areStringsEqual(imageBase64, ((NoteModel) obj).imageBase64);
+    }
+
+    private boolean areStringsEqual(String s, String s2) {
+        return (s == null && s2 == null) || s.equals(s2);
     }
 }
