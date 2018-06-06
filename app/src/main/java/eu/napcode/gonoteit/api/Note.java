@@ -2,38 +2,74 @@ package eu.napcode.gonoteit.api;
 
 import com.google.gson.Gson;
 
+import eu.napcode.gonoteit.GetNoteByIdQuery;
+import eu.napcode.gonoteit.GetNoteByIdQuery.Entity;
+import eu.napcode.gonoteit.GetNotesQuery;
 import eu.napcode.gonoteit.model.note.NoteModel;
+import eu.napcode.gonoteit.model.note.SimpleNoteModel;
 import eu.napcode.gonoteit.type.Type;
+
+import static eu.napcode.gonoteit.GetNotesQuery.*;
+import static eu.napcode.gonoteit.type.Type.NONE;
+import static eu.napcode.gonoteit.type.Type.NOTE;
 
 public class Note {
 
-    private String noteString;
+    private String noteDataString;
+    private String uuid;
+    private Type type;
+    private Long id;
 
-    public Note(String noteString) {
-        this.noteString = noteString;
+    public Note(String noteDataString) {
+        this.noteDataString = noteDataString;
     }
 
     public Note(NoteModel noteModel) {
         Gson gson = new Gson();
-        this.noteString = gson.toJson(noteModel);
+        this.noteDataString = gson.toJson(noteModel);
     }
 
-    public String getNoteString() {
-        return noteString;
+    public String getNoteDataString() {
+        return noteDataString;
     }
 
-    public <T> T parseNote(Type type, Object uuid, Long id) {
-        return (T) getNoteModel(type, uuid.toString(), id);
+    public <T extends NoteModel> T parseNote(AllEntity allEntity) {
+        this.id = allEntity.id();
+        this.type = allEntity.type();
+        this.uuid = allEntity.uuid().toString();
+
+        return parseNote();
     }
 
-    private NoteModel getNoteModel(Type type, String uuid, Long id) {
+    public <T extends NoteModel> T parseNote(Entity allEntity) {
+        this.id = allEntity.id();
+        this.type = allEntity.type();
+        this.uuid = allEntity.uuid().toString();
 
-        if (type == Type.NONE) {
+        return parseNote();
+    }
+
+    private <T extends NoteModel> T parseNote() {
+
+        if (type == NONE) {
+            return null;
+        }
+
+        if (type == NOTE) {
+            return (T) getNoteModel();
+        }
+
+        return (T) getNoteModel();
+    }
+
+    private SimpleNoteModel getNoteModel() {
+
+        if (type == NONE) {
             return null;
         }
 
         Gson gson = new Gson();
-        NoteModel noteModel = gson.fromJson(noteString, NoteModel.class);
+        SimpleNoteModel noteModel = gson.fromJson(noteDataString, SimpleNoteModel.class);
         noteModel.setUuid(uuid);
         noteModel.setId(id);
 

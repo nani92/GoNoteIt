@@ -4,19 +4,13 @@ import android.annotation.SuppressLint;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
-import android.arch.paging.PagedList;
-
-import java.util.List;
 
 import javax.inject.Inject;
 
-import eu.napcode.gonoteit.model.note.NoteModel;
-import eu.napcode.gonoteit.model.note.NotesResult;
+import eu.napcode.gonoteit.repository.notes.results.NotesResult;
 import eu.napcode.gonoteit.repository.Resource;
 import eu.napcode.gonoteit.repository.notes.NotesRepository;
 import eu.napcode.gonoteit.rx.RxSchedulers;
-import io.reactivex.functions.Action;
-import timber.log.Timber;
 
 public class NotesViewModel extends ViewModel {
 

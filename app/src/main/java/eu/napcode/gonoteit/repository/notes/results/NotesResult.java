@@ -1,8 +1,9 @@
-package eu.napcode.gonoteit.model.note;
+package eu.napcode.gonoteit.repository.notes.results;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.paging.PagedList;
 
+import eu.napcode.gonoteit.model.note.NoteModel;
 import eu.napcode.gonoteit.repository.Resource;
 
 public class NotesResult {

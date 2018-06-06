@@ -1,7 +1,8 @@
-package eu.napcode.gonoteit.model.note;
+package eu.napcode.gonoteit.repository.notes.results;
 
 import android.arch.lifecycle.LiveData;
 
+import eu.napcode.gonoteit.model.note.NoteModel;
 import eu.napcode.gonoteit.repository.Resource;
 
 public class NoteResult {

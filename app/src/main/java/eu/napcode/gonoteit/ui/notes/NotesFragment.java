@@ -1,7 +1,6 @@
 package eu.napcode.gonoteit.ui.notes;
 
 import android.arch.lifecycle.ViewModelProviders;
-import android.arch.paging.PagedList;
 import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
@@ -22,11 +21,9 @@ import javax.inject.Inject;
 
 import dagger.android.support.AndroidSupportInjection;
 import eu.napcode.gonoteit.R;
-import eu.napcode.gonoteit.api.NoteAdapter;
 import eu.napcode.gonoteit.databinding.FragmentBoardBinding;
 import eu.napcode.gonoteit.di.modules.viewmodel.ViewModelFactory;
-import eu.napcode.gonoteit.model.note.NoteModel;
-import eu.napcode.gonoteit.model.note.NotesResult;
+import eu.napcode.gonoteit.repository.notes.results.NotesResult;
 import eu.napcode.gonoteit.repository.Resource;
 import eu.napcode.gonoteit.repository.Resource.Status;
 import eu.napcode.gonoteit.ui.create.CreateActivity;

@@ -23,9 +23,12 @@ public class ErrorMessages {
         return getNotImplementedOfflineMessage(context.getString(R.string.deleting_note));
     }
 
-
     public String getUpdatingNoteNotImplementedOfflineMessage() {
         return getNotImplementedOfflineMessage(context.getString(R.string.updating_note));
+    }
+
+    public String getOfflineMessage() {
+        return context.getString(R.string.youre_offline);
     }
 
     private String getNotImplementedOfflineMessage(String functionality) {
