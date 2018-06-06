@@ -57,4 +57,8 @@ public class NotesLocal {
     public void saveEntity(NoteModel noteModel) {
         noteDao.insertNote(new NoteEntity(noteModel));
     }
+
+    public void deleteNote(Long id) {
+        noteDao.removeNote(id);
+    }
 }

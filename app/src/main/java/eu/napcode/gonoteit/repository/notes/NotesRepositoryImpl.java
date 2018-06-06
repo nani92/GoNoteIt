@@ -4,13 +4,11 @@ import android.annotation.SuppressLint;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 
-import com.apollographql.apollo.api.Response;
-
 import javax.inject.Inject;
 
-import eu.napcode.gonoteit.DeleteNoteMutation;
 import eu.napcode.gonoteit.data.notes.NotesLocal;
 import eu.napcode.gonoteit.data.notes.NotesRemote;
+import eu.napcode.gonoteit.data.results.DeletedResult;
 import eu.napcode.gonoteit.model.note.NoteModel;
 import eu.napcode.gonoteit.data.results.NoteResult;
 import eu.napcode.gonoteit.data.results.NotesResult;
@@ -18,7 +16,6 @@ import eu.napcode.gonoteit.repository.Resource;
 import eu.napcode.gonoteit.rx.RxSchedulers;
 import eu.napcode.gonoteit.utils.ErrorMessages;
 import eu.napcode.gonoteit.utils.NetworkHelper;
-import io.reactivex.Observable;
 
 public class NotesRepositoryImpl implements NotesRepository {
 
@@ -94,15 +91,34 @@ public class NotesRepositoryImpl implements NotesRepository {
     }
 
     @Override
-    public Observable<Response<DeleteNoteMutation.Data>> deleteNote(Long id) {
+    public DeletedResult deleteNote(Long id) {
+        MutableLiveData<Resource> resource = new MutableLiveData<>();
 
         if (networkHelper.isNetworkAvailable()) {
-            return notesRemote.deleteNote(id);
+            deleteNoteOnRemote(id, resource);
         } else {
-            return Observable.error(new Throwable(errorMessages.getDeletingNoteNotImplementedOfflineMessage()));
+            resource.postValue(Resource.error(new Throwable(errorMessages.getDeletingNoteNotImplementedOfflineMessage())));
         }
+
+        return new DeletedResult(id, resource);
     }
 
+    @SuppressLint("CheckResult")
+    private void deleteNoteOnRemote(Long id, MutableLiveData<Resource> resource) {
+        notesRemote.deleteNote(id)
+                .doOnSubscribe(it -> resource.postValue(Resource.loading(null)))
+                .filter(response -> response.data() != null)
+                .filter(response -> response.data().deleteEntity() != null)
+                .filter(response -> response.data().deleteEntity().deleted())
+                .singleOrError()
+                .doAfterSuccess(it -> notesLocal.deleteNote(id))
+                .subscribe(response -> {
+                            resource.postValue(Resource.success(null));
+                            getNotes();
+                            //todo something to delete deleted rows
+                        },
+                        error -> resource.postValue(Resource.error(error)));
+    }
 
     @Override
     public NoteResult getNote(Long id) {

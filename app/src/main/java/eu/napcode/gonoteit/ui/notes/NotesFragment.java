@@ -21,6 +21,7 @@ import javax.inject.Inject;
 
 import dagger.android.support.AndroidSupportInjection;
 import eu.napcode.gonoteit.R;
+import eu.napcode.gonoteit.data.results.DeletedResult;
 import eu.napcode.gonoteit.databinding.FragmentBoardBinding;
 import eu.napcode.gonoteit.di.modules.viewmodel.ViewModelFactory;
 import eu.napcode.gonoteit.data.results.NotesResult;
@@ -106,7 +107,8 @@ public class NotesFragment extends Fragment implements NotesAdapter.NoteListener
 
     @Override
     public void onDeleteNote(Long id) {
-        viewModel.deleteNote(id).observe(this, this::processDeleteResponse);
+        DeletedResult deletedResult = viewModel.deleteNote(id);
+        deletedResult.getResource().observe(this, this::processDeleteResponse);
     }
 
     @Override
