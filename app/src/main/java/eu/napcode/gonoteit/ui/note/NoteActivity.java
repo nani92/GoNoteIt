@@ -1,6 +1,7 @@
 package eu.napcode.gonoteit.ui.note;
 
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -8,6 +9,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -21,6 +23,7 @@ import eu.napcode.gonoteit.di.modules.viewmodel.ViewModelFactory;
 import eu.napcode.gonoteit.model.note.NoteModel;
 import eu.napcode.gonoteit.data.results.NoteResult;
 import eu.napcode.gonoteit.repository.Resource;
+import eu.napcode.gonoteit.ui.create.CreateActivity;
 import eu.napcode.gonoteit.utils.ImageUtils;
 
 import static android.support.design.widget.Snackbar.LENGTH_LONG;
@@ -28,6 +31,7 @@ import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 import static eu.napcode.gonoteit.repository.Resource.Status.ERROR;
 import static eu.napcode.gonoteit.repository.Resource.Status.LOADING;
+import static eu.napcode.gonoteit.ui.create.CreateActivity.EDIT_NOTE_ID_KEY;
 
 public class NoteActivity extends AppCompatActivity {
 
@@ -55,6 +59,30 @@ public class NoteActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.update_menu, menu);
 
         return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        if (item.getItemId() == R.id.update) {
+            showUpdateScreen();
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    void showUpdateScreen() {
+        Intent intent = new Intent(this, CreateActivity.class);
+        intent.putExtras(getBundleForUpdate());
+
+        startActivity(intent);
+    }
+
+    private Bundle getBundleForUpdate() {
+        Bundle bundle = new Bundle();
+        bundle.putLong(EDIT_NOTE_ID_KEY, getIntent().getLongExtra(NOTE_ID_KEY, 0));
+
+        return bundle;
     }
 
     void setupViewModel() {

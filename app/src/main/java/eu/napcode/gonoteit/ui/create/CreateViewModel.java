@@ -7,6 +7,7 @@ import android.arch.lifecycle.ViewModel;
 
 import javax.inject.Inject;
 
+import eu.napcode.gonoteit.data.results.NoteResult;
 import eu.napcode.gonoteit.model.note.NoteModel;
 import eu.napcode.gonoteit.repository.Resource;
 import eu.napcode.gonoteit.repository.notes.NotesRepository;
@@ -15,6 +16,7 @@ import eu.napcode.gonoteit.rx.RxSchedulers;
 public class CreateViewModel extends ViewModel {
 
     private NotesRepository notesRepository;
+
     @Inject
     public CreateViewModel(NotesRepository notesRepository) {
         this.notesRepository = notesRepository;
@@ -23,5 +25,9 @@ public class CreateViewModel extends ViewModel {
     @SuppressLint("CheckResult")
     public LiveData<Resource> createNote(NoteModel noteModel) {
         return notesRepository.createNote(noteModel);
+    }
+
+    public NoteResult getNote(Long id) {
+        return notesRepository.getNote(id);
     }
 }
