@@ -10,6 +10,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 import java.util.Arrays;
 
 import eu.napcode.gonoteit.MockRxSchedulers;
+import eu.napcode.gonoteit.data.results.NotesResult;
 import eu.napcode.gonoteit.model.note.NoteModel;
 import eu.napcode.gonoteit.repository.notes.NotesRepository;
 import io.reactivex.Flowable;
@@ -24,14 +25,11 @@ public class NotesViewModelTest {
 
     @Before
     public void init() {
-        this.notesViewModel = new NotesViewModel(notesRepository, new MockRxSchedulers());
+        this.notesViewModel = new NotesViewModel(notesRepository);
     }
 
     @Test
     public void testCallingGetNotes() {
-        Mockito.when(notesRepository.getNotes())
-                .thenReturn(Flowable.just(Arrays.asList(new NoteModel())));
-
         this.notesViewModel.getNotes();
 
         Mockito.verify(notesRepository).getNotes();

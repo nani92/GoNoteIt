@@ -21,7 +21,6 @@ public class NotesRepositoryImpl implements NotesRepository {
 
     private final ErrorMessages errorMessages;
     private final NotesLocal notesLocal;
-    private RxSchedulers rxSchedulers;
     private NotesRemote notesRemote;
     private NetworkHelper networkHelper;
 
@@ -29,12 +28,10 @@ public class NotesRepositoryImpl implements NotesRepository {
 
     @Inject
     public NotesRepositoryImpl(NotesRemote notesRemote, NotesLocal notesLocal,
-                               NetworkHelper networkHelper, RxSchedulers rxSchedulers,
-                               ErrorMessages errorMessages) {
+                               NetworkHelper networkHelper, ErrorMessages errorMessages) {
         this.notesRemote = notesRemote;
         this.notesLocal = notesLocal;
         this.networkHelper = networkHelper;
-        this.rxSchedulers = rxSchedulers;
         this.errorMessages = errorMessages;
     }
 
@@ -136,7 +133,6 @@ public class NotesRepositoryImpl implements NotesRepository {
     private void updateLocalNoteFromRemote(Long id) {
         notesRemote.getNote(id)
                 .doOnSubscribe(it -> resource.postValue(Resource.loading(null)))
-                .subscribeOn(rxSchedulers.io())
                 .subscribe(
                         noteModel -> {
                             notesLocal.saveEntity(noteModel);

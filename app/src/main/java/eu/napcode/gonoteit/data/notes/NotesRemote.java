@@ -66,7 +66,9 @@ public class NotesRemote {
     }
 
     public Observable<NoteModel> getNote(Long id) {
-        return apolloRxHelper.from(apolloClient.query(new GetNoteByIdQuery(id)))
+        return apolloRxHelper
+                .from(apolloClient.query(new GetNoteByIdQuery(id)))
+                .subscribeOn(rxSchedulers.io())
                 .map(dataResponse -> dataResponse.data().entity())
                 .map(entity -> ((Note) entity.data()).parseNote(entity));
     }

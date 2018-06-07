@@ -1,14 +1,13 @@
 package eu.napcode.gonoteit.repository.notes;
 
 import com.apollographql.apollo.ApolloClient;
+import com.apollographql.apollo.ApolloMutationCall;
 import com.apollographql.apollo.ApolloQueryCall;
-import com.apollographql.apollo.api.Input;
 import com.apollographql.apollo.api.Response;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.ArgumentMatcher;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
@@ -17,11 +16,16 @@ import java.util.List;
 
 import eu.napcode.gonoteit.CreateNoteMutation;
 import eu.napcode.gonoteit.GetNotesQuery;
+import eu.napcode.gonoteit.GetNotesQuery.AllEntity;
+import eu.napcode.gonoteit.MockRxSchedulers;
 import eu.napcode.gonoteit.api.ApolloRxHelper;
 import eu.napcode.gonoteit.auth.StoreAuth;
 import eu.napcode.gonoteit.dao.NoteDao;
+import eu.napcode.gonoteit.data.notes.NotesRemote;
 import eu.napcode.gonoteit.model.note.NoteModel;
+import eu.napcode.gonoteit.repository.Resource;
 import io.reactivex.Observable;
+import io.reactivex.observers.TestObserver;
 import io.reactivex.subscribers.TestSubscriber;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -41,56 +45,67 @@ public class NotesRepositoryRemoteImplTest {
     ApolloQueryCall<GetNotesQuery.Data> apolloGetNotesCall;
 
     @Mock
+    ApolloMutationCall<CreateNoteMutation.Data> apolloCreateNoteCall;
+
+    @Mock
     Response<GetNotesQuery.Data> getNotesResponse;
+
+    @Mock
+    Response<CreateNoteMutation.Data> createNoteResponse;
 
     @Mock
     GetNotesQuery.Data data;
 
     @Mock
-    GetNotesQuery.AllEntity allEntity;
+    AllEntity allEntity;
 
     @Mock
     NoteDao noteDao;
 
-    private NotesRepositoryRemoteImpl notesRepositoryRemote;
+    private NotesRemote notesRemote;
 
     @Before
     public void init() {
-        this.notesRepositoryRemote = new NotesRepositoryRemoteImpl(apolloClient, storeAuth, apolloRxHelper, noteDao);
+        this.notesRemote = new NotesRemote(apolloClient, storeAuth, apolloRxHelper, new MockRxSchedulers());
 
         Mockito.when(apolloClient.query(Mockito.any(GetNotesQuery.class)))
                 .thenReturn(apolloGetNotesCall);
-
         Mockito.when(apolloRxHelper.from(apolloGetNotesCall))
                 .thenReturn(Observable.just(getNotesResponse));
+
+
+        Mockito.when(apolloClient.mutate(Mockito.any(CreateNoteMutation.class)))
+                .thenReturn(apolloCreateNoteCall);
+        Mockito.when(apolloRxHelper.from(apolloCreateNoteCall))
+                .thenReturn(Observable.just(createNoteResponse));
     }
 
 
     @Test
     public void testCallGetNotesQuery() {
-        notesRepositoryRemote.getNotes();
+        notesRemote.getNotes();
 
         Mockito.verify(apolloClient).query(Mockito.any(GetNotesQuery.class));
     }
 
     @Test
     public void testCallIntoRx() {
-        notesRepositoryRemote.getNotes();
+        notesRemote.getNotes();
 
         Mockito.verify(apolloRxHelper).from(apolloGetNotesCall);
     }
 
     @Test
     public void testReturnNotes() {
-        TestSubscriber<List<NoteModel>> notesSubscriber = new TestSubscriber<>();
-        notesRepositoryRemote.getNotes().subscribe(notesSubscriber);
+        TestObserver<List<AllEntity>> notesObserver = new TestObserver<>();
+        notesRemote.getNotes().subscribe(notesObserver);
 
-        notesSubscriber.assertSubscribed();
+        notesObserver.assertSubscribed();
     }
 
     @Test
     public void testCallNoteMutation() {
-        notesRepositoryRemote.createNote(new NoteModel());
+        notesRemote.createNote(new NoteModel());
 
         Mockito.verify(apolloClient).mutate(Mockito.any(CreateNoteMutation.class));
     }
@@ -101,7 +116,7 @@ public class NotesRepositoryRemoteImplTest {
 //        noteModel.setTitle("test title");
 //        noteModel.setContent("test content");
 //
-//        notesRepositoryRemote.createNote(noteModel);
+//        notesRemote.createNote(noteModel);
 //
 //        Mockito.verify(apolloClient).mutate(
 //                Mockito.argThat((ArgumentMatcher<CreateNoteMutation>) argument -> {
@@ -117,7 +132,7 @@ public class NotesRepositoryRemoteImplTest {
 //        noteModel.setTitle("test title");
 //        noteModel.setContent("test content");
 //
-//        notesRepositoryRemote.createNote(noteModel);
+//        notesRemote.createNote(noteModel);
 //
 //        Mockito.verify(apolloClient).mutate(
 //                Mockito.argThat((ArgumentMatcher<CreateNoteMutation>) argument -> {

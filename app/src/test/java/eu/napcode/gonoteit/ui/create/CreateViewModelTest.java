@@ -1,6 +1,7 @@
 package eu.napcode.gonoteit.ui.create;
 
 import android.arch.core.executor.testing.InstantTaskExecutorRule;
+import android.arch.lifecycle.MutableLiveData;
 
 import com.apollographql.apollo.api.Response;
 
@@ -16,6 +17,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 import eu.napcode.gonoteit.CreateNoteMutation;
 import eu.napcode.gonoteit.MockRxSchedulers;
 import eu.napcode.gonoteit.model.note.NoteModel;
+import eu.napcode.gonoteit.repository.Resource;
 import eu.napcode.gonoteit.repository.notes.NotesRepository;
 import io.reactivex.Observable;
 
@@ -35,10 +37,10 @@ public class CreateViewModelTest {
 
     @Before
     public void init() {
-        createViewModel = new CreateViewModel(notesRepository, new MockRxSchedulers());
+        createViewModel = new CreateViewModel(notesRepository);
 
         Mockito.when(notesRepository.createNote(Mockito.any()))
-                .thenReturn(Observable.just(createNoteMutationResponse));
+                .thenReturn(new MutableLiveData<Resource>());
     }
 
     @Test
