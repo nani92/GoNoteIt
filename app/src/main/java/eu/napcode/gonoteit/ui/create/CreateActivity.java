@@ -6,10 +6,10 @@ import android.databinding.DataBindingUtil;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.view.View;
 
 import com.bumptech.glide.Glide;
@@ -23,6 +23,7 @@ import javax.inject.Inject;
 
 import dagger.android.AndroidInjection;
 import eu.napcode.gonoteit.R;
+import eu.napcode.gonoteit.data.results.NoteResult;
 import eu.napcode.gonoteit.databinding.ActivityCreateBinding;
 import eu.napcode.gonoteit.di.modules.viewmodel.ViewModelFactory;
 import eu.napcode.gonoteit.model.note.NoteModel;
@@ -38,6 +39,8 @@ public class CreateActivity extends AppCompatActivity {
 
     //TODO: add back nav
 
+    public static final String EDIT_NOTE_ID_KEY = "edit id";
+
     @Inject
     ViewModelFactory viewModelFactory;
 
@@ -45,7 +48,7 @@ public class CreateActivity extends AppCompatActivity {
     Tracker tracker;
 
     private ActivityCreateBinding binding;
-    private CreateViewModel createViewModel;
+    private CreateViewModel viewModel;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -54,12 +57,23 @@ public class CreateActivity extends AppCompatActivity {
 
         AndroidInjection.inject(this);
 
-        this.createViewModel = ViewModelProviders
+        this.viewModel = ViewModelProviders
                 .of(this, this.viewModelFactory)
                 .get(CreateViewModel.class);
 
+        setupViews();
+
+        if (isInEditMode()) {
+            getNoteToEdit();
+        }
+
+        tracker.setScreenName("Create note screen");
+        tracker.send(new HitBuilders.ScreenViewBuilder().build());
+    }
+
+    private void setupViews() {
         binding.createNoteButton.setOnClickListener(v -> {
-                    createViewModel.createNote(getNoteModelFromInputs())
+                    viewModel.createNote(getNoteModelFromInputs())
                             .observe(this, this::processResponse);
 
                     tracker.send(new HitBuilders.EventBuilder()
@@ -72,10 +86,38 @@ public class CreateActivity extends AppCompatActivity {
         binding.addImageButton.setOnClickListener(v ->
                 EasyImage.openGallery(this, 0)
         );
+    }
 
+    private boolean isInEditMode() {
+        return getIntent().getExtras() != null;
+    }
 
-        tracker.setScreenName("Create note screen");
-        tracker.send(new HitBuilders.ScreenViewBuilder().build());
+    private void getNoteToEdit() {
+        NoteResult noteResult = viewModel.getNote(getNoteToEditId());
+
+        noteResult.getNote().observe(this, this::displayNote);
+    }
+
+    private Long getNoteToEditId() {
+        return getIntent().getExtras().getLong(EDIT_NOTE_ID_KEY);
+    }
+
+    private void displayNote(NoteModel noteModel) {
+        binding.createNoteButton.setText(R.string.update_note);
+        binding.titleEditText.setText(noteModel.getTitle());
+        binding.contentEditText.setText(noteModel.getContent());
+
+        if (TextUtils.isEmpty(noteModel.getImageBase64()) == false) {
+            displayImageBitmap(ImageUtils.decodeBase64ToBitmap(noteModel.getImageBase64()));
+        }
+    }
+
+    private void displayImageBitmap(Bitmap bitmap) {
+        Glide.with(this)
+                .load(bitmap)
+                .into(binding.attachmentImageView);
+
+        binding.attachmentCardView.setVisibility(View.VISIBLE);
     }
 
     private void processResponse(Resource resource) {
@@ -118,6 +160,10 @@ public class CreateActivity extends AppCompatActivity {
         noteModel.setContent(binding.contentEditText.getText().toString());
         setImageForNote(noteModel);
 
+        if (isInEditMode()) {
+            noteModel.setId(getNoteToEditId());
+        }
+
         return noteModel;
     }
 
@@ -149,19 +195,18 @@ public class CreateActivity extends AppCompatActivity {
         public void onImagesPicked(List<File> imagesFiles, EasyImage.ImageSource source, int type) {
 
             if (imagesFiles != null && imagesFiles.size() > 0) {
-                displayImage(imagesFiles.get(0));
+                displayImageFile(imagesFiles.get(0));
             } else {
                 Snackbar.make(binding.constraintLayout, R.string.error_image_not_found, Snackbar.LENGTH_LONG).show();
             }
         }
     };
 
-    private void displayImage(File file) {
+    private void displayImageFile(File file) {
         Glide.with(this)
                 .load(file)
                 .into(binding.attachmentImageView);
 
         binding.attachmentCardView.setVisibility(View.VISIBLE);
     }
-
 }

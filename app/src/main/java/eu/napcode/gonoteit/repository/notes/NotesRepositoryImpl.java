@@ -145,4 +145,31 @@ public class NotesRepositoryImpl implements NotesRepository {
                         error -> resource.postValue(Resource.error(error))
                 );
     }
+
+    @Override
+    public LiveData<Resource> updateNote(NoteModel noteModel) {
+
+        if (networkHelper.isNetworkAvailable()) {
+            updateNoteOnRemote(noteModel);
+        } else {
+            resource.postValue(Resource.error(new Throwable(errorMessages.getUpdatingNoteNotImplementedOfflineMessage())));
+        }
+
+        return resource;
+    }
+
+    @SuppressLint("CheckResult")
+    private void updateNoteOnRemote(NoteModel noteModel) {
+        notesRemote.updateNote(noteModel)
+                .doOnSubscribe(it -> resource.postValue(Resource.loading(null)))
+                .filter(response -> response.data() != null)
+                .filter(response -> response.data().updateEntity() != null)
+                .filter(response -> response.data().updateEntity().ok())
+                .singleOrError()
+                .doOnSuccess(it -> updateLocalNotesFromRemote())
+                .subscribe(
+                        response -> resource.postValue(Resource.success(null)),
+                        error -> resource.postValue(Resource.error(error))
+                );
+    }
 }

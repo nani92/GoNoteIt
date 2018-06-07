@@ -44,5 +44,7 @@
     <string name="deleting_note">Deleting note</string>
     <string name="updating_note">Updating note</string>
     <string name="youre_offline">You are offline.</string>
+    <string name="edit">Edit</string>
+    <string name="update_note">Update Note</string>
 
 </resources>
