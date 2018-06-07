@@ -32,6 +32,7 @@ import eu.napcode.gonoteit.repository.Resource;
 import eu.napcode.gonoteit.utils.ImageUtils;
 import pl.aprilapps.easyphotopicker.DefaultCallback;
 import pl.aprilapps.easyphotopicker.EasyImage;
+import timber.log.Timber;
 
 import static android.graphics.Bitmap.CompressFormat.JPEG;
 

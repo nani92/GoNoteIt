@@ -12,6 +12,7 @@ import eu.napcode.gonoteit.model.note.NoteModel;
 import eu.napcode.gonoteit.repository.Resource;
 import eu.napcode.gonoteit.repository.notes.NotesRepository;
 import eu.napcode.gonoteit.rx.RxSchedulers;
+import timber.log.Timber;
 
 public class CreateViewModel extends ViewModel {
 
@@ -24,7 +25,6 @@ public class CreateViewModel extends ViewModel {
 
     @SuppressLint("CheckResult")
     public LiveData<Resource> createNote(NoteModel noteModel) {
-
         if (noteModel.getId() != null) {
             return notesRepository.updateNote(noteModel);
         }

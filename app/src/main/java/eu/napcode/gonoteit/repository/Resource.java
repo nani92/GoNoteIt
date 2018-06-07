@@ -38,6 +38,10 @@ public class Resource<T> {
         return new Resource<>(ERROR, null, error.message());
     }
 
+    public static <T> Resource<T> error(String message) {
+        return new Resource<>(ERROR, null, message);
+    }
+
     public static <T> Resource<T> loading(@Nullable T data) {
         return new Resource<>(LOADING, data, null);
     }

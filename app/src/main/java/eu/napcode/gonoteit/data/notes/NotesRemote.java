@@ -79,6 +79,6 @@ public class NotesRemote {
         return apolloRxHelper
                 .from(apolloClient.mutate(new UpdateNoteMutation(noteModel.getId(), note.getNoteDataString())))
                 .subscribeOn(rxSchedulers.io())
-                .observeOn(rxSchedulers.androidMainThread());
+                .observeOn(rxSchedulers.io());
     }
 }

@@ -2,9 +2,8 @@ package eu.napcode.gonoteit.api;
 
 import com.google.gson.Gson;
 
-import eu.napcode.gonoteit.GetNoteByIdQuery;
 import eu.napcode.gonoteit.GetNoteByIdQuery.Entity;
-import eu.napcode.gonoteit.GetNotesQuery;
+import eu.napcode.gonoteit.UpdateNoteMutation;
 import eu.napcode.gonoteit.model.note.NoteModel;
 import eu.napcode.gonoteit.model.note.SimpleNoteModel;
 import eu.napcode.gonoteit.type.Type;
@@ -41,10 +40,18 @@ public class Note {
         return parseNote();
     }
 
-    public <T extends NoteModel> T parseNote(Entity allEntity) {
-        this.id = allEntity.id();
-        this.type = allEntity.type();
-        this.uuid = allEntity.uuid().toString();
+    public <T extends NoteModel> T parseNote(Entity entity) {
+        this.id = entity.id();
+        this.type = entity.type();
+        this.uuid = entity.uuid().toString();
+
+        return parseNote();
+    }
+
+    public <T extends NoteModel> T parseNote(UpdateNoteMutation.Entity entity) {
+        this.id = entity.id();
+        this.type = entity.type();
+        this.uuid = entity.uuid().toString();
 
         return parseNote();
     }

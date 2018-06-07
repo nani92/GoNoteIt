@@ -5,6 +5,7 @@ import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.Transformations;
 import android.arch.paging.LivePagedListBuilder;
 import android.arch.paging.PagedList;
+import android.util.Log;
 
 import java.util.List;
 
@@ -17,6 +18,7 @@ import eu.napcode.gonoteit.dao.NoteEntity;
 import eu.napcode.gonoteit.model.note.NoteModel;
 import eu.napcode.gonoteit.type.Type;
 import io.reactivex.Observable;
+import timber.log.Timber;
 
 public class NotesLocal {
     private static final int PAGE_SIZE = 20;

@@ -6,7 +6,13 @@ mutation createNote($data: String!) {
 
 mutation updateNote($id: Int!, $data: String!) {
  updateEntity(id: $id, data: $data) {
-    ok
+    ok,
+    entity {
+        uuid,
+        id,
+        data,
+        type
+    }
  }
 }
 
