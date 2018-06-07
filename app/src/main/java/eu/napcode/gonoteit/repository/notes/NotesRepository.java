@@ -17,4 +17,6 @@ public interface NotesRepository {
     DeletedResult deleteNote(Long id);
 
     NoteResult getNote(Long id);
+
+    LiveData<Resource> updateNote(NoteModel noteModel);
 }

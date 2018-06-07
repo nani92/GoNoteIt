@@ -1,7 +1,12 @@
-
 mutation createNote($data: String!) {
  createEntity(type: NOTE, data: $data) {
   ok
+ }
+}
+
+mutation updateNote($id: Int!, $data: String!) {
+ updateEntity(id: $id, data: $data) {
+    ok
  }
 }
 

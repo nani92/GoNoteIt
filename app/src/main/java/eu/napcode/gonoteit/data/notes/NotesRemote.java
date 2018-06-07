@@ -13,11 +13,13 @@ import eu.napcode.gonoteit.CreateNoteMutation;
 import eu.napcode.gonoteit.DeleteNoteMutation;
 import eu.napcode.gonoteit.GetNoteByIdQuery;
 import eu.napcode.gonoteit.GetNotesQuery;
+import eu.napcode.gonoteit.UpdateNoteMutation;
 import eu.napcode.gonoteit.api.ApolloRxHelper;
 import eu.napcode.gonoteit.api.Note;
 import eu.napcode.gonoteit.auth.StoreAuth;
 import eu.napcode.gonoteit.model.note.NoteModel;
 import eu.napcode.gonoteit.rx.RxSchedulers;
+import io.reactivex.Completable;
 import io.reactivex.Observable;
 
 public class NotesRemote {
@@ -67,5 +69,14 @@ public class NotesRemote {
         return apolloRxHelper.from(apolloClient.query(new GetNoteByIdQuery(id)))
                 .map(dataResponse -> dataResponse.data().entity())
                 .map(entity -> ((Note) entity.data()).parseNote(entity));
+    }
+
+    public Observable<Response<UpdateNoteMutation.Data>> updateNote(NoteModel noteModel) {
+        Note note = new Note(noteModel);
+
+        return apolloRxHelper
+                .from(apolloClient.mutate(new UpdateNoteMutation(noteModel.getId(), note.getNoteDataString())))
+                .subscribeOn(rxSchedulers.io())
+                .observeOn(rxSchedulers.androidMainThread());
     }
 }

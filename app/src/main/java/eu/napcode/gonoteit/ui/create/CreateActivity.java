@@ -93,9 +93,13 @@ public class CreateActivity extends AppCompatActivity {
     }
 
     private void getNoteToEdit() {
-        NoteResult noteResult = viewModel.getNote(getIntent().getExtras().getLong(EDIT_NOTE_ID_KEY));
+        NoteResult noteResult = viewModel.getNote(getNoteToEditId());
 
         noteResult.getNote().observe(this, this::displayNote);
+    }
+
+    private Long getNoteToEditId() {
+        return getIntent().getExtras().getLong(EDIT_NOTE_ID_KEY);
     }
 
     private void displayNote(NoteModel noteModel) {
@@ -155,6 +159,10 @@ public class CreateActivity extends AppCompatActivity {
         noteModel.setTitle(binding.titleEditText.getText().toString());
         noteModel.setContent(binding.contentEditText.getText().toString());
         setImageForNote(noteModel);
+
+        if (isInEditMode()) {
+            noteModel.setId(getNoteToEditId());
+        }
 
         return noteModel;
     }
