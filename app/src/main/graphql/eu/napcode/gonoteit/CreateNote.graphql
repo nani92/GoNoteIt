@@ -11,7 +11,8 @@ mutation updateNote($id: Int!, $data: String!) {
         uuid,
         id,
         data,
-        type
+        type,
+        updatedAt
     }
  }
 }

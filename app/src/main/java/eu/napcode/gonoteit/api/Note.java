@@ -18,6 +18,7 @@ public class Note {
     private String uuid;
     private Type type;
     private Long id;
+    private Long updatedAt;
 
     public Note(String noteDataString) {
         this.noteDataString = noteDataString;
@@ -36,6 +37,7 @@ public class Note {
         this.id = allEntity.id();
         this.type = allEntity.type();
         this.uuid = allEntity.uuid().toString();
+        this.updatedAt = allEntity.updatedAt();
 
         return parseNote();
     }
@@ -44,6 +46,7 @@ public class Note {
         this.id = entity.id();
         this.type = entity.type();
         this.uuid = entity.uuid().toString();
+        this.updatedAt = entity.updatedAt();
 
         return parseNote();
     }
@@ -52,6 +55,7 @@ public class Note {
         this.id = entity.id();
         this.type = entity.type();
         this.uuid = entity.uuid().toString();
+        this.updatedAt = entity.updatedAt();
 
         return parseNote();
     }
@@ -79,6 +83,7 @@ public class Note {
         SimpleNoteModel noteModel = gson.fromJson(noteDataString, SimpleNoteModel.class);
         noteModel.setUuid(uuid);
         noteModel.setId(id);
+        noteModel.setUpdatedAt(updatedAt);
 
         return noteModel;
     }

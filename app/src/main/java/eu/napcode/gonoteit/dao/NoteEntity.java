@@ -21,6 +21,7 @@ public class NoteEntity {
     public static final String COLUMN_TITLE = "title";
     public static final String COLUMN_CONTENT = "content";
     public static final String COLUMN_IMAGE = "image";
+    public static final String COLUMN_UPDATED_AT = "updated";
 
     public NoteEntity() {
     }
@@ -31,6 +32,7 @@ public class NoteEntity {
         this.setContent(noteModel.getContent());
         this.setId(noteModel.getId());
         this.setImageBase64(noteModel.getImageBase64());
+        this.setUpdatedAt(noteModel.getUpdatedAt());
     }
 
     @NonNull
@@ -53,6 +55,9 @@ public class NoteEntity {
     @Nullable
     @ColumnInfo(name = COLUMN_IMAGE)
     private String imageBase64;
+
+    @ColumnInfo(name = COLUMN_UPDATED_AT)
+    private Long updatedAt;
 
     public String getUuid() {
         return uuid;
@@ -95,5 +100,13 @@ public class NoteEntity {
 
     public String getImageBase64() {
         return imageBase64;
+    }
+
+    public Long getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(Long updatedAt) {
+        this.updatedAt = updatedAt;
     }
 }

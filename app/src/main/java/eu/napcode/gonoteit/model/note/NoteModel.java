@@ -13,6 +13,7 @@ public class NoteModel {
         this.content = noteEntity.getContent();
         this.id = noteEntity.getId();
         this.imageBase64 = noteEntity.getImageBase64();
+        this.updatedAt = noteEntity.getUpdatedAt();
     }
 
     private String uuid;
@@ -20,6 +21,7 @@ public class NoteModel {
     private String content;
     private Long id;
     private String imageBase64;
+    private Long updatedAt;
 
     public String getUuid() {
         return uuid;
@@ -59,6 +61,14 @@ public class NoteModel {
 
     public void setImageBase64(String imageBase64) {
         this.imageBase64 = imageBase64;
+    }
+
+    public void setUpdatedAt(Long updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
+    public Long getUpdatedAt() {
+        return updatedAt;
     }
 
     @Override
