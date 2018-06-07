@@ -14,6 +14,7 @@ import eu.napcode.gonoteit.DeleteNoteMutation;
 import eu.napcode.gonoteit.GetNoteByIdQuery;
 import eu.napcode.gonoteit.GetNotesQuery;
 import eu.napcode.gonoteit.UpdateNoteMutation;
+import eu.napcode.gonoteit.api.ApiEntity;
 import eu.napcode.gonoteit.api.ApolloRxHelper;
 import eu.napcode.gonoteit.api.Note;
 import eu.napcode.gonoteit.auth.StoreAuth;
@@ -70,7 +71,7 @@ public class NotesRemote {
                 .from(apolloClient.query(new GetNoteByIdQuery(id)))
                 .subscribeOn(rxSchedulers.io())
                 .map(dataResponse -> dataResponse.data().entity())
-                .map(entity -> ((Note) entity.data()).parseNote(entity));
+                .map(entity -> ((Note) entity.data()).parseNote(new ApiEntity(entity)));
     }
 
     public Observable<Response<UpdateNoteMutation.Data>> updateNote(NoteModel noteModel) {

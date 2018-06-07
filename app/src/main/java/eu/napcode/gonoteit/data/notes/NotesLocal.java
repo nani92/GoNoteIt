@@ -12,6 +12,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import eu.napcode.gonoteit.GetNotesQuery.AllEntity;
+import eu.napcode.gonoteit.api.ApiEntity;
 import eu.napcode.gonoteit.api.Note;
 import eu.napcode.gonoteit.dao.NoteDao;
 import eu.napcode.gonoteit.dao.NoteEntity;
@@ -48,7 +49,7 @@ public class NotesLocal {
         Observable.just(entities)
                 .flatMapIterable(allEntities -> allEntities)
                 .filter(allEntity -> allEntity.type() != Type.NONE)
-                .map(allEntity -> (NoteModel) ((Note) allEntity.data()).parseNote(allEntity))
+                .map(allEntity -> (NoteModel) ((Note) allEntity.data()).parseNote(new ApiEntity(allEntity)))
                 .map(NoteEntity::new)
                 .doOnEach(it -> {
                     if (it.getValue() != null) noteDao.insertNote(it.getValue());

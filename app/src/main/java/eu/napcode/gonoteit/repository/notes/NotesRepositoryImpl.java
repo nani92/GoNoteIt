@@ -6,6 +6,7 @@ import android.arch.lifecycle.MutableLiveData;
 
 import javax.inject.Inject;
 
+import eu.napcode.gonoteit.api.ApiEntity;
 import eu.napcode.gonoteit.api.Note;
 import eu.napcode.gonoteit.data.notes.NotesLocal;
 import eu.napcode.gonoteit.data.notes.NotesRemote;
@@ -164,7 +165,7 @@ public class NotesRepositoryImpl implements NotesRepository {
                 .filter(response -> response.data().updateEntity().ok())
                 .singleOrError()
                 .map(dataResponse -> dataResponse.data().updateEntity().entity())
-                .map(entity -> (NoteModel) ((Note) entity.data()).parseNote(entity))
+                .map(entity -> (NoteModel) ((Note) entity.data()).parseNote(new ApiEntity(entity)))
                 .doOnSuccess(notesLocal::saveEntity)
                 //.doOnSuccess(it -> getNotesFromRemote())
                 .subscribe(
