@@ -5,7 +5,8 @@ query GetNotesQuery {
        id,
        uuid,
        updatedAt
-     }
+     },
+    timestamp
 }
 
 query GetNoteByIdQuery($id: Int!) {
