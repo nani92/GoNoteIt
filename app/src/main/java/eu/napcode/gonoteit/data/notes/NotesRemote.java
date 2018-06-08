@@ -56,7 +56,7 @@ public class NotesRemote {
         return apolloRxHelper
                 .from(apolloClient.mutate(new CreateNoteMutation(note.getNoteDataString())))
                 .subscribeOn(rxSchedulers.io())
-                .observeOn(rxSchedulers.androidMainThread());
+                .observeOn(rxSchedulers.io());
     }
 
     public Observable<Response<DeleteNoteMutation.Data>> deleteNote(Long id) {

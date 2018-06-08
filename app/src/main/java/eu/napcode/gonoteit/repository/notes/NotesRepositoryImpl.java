@@ -17,7 +17,6 @@ import eu.napcode.gonoteit.data.results.NotesResult;
 import eu.napcode.gonoteit.repository.Resource;
 import eu.napcode.gonoteit.utils.ErrorMessages;
 import eu.napcode.gonoteit.utils.NetworkHelper;
-import timber.log.Timber;
 
 public class NotesRepositoryImpl implements NotesRepository {
 
@@ -82,7 +81,10 @@ public class NotesRepositoryImpl implements NotesRepository {
                 .filter(response -> response.data().createEntity() != null)
                 .filter(response -> response.data().createEntity().ok())
                 .singleOrError()
-                .doOnSuccess(it -> getNotesFromRemote())
+                //.doOnSuccess(it -> getNotesFromRemote())
+                .map(dataResponse -> dataResponse.data().createEntity().entity())
+                .map(entity -> (NoteModel) ((Note) entity.data()).parseNote(new ApiEntity(entity)))
+                .doOnSuccess(notesLocal::saveEntity)
                 .subscribe(
                         response -> resource.postValue(Resource.success(null)),
                         error -> resource.postValue(Resource.error(error))
