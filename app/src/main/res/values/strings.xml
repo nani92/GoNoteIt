@@ -47,5 +47,6 @@
     <string name="edit">Edit</string>
     <string name="update_note">Update Note</string>
     <string name="transition_note_title">title transition</string>
+    <string name="transition_note_content">note ct transition</string>
 
 </resources>

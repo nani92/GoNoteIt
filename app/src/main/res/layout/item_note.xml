@@ -35,11 +35,11 @@
                 android:ellipsize="end"
                 android:maxLines="@integer/list_note_title_max_lines"
                 android:textSize="@dimen/note_title_text_size"
+                android:transitionName="@string/transition_note_title"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toLeftOf="@id/deleteNoteButton"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:text="@tools:sample/lorem"
-                android:transitionName="@string/transition_note_title"/>
+                tools:text="@tools:sample/lorem"/>
 
             <TextView
                 android:id="@+id/noteTextView"
@@ -47,6 +47,7 @@
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
                 android:maxLines="@integer/list_note_content_max_lines"
+                android:transitionName="@string/transition_note_content"
                 app:layout_constraintLeft_toLeftOf="@id/noteTitleTextView"
                 app:layout_constraintRight_toLeftOf="@id/deleteNoteButton"
                 app:layout_constraintTop_toBottomOf="@id/noteTitleTextView"

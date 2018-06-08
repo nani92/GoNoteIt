@@ -115,7 +115,7 @@ public class NotesFragment extends Fragment implements NotesAdapter.NoteListener
         //ToDO grid/linear changes no of columns depends on orientation and size
         this.binding.recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        this.notesAdapter = new NotesAdapter(this);
+        this.notesAdapter = new NotesAdapter(getContext(), this);
         this.binding.recyclerView.setAdapter(notesAdapter);
 
         this.binding.recyclerView.setLayoutAnimation(
@@ -142,18 +142,16 @@ public class NotesFragment extends Fragment implements NotesAdapter.NoteListener
     }
 
     @Override
-    public void onClickNote(NoteModel noteModel, CardView noteCardView) {
+    public void onClickNote(NoteModel noteModel, Pair<View, String>... sharedElementPairs) {
         Intent intent = new Intent(getContext(), NoteActivity.class);
         intent.putExtra(NOTE_ID_KEY, noteModel.getId());
 
-        startActivity(intent, getAnimationBundle(noteCardView));
+        startActivity(intent, getAnimationBundle(sharedElementPairs));
     }
 
-    private Bundle getAnimationBundle(CardView cardView) {
-        Pair<View, String> tilePair = Pair.create(cardView.findViewById(R.id.noteTitleTextView), getContext().getString(R.string.transition_note_title));
-
+    private Bundle getAnimationBundle(Pair<View, String>... sharedElementPairs) {
         ActivityOptionsCompat optionsCompat = ActivityOptionsCompat
-                .makeSceneTransitionAnimation(getActivity(), tilePair);
+                .makeSceneTransitionAnimation(getActivity(), sharedElementPairs);
 
         return optionsCompat.toBundle();
     }

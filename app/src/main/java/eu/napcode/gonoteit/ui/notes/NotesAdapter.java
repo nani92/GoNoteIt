@@ -1,14 +1,17 @@
 package eu.napcode.gonoteit.ui.notes;
 
 import android.arch.paging.PagedListAdapter;
+import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintSet;
+import android.support.v4.util.Pair;
 import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
 import com.bumptech.glide.Glide;
@@ -25,12 +28,14 @@ import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 
 public class NotesAdapter extends PagedListAdapter<NoteModel, NotesAdapter.NoteViewHolder> {
-    //TODO swipe to delete
 
+    private final Context context;
     private NoteListener noteListener;
 
-    public NotesAdapter(NoteListener noteListener) {
+    public NotesAdapter(Context context,NoteListener noteListener) {
         super(DIFF_CALLBACK);
+
+        this.context = context;
         this.noteListener = noteListener;
     }
 
@@ -51,7 +56,7 @@ public class NotesAdapter extends PagedListAdapter<NoteModel, NotesAdapter.NoteV
         holder.itemNoteBinding.noteTitleTextView.setText(note.getTitle());
 
         holder.itemNoteBinding.deleteNoteButton.setOnClickListener(v -> noteListener.onDeleteNote(note.getId()));
-        holder.itemNoteBinding.noteCardView.setOnClickListener(v -> noteListener.onClickNote(note, holder.itemNoteBinding.noteCardView));
+        holder.itemNoteBinding.noteCardView.setOnClickListener(v -> noteListener.onClickNote(note, getSharedElementPairs(holder.itemNoteBinding)));
 
         if (!TextUtils.isEmpty(note.getImageBase64())) {
             displayImage(holder, note);
@@ -60,6 +65,13 @@ public class NotesAdapter extends PagedListAdapter<NoteModel, NotesAdapter.NoteV
             holder.itemNoteBinding.attachmentImageView.setVisibility(GONE);
             adjustConstraintsForNoImage(holder);
         }
+    }
+
+    private Pair<View, String>[] getSharedElementPairs(ItemNoteBinding binding) {
+        Pair<View, String> titlePair = new Pair<>(binding.noteTitleTextView, context.getString(R.string.transition_note_title));
+        Pair<View, String> notePair = new Pair<>(binding.noteTextView, context.getString(R.string.transition_note_content));
+
+        return new Pair[]{titlePair, notePair};
     }
 
     private void displayImage(NoteViewHolder holder, NoteModel note) {
@@ -100,7 +112,7 @@ public class NotesAdapter extends PagedListAdapter<NoteModel, NotesAdapter.NoteV
     public interface NoteListener {
         void onDeleteNote(Long id);
 
-        void onClickNote(NoteModel noteModel, CardView noteCardView);
+        void onClickNote(NoteModel noteModel, Pair<View, String>... sharedElementPairs);
     }
 
     public static final DiffUtil.ItemCallback<NoteModel> DIFF_CALLBACK =
