@@ -11,6 +11,8 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import eu.napcode.gonoteit.GetChangelogMutation;
+import eu.napcode.gonoteit.GetChangelogMutation.Changelog;
 import eu.napcode.gonoteit.GetNotesQuery.AllEntity;
 import eu.napcode.gonoteit.api.ApiEntity;
 import eu.napcode.gonoteit.api.Note;
@@ -63,5 +65,33 @@ public class NotesLocal {
 
     public void deleteNote(Long id) {
         noteDao.removeNote(id);
+    }
+
+    @SuppressLint("CheckResult")
+    public void saveChangelog(Changelog changelog) {
+        getNoteModelsToSaveObservable(changelog)
+                .subscribe(noteModel -> saveEntity(noteModel));
+
+        Observable.just(changelog.deleted())
+                .flatMapIterable(deleteds -> deleteds)
+                .map(deleted -> deleted.toString())
+                .subscribe(deleted ->noteDao.removeNoteByUuid(deleted));
+    }
+
+    private Observable<NoteModel> getNoteModelsToSaveObservable(Changelog changelog) {
+        return getCreatedsObservable(changelog)
+                .mergeWith(getUpdatedsObservable(changelog));
+    }
+
+    private Observable<NoteModel> getUpdatedsObservable(Changelog changelog) {
+        return Observable.just(changelog.updated())
+                .flatMapIterable(updateds -> updateds)
+                .map(updated -> (NoteModel) ((Note) updated.data()).parseNote(new ApiEntity(updated)));
+    }
+
+    private Observable<NoteModel> getCreatedsObservable(Changelog changelog) {
+        return Observable.just(changelog.created())
+                .flatMapIterable(createds -> createds)
+                .map(created -> (NoteModel) ((Note) created.data()).parseNote(new ApiEntity(created)));
     }
 }

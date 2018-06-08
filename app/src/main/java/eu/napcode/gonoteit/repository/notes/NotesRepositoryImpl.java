@@ -4,6 +4,8 @@ import android.annotation.SuppressLint;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 
+import java.util.Observable;
+
 import javax.inject.Inject;
 
 import eu.napcode.gonoteit.api.ApiEntity;
@@ -40,12 +42,36 @@ public class NotesRepositoryImpl implements NotesRepository {
     public NotesResult getNotes() {
 
         if (networkHelper.isNetworkAvailable()) {
-            getNotesFromRemote();
+            updateNotesFromRemote();
         } else {
             resource.postValue(Resource.error(new Throwable(errorMessages.getOfflineMessage())));
         }
 
         return new NotesResult(notesLocal.getNotes(), resource);
+    }
+
+    private void updateNotesFromRemote() {
+
+        if (notesRemote.shouldFetchChangelog()) {
+            getNotesChangelog();
+        } else {
+            getNotesFromRemote();
+        }
+    }
+
+    @SuppressLint("CheckResult")
+    private void getNotesChangelog() {
+        notesRemote.getChangelog()
+                .doOnSubscribe(it -> resource.postValue(Resource.loading(null)))
+                .filter(dataResponse -> dataResponse.data().changelog() != null)
+                .singleOrError()
+                .map(dataResponse -> dataResponse.data().changelog())
+                .doOnSuccess(it -> notesLocal.saveChangelog(it))
+                .doOnSuccess(it -> notesRemote.saveTimestamp(it.timestamp()))
+                .subscribe(
+                        changelog -> resource.postValue(Resource.success(null)),
+                        error -> resource.postValue(Resource.error(error))
+                );
     }
 
     @SuppressLint("CheckResult")
