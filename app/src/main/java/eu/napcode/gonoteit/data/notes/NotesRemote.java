@@ -11,31 +11,36 @@ import javax.inject.Inject;
 
 import eu.napcode.gonoteit.CreateNoteMutation;
 import eu.napcode.gonoteit.DeleteNoteMutation;
+import eu.napcode.gonoteit.GetChangelogMutation;
 import eu.napcode.gonoteit.GetNoteByIdQuery;
 import eu.napcode.gonoteit.GetNotesQuery;
 import eu.napcode.gonoteit.UpdateNoteMutation;
+import eu.napcode.gonoteit.api.ApiEntity;
 import eu.napcode.gonoteit.api.ApolloRxHelper;
 import eu.napcode.gonoteit.api.Note;
 import eu.napcode.gonoteit.auth.StoreAuth;
 import eu.napcode.gonoteit.model.note.NoteModel;
 import eu.napcode.gonoteit.rx.RxSchedulers;
-import io.reactivex.Completable;
+import eu.napcode.gonoteit.utils.TimestampStore;
 import io.reactivex.Observable;
 
 public class NotesRemote {
 
     private final RxSchedulers rxSchedulers;
+    private final TimestampStore timestampStore;
     private StoreAuth storeAuth;
     private ApolloClient apolloClient;
     private ApolloRxHelper apolloRxHelper;
 
+
     @Inject
     public NotesRemote(ApolloClient apolloClient, StoreAuth storeAuth, ApolloRxHelper apolloRxHelper,
-                       RxSchedulers rxSchedulers) {
+                       RxSchedulers rxSchedulers, TimestampStore timestampStore) {
         this.apolloClient = apolloClient;
         this.storeAuth = storeAuth;
         this.apolloRxHelper = apolloRxHelper;
         this.rxSchedulers = rxSchedulers;
+        this.timestampStore = timestampStore;
     }
 
     @SuppressLint("CheckResult")
@@ -46,6 +51,7 @@ public class NotesRemote {
                 .from(apolloClient.query(new GetNotesQuery()))
                 .subscribeOn(rxSchedulers.io())
                 .observeOn(rxSchedulers.io())
+                .doOnNext(dataResponse -> timestampStore.saveTimestamp(dataResponse.data().timestamp()))
                 .flatMap(dataResponse -> Observable.fromArray(dataResponse.data().allEntities()));
     }
 
@@ -55,7 +61,7 @@ public class NotesRemote {
         return apolloRxHelper
                 .from(apolloClient.mutate(new CreateNoteMutation(note.getNoteDataString())))
                 .subscribeOn(rxSchedulers.io())
-                .observeOn(rxSchedulers.androidMainThread());
+                .observeOn(rxSchedulers.io());
     }
 
     public Observable<Response<DeleteNoteMutation.Data>> deleteNote(Long id) {
@@ -70,7 +76,7 @@ public class NotesRemote {
                 .from(apolloClient.query(new GetNoteByIdQuery(id)))
                 .subscribeOn(rxSchedulers.io())
                 .map(dataResponse -> dataResponse.data().entity())
-                .map(entity -> ((Note) entity.data()).parseNote(entity));
+                .map(entity -> ((Note) entity.data()).parseNote(new ApiEntity(entity)));
     }
 
     public Observable<Response<UpdateNoteMutation.Data>> updateNote(NoteModel noteModel) {
@@ -79,6 +85,21 @@ public class NotesRemote {
         return apolloRxHelper
                 .from(apolloClient.mutate(new UpdateNoteMutation(noteModel.getId(), note.getNoteDataString())))
                 .subscribeOn(rxSchedulers.io())
-                .observeOn(rxSchedulers.androidMainThread());
+                .observeOn(rxSchedulers.io());
+    }
+
+    public boolean shouldFetchChangelog() {
+        return timestampStore.hasTimestamp();
+    }
+
+    public Observable<Response<GetChangelogMutation.Data>> getChangelog() {
+        return apolloRxHelper
+                .from(apolloClient.mutate(new GetChangelogMutation(timestampStore.getTimestamp())))
+                .subscribeOn(rxSchedulers.io())
+                .observeOn(rxSchedulers.io());
+    }
+
+    public void saveTimestamp(Long timestamp) {
+        timestampStore.saveTimestamp(timestamp);
     }
 }

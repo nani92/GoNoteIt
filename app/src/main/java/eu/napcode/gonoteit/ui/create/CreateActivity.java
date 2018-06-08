@@ -1,5 +1,6 @@
 package eu.napcode.gonoteit.ui.create;
 
+import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
@@ -32,6 +33,7 @@ import eu.napcode.gonoteit.repository.Resource;
 import eu.napcode.gonoteit.utils.ImageUtils;
 import pl.aprilapps.easyphotopicker.DefaultCallback;
 import pl.aprilapps.easyphotopicker.EasyImage;
+import timber.log.Timber;
 
 import static android.graphics.Bitmap.CompressFormat.JPEG;
 
@@ -67,25 +69,27 @@ public class CreateActivity extends AppCompatActivity {
             getNoteToEdit();
         }
 
-        tracker.setScreenName("Create note screen");
-        tracker.send(new HitBuilders.ScreenViewBuilder().build());
+        trackScreen();
     }
 
     private void setupViews() {
         binding.createNoteButton.setOnClickListener(v -> {
-                    viewModel.createNote(getNoteModelFromInputs())
-                            .observe(this, this::processResponse);
-
-                    tracker.send(new HitBuilders.EventBuilder()
-                            .setCategory("Action")
-                            .setAction("Create note")
-                            .build());
+                    LiveData<Resource> createResource = viewModel.createNote(getNoteModelFromInputs());
+                    createResource.observe(this, resource -> processResponse(resource, createResource));
+                    trackCreateNoteClick();
                 }
         );
 
         binding.addImageButton.setOnClickListener(v ->
                 EasyImage.openGallery(this, 0)
         );
+    }
+
+    private void trackCreateNoteClick() {
+        tracker.send(new HitBuilders.EventBuilder()
+                .setCategory("Action")
+                .setAction("Create note")
+                .build());
     }
 
     private boolean isInEditMode() {
@@ -96,6 +100,7 @@ public class CreateActivity extends AppCompatActivity {
         NoteResult noteResult = viewModel.getNote(getNoteToEditId());
 
         noteResult.getNote().observe(this, this::displayNote);
+        noteResult.getResource().observe(this, resource -> processResponse(resource, noteResult.getResource()));
     }
 
     private Long getNoteToEditId() {
@@ -120,7 +125,7 @@ public class CreateActivity extends AppCompatActivity {
         binding.attachmentCardView.setVisibility(View.VISIBLE);
     }
 
-    private void processResponse(Resource resource) {
+    private void processResponse(Resource resource, LiveData<Resource> resourceLiveData) {
         updateForLoading(resource.status == Status.LOADING);
 
         if (resource.status == Status.SUCCESS) {
@@ -132,6 +137,8 @@ public class CreateActivity extends AppCompatActivity {
         if (resource.status == Status.ERROR) {
             showError(resource.message);
         }
+
+        resourceLiveData.removeObservers(this);
     }
 
     private void updateForLoading(boolean loading) {
@@ -152,6 +159,11 @@ public class CreateActivity extends AppCompatActivity {
         }
 
         Snackbar.make(binding.constraintLayout, message, Snackbar.LENGTH_LONG).show();
+    }
+
+    private void trackScreen() {
+        tracker.setScreenName("Create note screen");
+        tracker.send(new HitBuilders.ScreenViewBuilder().build());
     }
 
     private NoteModel getNoteModelFromInputs() {

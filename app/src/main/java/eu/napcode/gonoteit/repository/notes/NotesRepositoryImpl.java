@@ -6,6 +6,8 @@ import android.arch.lifecycle.MutableLiveData;
 
 import javax.inject.Inject;
 
+import eu.napcode.gonoteit.api.ApiEntity;
+import eu.napcode.gonoteit.api.Note;
 import eu.napcode.gonoteit.data.notes.NotesLocal;
 import eu.napcode.gonoteit.data.notes.NotesRemote;
 import eu.napcode.gonoteit.data.results.DeletedResult;
@@ -13,7 +15,6 @@ import eu.napcode.gonoteit.model.note.NoteModel;
 import eu.napcode.gonoteit.data.results.NoteResult;
 import eu.napcode.gonoteit.data.results.NotesResult;
 import eu.napcode.gonoteit.repository.Resource;
-import eu.napcode.gonoteit.rx.RxSchedulers;
 import eu.napcode.gonoteit.utils.ErrorMessages;
 import eu.napcode.gonoteit.utils.NetworkHelper;
 
@@ -39,7 +40,7 @@ public class NotesRepositoryImpl implements NotesRepository {
     public NotesResult getNotes() {
 
         if (networkHelper.isNetworkAvailable()) {
-            updateLocalNotesFromRemote();
+            updateNotesFromRemote();
         } else {
             resource.postValue(Resource.error(new Throwable(errorMessages.getOfflineMessage())));
         }
@@ -47,8 +48,32 @@ public class NotesRepositoryImpl implements NotesRepository {
         return new NotesResult(notesLocal.getNotes(), resource);
     }
 
+    private void updateNotesFromRemote() {
+
+        if (notesRemote.shouldFetchChangelog()) {
+            getNotesChangelog();
+        } else {
+            getNotesFromRemote();
+        }
+    }
+
     @SuppressLint("CheckResult")
-    private void updateLocalNotesFromRemote() {
+    private void getNotesChangelog() {
+        notesRemote.getChangelog()
+                .doOnSubscribe(it -> resource.postValue(Resource.loading(null)))
+                .filter(dataResponse -> dataResponse.data().changelog() != null)
+                .singleOrError()
+                .map(dataResponse -> dataResponse.data().changelog())
+                .doOnSuccess(it -> notesLocal.saveChangelog(it))
+                .doOnSuccess(it -> notesRemote.saveTimestamp(it.timestamp()))
+                .subscribe(
+                        changelog -> resource.postValue(Resource.success(null)),
+                        error -> resource.postValue(Resource.error(error))
+                );
+    }
+
+    @SuppressLint("CheckResult")
+    private void getNotesFromRemote() {
         notesRemote.getNotes()
                 .doOnSubscribe(it -> resource.postValue(Resource.loading(null)))
                 .subscribe(
@@ -80,7 +105,10 @@ public class NotesRepositoryImpl implements NotesRepository {
                 .filter(response -> response.data().createEntity() != null)
                 .filter(response -> response.data().createEntity().ok())
                 .singleOrError()
-                .doOnSuccess(it -> updateLocalNotesFromRemote())
+                .doOnSuccess(it -> getNotesChangelog())
+                .map(dataResponse -> dataResponse.data().createEntity().entity())
+                .map(entity -> (NoteModel) ((Note) entity.data()).parseNote(new ApiEntity(entity)))
+                .doOnSuccess(notesLocal::saveEntity)
                 .subscribe(
                         response -> resource.postValue(Resource.success(null)),
                         error -> resource.postValue(Resource.error(error))
@@ -108,20 +136,18 @@ public class NotesRepositoryImpl implements NotesRepository {
                 .filter(response -> response.data().deleteEntity() != null)
                 .filter(response -> response.data().deleteEntity().deleted())
                 .singleOrError()
-                .doAfterSuccess(it -> notesLocal.deleteNote(id))
-                .subscribe(response -> {
-                            resource.postValue(Resource.success(null));
-                            getNotes();
-                            //todo something to delete deleted rows
-                        },
-                        error -> resource.postValue(Resource.error(error)));
+                .doOnSuccess(it -> getNotesChangelog())
+                .subscribe(
+                        response -> resource.postValue(Resource.success(null)),
+                        error -> resource.postValue(Resource.error(error))
+                );
     }
 
     @Override
     public NoteResult getNote(Long id) {
 
         if (networkHelper.isNetworkAvailable()) {
-            updateLocalNoteFromRemote(id);
+            getNoteFromRemote(id);
         } else {
             resource.postValue(Resource.error(new Throwable(errorMessages.getOfflineMessage())));
         }
@@ -130,7 +156,7 @@ public class NotesRepositoryImpl implements NotesRepository {
     }
 
     @SuppressLint("CheckResult")
-    private void updateLocalNoteFromRemote(Long id) {
+    private void getNoteFromRemote(Long id) {
         notesRemote.getNote(id)
                 .doOnSubscribe(it -> resource.postValue(Resource.loading(null)))
                 .subscribe(
@@ -148,7 +174,7 @@ public class NotesRepositoryImpl implements NotesRepository {
         if (networkHelper.isNetworkAvailable()) {
             updateNoteOnRemote(noteModel);
         } else {
-            resource.postValue(Resource.error(new Throwable(errorMessages.getUpdatingNoteNotImplementedOfflineMessage())));
+            resource.postValue(Resource.error(errorMessages.getUpdatingNoteNotImplementedOfflineMessage()));
         }
 
         return resource;
@@ -162,7 +188,10 @@ public class NotesRepositoryImpl implements NotesRepository {
                 .filter(response -> response.data().updateEntity() != null)
                 .filter(response -> response.data().updateEntity().ok())
                 .singleOrError()
-                .doOnSuccess(it -> updateLocalNotesFromRemote())
+                .map(dataResponse -> dataResponse.data().updateEntity().entity())
+                .map(entity -> (NoteModel) ((Note) entity.data()).parseNote(new ApiEntity(entity)))
+                .doOnSuccess(notesLocal::saveEntity)
+                .doOnSuccess(it -> getNotesChangelog())
                 .subscribe(
                         response -> resource.postValue(Resource.success(null)),
                         error -> resource.postValue(Resource.error(error))

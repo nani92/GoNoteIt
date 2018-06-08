@@ -10,9 +10,11 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import eu.napcode.gonoteit.GetChangelogMutation.Changelog;
 import eu.napcode.gonoteit.GetNotesQuery.AllEntity;
+import eu.napcode.gonoteit.api.ApiEntity;
 import eu.napcode.gonoteit.api.Note;
-import eu.napcode.gonoteit.dao.NoteDao;
+import eu.napcode.gonoteit.dao.NoteDaoManipulator;
 import eu.napcode.gonoteit.dao.NoteEntity;
 import eu.napcode.gonoteit.model.note.NoteModel;
 import eu.napcode.gonoteit.type.Type;
@@ -21,11 +23,11 @@ import io.reactivex.Observable;
 public class NotesLocal {
     private static final int PAGE_SIZE = 20;
 
-    private NoteDao noteDao;
+    private NoteDaoManipulator noteDao;
 
     @Inject
-    public NotesLocal(NoteDao noteDao) {
-        this.noteDao = noteDao;
+    public NotesLocal(NoteDaoManipulator noteDaoManipulator) {
+        this.noteDao = noteDaoManipulator;
     }
 
     public LiveData<PagedList<NoteModel>> getNotes() {
@@ -46,11 +48,10 @@ public class NotesLocal {
         Observable.just(entities)
                 .flatMapIterable(allEntities -> allEntities)
                 .filter(allEntity -> allEntity.type() != Type.NONE)
-                .map(allEntity -> (NoteModel) ((Note) allEntity.data()).parseNote(allEntity))
+                .map(allEntity -> (NoteModel) ((Note) allEntity.data()).parseNote(new ApiEntity(allEntity)))
                 .map(NoteEntity::new)
-                .doOnEach(it -> {
-                    if (it.getValue() != null) noteDao.insertNote(it.getValue());
-                })
+                .filter(noteEntity -> noteEntity != null)
+                .doOnEach(it ->  noteDao.insertNote(it.getValue()))
                 .subscribe();
     }
 
@@ -60,5 +61,33 @@ public class NotesLocal {
 
     public void deleteNote(Long id) {
         noteDao.removeNote(id);
+    }
+
+    @SuppressLint("CheckResult")
+    public void saveChangelog(Changelog changelog) {
+        getNoteModelsToSaveObservable(changelog)
+                .subscribe(noteModel -> saveEntity(noteModel));
+
+        Observable.just(changelog.deleted())
+                .flatMapIterable(deleteds -> deleteds)
+                .map(deleted -> deleted.toString())
+                .subscribe(deleted ->noteDao.removeNoteByUuid(deleted));
+    }
+
+    private Observable<NoteModel> getNoteModelsToSaveObservable(Changelog changelog) {
+        return getCreatedsObservable(changelog)
+                .mergeWith(getUpdatedsObservable(changelog));
+    }
+
+    private Observable<NoteModel> getUpdatedsObservable(Changelog changelog) {
+        return Observable.just(changelog.updated())
+                .flatMapIterable(updateds -> updateds)
+                .map(updated -> (NoteModel) ((Note) updated.data()).parseNote(new ApiEntity(updated)));
+    }
+
+    private Observable<NoteModel> getCreatedsObservable(Changelog changelog) {
+        return Observable.just(changelog.created())
+                .flatMapIterable(createds -> createds)
+                .map(created -> (NoteModel) ((Note) created.data()).parseNote(new ApiEntity(created)));
     }
 }

@@ -8,12 +8,14 @@ import android.arch.persistence.room.OnConflictStrategy;
 import android.arch.persistence.room.Query;
 
 import static eu.napcode.gonoteit.dao.NoteEntity.COLUMN_ID;
+import static eu.napcode.gonoteit.dao.NoteEntity.COLUMN_UPDATED_AT;
+import static eu.napcode.gonoteit.dao.NoteEntity.COLUMN_UUID;
 import static eu.napcode.gonoteit.dao.NoteEntity.TABLE_NAME;
 
 @Dao
 public interface NoteDao {
 
-    @Query("SELECT * FROM " + TABLE_NAME)
+    @Query("SELECT * FROM " + TABLE_NAME + " ORDER BY " + COLUMN_UPDATED_AT + " DESC")
     DataSource.Factory<Integer, NoteEntity> getAllNoteEntities();
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
@@ -24,6 +26,9 @@ public interface NoteDao {
 
     @Query("DELETE FROM " + TABLE_NAME + " WHERE " + COLUMN_ID + " = :id")
     void removeNote(Long id);
+
+    @Query("DELETE FROM " + TABLE_NAME + " WHERE " + COLUMN_UUID + " = :id")
+    void removeNoteByUuid(String id);
 
     @Query("SELECT * FROM " + TABLE_NAME +" WHERE " + COLUMN_ID + " = :id")
     LiveData<NoteEntity> getNoteById(Long id);

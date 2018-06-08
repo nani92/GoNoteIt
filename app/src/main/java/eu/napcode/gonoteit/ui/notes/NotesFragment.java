@@ -48,7 +48,16 @@ public class NotesFragment extends Fragment implements NotesAdapter.NoteListener
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+
         AndroidSupportInjection.inject(this);
+    }
+
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_board, container, false);
+
+        return binding.getRoot();
     }
 
     @Override
@@ -60,13 +69,15 @@ public class NotesFragment extends Fragment implements NotesAdapter.NoteListener
                 .get(NotesViewModel.class);
 
         setupViews();
+        subscribeToNotes();
 
+        trackScreen();
+    }
+
+    private void subscribeToNotes() {
         NotesResult notesResult = this.viewModel.getNotes();
         notesResult.getNotes().observe(this, noteModels -> notesAdapter.submitList(noteModels));
         notesResult.getResource().observe(this, this::processResource);
-
-        tracker.setScreenName("Displaying notes");
-        tracker.send(new HitBuilders.ScreenViewBuilder().build());
     }
 
     private void processResource(Resource resource) {
@@ -97,12 +108,16 @@ public class NotesFragment extends Fragment implements NotesAdapter.NoteListener
         this.binding.recyclerView.setAdapter(notesAdapter);
     }
 
-    @Nullable
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_board, container, false);
+    private void trackScreen() {
+        tracker.setScreenName("Displaying notes");
+        tracker.send(new HitBuilders.ScreenViewBuilder().build());
+    }
 
-        return binding.getRoot();
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        viewModel.getNotes();
     }
 
     @Override
@@ -120,7 +135,6 @@ public class NotesFragment extends Fragment implements NotesAdapter.NoteListener
     }
 
     private void processDeleteResponse(Resource<Boolean> booleanResource) {
-        //TODO positon of RV should be saved
         boolean loading = booleanResource.status == Status.LOADING;
         binding.progressBar.setVisibility(loading ? View.VISIBLE : View.GONE);
     }
