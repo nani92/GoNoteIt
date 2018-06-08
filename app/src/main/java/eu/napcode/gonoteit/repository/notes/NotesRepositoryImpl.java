@@ -4,8 +4,6 @@ import android.annotation.SuppressLint;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 
-import java.util.Observable;
-
 import javax.inject.Inject;
 
 import eu.napcode.gonoteit.api.ApiEntity;
@@ -107,7 +105,7 @@ public class NotesRepositoryImpl implements NotesRepository {
                 .filter(response -> response.data().createEntity() != null)
                 .filter(response -> response.data().createEntity().ok())
                 .singleOrError()
-                //.doOnSuccess(it -> getNotesFromRemote())
+                .doOnSuccess(it -> getNotesChangelog())
                 .map(dataResponse -> dataResponse.data().createEntity().entity())
                 .map(entity -> (NoteModel) ((Note) entity.data()).parseNote(new ApiEntity(entity)))
                 .doOnSuccess(notesLocal::saveEntity)
@@ -138,13 +136,11 @@ public class NotesRepositoryImpl implements NotesRepository {
                 .filter(response -> response.data().deleteEntity() != null)
                 .filter(response -> response.data().deleteEntity().deleted())
                 .singleOrError()
-                .doAfterSuccess(it -> notesLocal.deleteNote(id))
-                .subscribe(response -> {
-                            resource.postValue(Resource.success(null));
-                            getNotes();
-                            //todo something to delete deleted rows
-                        },
-                        error -> resource.postValue(Resource.error(error)));
+                .doOnSuccess(it -> getNotesChangelog())
+                .subscribe(
+                        response -> resource.postValue(Resource.success(null)),
+                        error -> resource.postValue(Resource.error(error))
+                );
     }
 
     @Override
@@ -195,7 +191,7 @@ public class NotesRepositoryImpl implements NotesRepository {
                 .map(dataResponse -> dataResponse.data().updateEntity().entity())
                 .map(entity -> (NoteModel) ((Note) entity.data()).parseNote(new ApiEntity(entity)))
                 .doOnSuccess(notesLocal::saveEntity)
-                //.doOnSuccess(it -> getNotesFromRemote())
+                .doOnSuccess(it -> getNotesChangelog())
                 .subscribe(
                         response -> resource.postValue(Resource.success(null)),
                         error -> resource.postValue(Resource.error(error))
