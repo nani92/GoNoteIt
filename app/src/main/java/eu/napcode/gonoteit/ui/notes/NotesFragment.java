@@ -1,6 +1,7 @@
 package eu.napcode.gonoteit.ui.notes;
 
 import android.arch.lifecycle.ViewModelProviders;
+import android.arch.paging.PagedList;
 import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
@@ -13,6 +14,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
 
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
@@ -25,6 +27,7 @@ import eu.napcode.gonoteit.data.results.DeletedResult;
 import eu.napcode.gonoteit.databinding.FragmentBoardBinding;
 import eu.napcode.gonoteit.di.modules.viewmodel.ViewModelFactory;
 import eu.napcode.gonoteit.data.results.NotesResult;
+import eu.napcode.gonoteit.model.note.NoteModel;
 import eu.napcode.gonoteit.repository.Resource;
 import eu.napcode.gonoteit.repository.Resource.Status;
 import eu.napcode.gonoteit.ui.create.CreateActivity;
@@ -76,8 +79,13 @@ public class NotesFragment extends Fragment implements NotesAdapter.NoteListener
 
     private void subscribeToNotes() {
         NotesResult notesResult = this.viewModel.getNotes();
-        notesResult.getNotes().observe(this, noteModels -> notesAdapter.submitList(noteModels));
+        notesResult.getNotes().observe(this, this::displayNotes);
         notesResult.getResource().observe(this, this::processResource);
+    }
+
+    private void displayNotes(PagedList<NoteModel> noteModels) {
+        notesAdapter.submitList(noteModels);
+        this.binding.recyclerView.scheduleLayoutAnimation();
     }
 
     private void processResource(Resource resource) {
@@ -106,6 +114,10 @@ public class NotesFragment extends Fragment implements NotesAdapter.NoteListener
 
         this.notesAdapter = new NotesAdapter(this);
         this.binding.recyclerView.setAdapter(notesAdapter);
+
+        this.binding.recyclerView.setLayoutAnimation(
+                AnimationUtils.loadLayoutAnimation(getContext(), R.anim.recycler_view_animation)
+        );
     }
 
     private void trackScreen() {
