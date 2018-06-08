@@ -9,7 +9,10 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.util.Pair;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -139,11 +142,20 @@ public class NotesFragment extends Fragment implements NotesAdapter.NoteListener
     }
 
     @Override
-    public void onClickNote(Long id) {
+    public void onClickNote(NoteModel noteModel, CardView noteCardView) {
         Intent intent = new Intent(getContext(), NoteActivity.class);
-        intent.putExtra(NOTE_ID_KEY, id);
+        intent.putExtra(NOTE_ID_KEY, noteModel.getId());
 
-        startActivity(intent);
+        startActivity(intent, getAnimationBundle(noteCardView));
+    }
+
+    private Bundle getAnimationBundle(CardView cardView) {
+        Pair<View, String> tilePair = Pair.create(cardView.findViewById(R.id.noteTitleTextView), getContext().getString(R.string.transition_note_title));
+
+        ActivityOptionsCompat optionsCompat = ActivityOptionsCompat
+                .makeSceneTransitionAnimation(getActivity(), tilePair);
+
+        return optionsCompat.toBundle();
     }
 
     private void processDeleteResponse(Resource<Boolean> booleanResource) {

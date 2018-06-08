@@ -5,6 +5,7 @@ import android.databinding.DataBindingUtil;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintSet;
 import android.support.v7.util.DiffUtil;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -50,7 +51,7 @@ public class NotesAdapter extends PagedListAdapter<NoteModel, NotesAdapter.NoteV
         holder.itemNoteBinding.noteTitleTextView.setText(note.getTitle());
 
         holder.itemNoteBinding.deleteNoteButton.setOnClickListener(v -> noteListener.onDeleteNote(note.getId()));
-        holder.itemNoteBinding.noteCardView.setOnClickListener(v -> noteListener.onClickNote(note.getId()));
+        holder.itemNoteBinding.noteCardView.setOnClickListener(v -> noteListener.onClickNote(note, holder.itemNoteBinding.noteCardView));
 
         if (!TextUtils.isEmpty(note.getImageBase64())) {
             displayImage(holder, note);
@@ -99,7 +100,7 @@ public class NotesAdapter extends PagedListAdapter<NoteModel, NotesAdapter.NoteV
     public interface NoteListener {
         void onDeleteNote(Long id);
 
-        void onClickNote(Long id);
+        void onClickNote(NoteModel noteModel, CardView noteCardView);
     }
 
     public static final DiffUtil.ItemCallback<NoteModel> DIFF_CALLBACK =
