@@ -35,6 +35,7 @@
                 android:ellipsize="end"
                 android:maxLines="@integer/list_note_title_max_lines"
                 android:textSize="@dimen/note_title_text_size"
+                android:transitionName="@string/transition_note_title"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toLeftOf="@id/deleteNoteButton"
                 app:layout_constraintTop_toTopOf="parent"
@@ -46,6 +47,7 @@
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
                 android:maxLines="@integer/list_note_content_max_lines"
+                android:transitionName="@string/transition_note_content"
                 app:layout_constraintLeft_toLeftOf="@id/noteTitleTextView"
                 app:layout_constraintRight_toLeftOf="@id/deleteNoteButton"
                 app:layout_constraintTop_toBottomOf="@id/noteTitleTextView"
@@ -58,6 +60,7 @@
                 android:contentDescription="@string/delete_note_action"
                 android:padding="@dimen/base_margin"
                 android:src="@drawable/ic_delete_black_24dp"
+                android:transitionName="@string/transition_note_image"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="parent"/>
 

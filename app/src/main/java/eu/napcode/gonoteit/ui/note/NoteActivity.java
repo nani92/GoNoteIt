@@ -12,8 +12,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-
 import javax.inject.Inject;
 
 import dagger.android.AndroidInjection;
@@ -24,7 +22,7 @@ import eu.napcode.gonoteit.model.note.NoteModel;
 import eu.napcode.gonoteit.data.results.NoteResult;
 import eu.napcode.gonoteit.repository.Resource;
 import eu.napcode.gonoteit.ui.create.CreateActivity;
-import eu.napcode.gonoteit.utils.ImageUtils;
+import eu.napcode.gonoteit.utils.GlideBase64Loader;
 
 import static android.support.design.widget.Snackbar.LENGTH_LONG;
 import static android.view.View.GONE;
@@ -37,6 +35,9 @@ public class NoteActivity extends AppCompatActivity {
 
     @Inject
     ViewModelFactory viewModelFactory;
+
+    @Inject
+    GlideBase64Loader glideBase64Loader;
 
     ActivityNoteBinding binding;
     private NoteViewModel viewModel;
@@ -136,11 +137,8 @@ public class NoteActivity extends AppCompatActivity {
     }
 
     private void displayImage(NoteModel noteModel) {
-        Glide.with(this)
-                .load(ImageUtils.decodeBase64ToBitmap(noteModel.getImageBase64()))
-                .into(binding.imageView);
+        glideBase64Loader.loadBase64IntoView(noteModel.getImageBase64(), binding.imageView);
 
         binding.imageView.setVisibility(VISIBLE);
     }
-
 }

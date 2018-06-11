@@ -1,13 +1,16 @@
 package eu.napcode.gonoteit.ui.notes;
 
 import android.arch.paging.PagedListAdapter;
+import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintSet;
+import android.support.v4.util.Pair;
 import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
 import com.bumptech.glide.Glide;
@@ -24,12 +27,14 @@ import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 
 public class NotesAdapter extends PagedListAdapter<NoteModel, NotesAdapter.NoteViewHolder> {
-    //TODO swipe to delete
 
+    private final Context context;
     private NoteListener noteListener;
 
-    public NotesAdapter(NoteListener noteListener) {
+    public NotesAdapter(Context context, NoteListener noteListener) {
         super(DIFF_CALLBACK);
+
+        this.context = context;
         this.noteListener = noteListener;
     }
 
@@ -50,7 +55,7 @@ public class NotesAdapter extends PagedListAdapter<NoteModel, NotesAdapter.NoteV
         holder.itemNoteBinding.noteTitleTextView.setText(note.getTitle());
 
         holder.itemNoteBinding.deleteNoteButton.setOnClickListener(v -> noteListener.onDeleteNote(note.getId()));
-        holder.itemNoteBinding.noteCardView.setOnClickListener(v -> noteListener.onClickNote(note.getId()));
+        holder.itemNoteBinding.noteCardView.setOnClickListener(v -> noteListener.onClickNote(note, getSharedElementPairs(holder.itemNoteBinding)));
 
         if (!TextUtils.isEmpty(note.getImageBase64())) {
             displayImage(holder, note);
@@ -61,10 +66,30 @@ public class NotesAdapter extends PagedListAdapter<NoteModel, NotesAdapter.NoteV
         }
     }
 
+    private Pair<View, String>[] getSharedElementPairs(ItemNoteBinding binding) {
+        Pair<View, String> titlePair = new Pair<>(binding.noteTitleTextView, context.getString(R.string.transition_note_title));
+        Pair<View, String> notePair = new Pair<>(binding.noteTextView, context.getString(R.string.transition_note_content));
+        Pair<View, String> imagePair = new Pair<>(binding.attachmentImageView, context.getString(R.string.transition_note_image));
+
+        return new Pair[] {titlePair, notePair, imagePair};
+    }
+
+    //TODO replace placeholder image
+    /**
+     * For now images are stored as Base64 in database. It will be fixed soon
+     * and I'll receive url for image from API.
+     *
+     * To prevent problems with efficiency instead of images, placeholders
+     * are loaded.
+     *
+     **/
     private void displayImage(NoteViewHolder holder, NoteModel note) {
         Glide.with(holder.itemView)
-                .load(ImageUtils.decodeBase64ToBitmap(note.getImageBase64()))
+                .load(R.drawable.ic_image_black_24dp)
                 .into(holder.itemNoteBinding.attachmentImageView);
+//        Glide.with(holder.itemView)
+//                .load(ImageUtils.decodeBase64ToBitmap(note.getImageBase64()))
+//                .into(holder.itemNoteBinding.attachmentImageView);
 
         holder.itemNoteBinding.attachmentImageView.setVisibility(VISIBLE);
     }
@@ -99,7 +124,7 @@ public class NotesAdapter extends PagedListAdapter<NoteModel, NotesAdapter.NoteV
     public interface NoteListener {
         void onDeleteNote(Long id);
 
-        void onClickNote(Long id);
+        void onClickNote(NoteModel noteModel, Pair<View, String>... sharedElementPairs);
     }
 
     public static final DiffUtil.ItemCallback<NoteModel> DIFF_CALLBACK =
@@ -113,7 +138,7 @@ public class NotesAdapter extends PagedListAdapter<NoteModel, NotesAdapter.NoteV
                 @Override
                 public boolean areContentsTheSame(
                         @NonNull NoteModel oldNoteModel, @NonNull NoteModel newNoteModel) {
-                   return oldNoteModel.equals(newNoteModel);
+                    return oldNoteModel.equals(newNoteModel);
                 }
             };
 }
