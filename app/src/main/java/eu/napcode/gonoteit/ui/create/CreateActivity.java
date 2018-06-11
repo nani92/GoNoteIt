@@ -11,6 +11,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.transition.Explode;
+import android.transition.Slide;
 import android.view.View;
 import android.view.WindowManager;
 
@@ -88,6 +89,7 @@ public class CreateActivity extends AppCompatActivity {
             new RevealActivityHelper(this, binding.constraintLayout, getIntent());
         } else {
             binding.constraintLayout.setVisibility(VISIBLE);
+            setupEnterTransition();
         }
 
         setupReturnTransition();
@@ -97,7 +99,14 @@ public class CreateActivity extends AppCompatActivity {
         return getIntent().hasExtra(REVEAL_X_KEY) && getIntent().hasExtra(REVEAL_Y_KEY);
     }
 
-    private void setupReturnTransition() {
+    private void setupEnterTransition() {
+        Slide slide = new Slide();
+        slide.setDuration(getResources().getInteger(R.integer.anim_duration_medium));
+
+        getWindow().setEnterTransition(slide);
+    }
+
+        private void setupReturnTransition() {
         Explode explode = new Explode();
         explode.setDuration(getResources().getInteger(R.integer.anim_duration_medium));
 

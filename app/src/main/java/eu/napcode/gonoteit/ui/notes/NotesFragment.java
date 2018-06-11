@@ -120,7 +120,7 @@ public class NotesFragment extends Fragment implements NotesAdapter.NoteListener
     private void displayCreateActivity() {
         Intent intent = new Intent(NotesFragment.this.getContext(), CreateActivity.class);
         intent.putExtra(REVEAL_X_KEY, getRevealXForCreateActivity());
-        intent.putExtra(REVEAL_Y_KEY, getRevealXForCreateActivity());
+        intent.putExtra(REVEAL_Y_KEY, getRevealYForCreateActivity());
 
         startActivity(intent, getOptionsForCreateActivity());
     }
