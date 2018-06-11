@@ -7,6 +7,7 @@ import android.databinding.DataBindingUtil;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -121,16 +122,24 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         headerBinding.usernameTextView.setText(R.string.not_logged_in);
         headerBinding.usernameTextView.setCompoundDrawables(null, null, null, null);
         headerBinding.loginButton.setVisibility(View.VISIBLE);
-        headerBinding.loginButton.setOnClickListener(v -> startActivity(new Intent(MainActivity.this, LoginActivity.class)));
+        headerBinding.loginButton.setOnClickListener(v -> startLoginActivity());
 
         binding.navigationView.getMenu().findItem(R.id.logout).setVisible(false);
 
         showLoginSnackbar();
     }
 
+    private void startLoginActivity (){
+        Intent intent = new Intent(this, LoginActivity.class);
+        ActivityOptionsCompat options = ActivityOptionsCompat.
+                makeSceneTransitionAnimation(this);
+
+        startActivity(intent, options.toBundle());
+    }
+
     private void showLoginSnackbar() {
         Snackbar snackbar = Snackbar.make(binding.drawerLayout, R.string.not_logged_in, Snackbar.LENGTH_LONG);
-        snackbar.setAction(R.string.login, v -> startActivity(new Intent(MainActivity.this, LoginActivity.class)));
+        snackbar.setAction(R.string.login, v -> startLoginActivity());
 
         snackbar.show();
     }

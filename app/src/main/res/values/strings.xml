@@ -49,5 +49,6 @@
     <string name="transition_note_title">title transition</string>
     <string name="transition_note_content">note ct transition</string>
     <string name="transition_note_image">transition image</string>
+    <string name="transition_circular_reveal_create_screen">create screen transition</string>
 
 </resources>

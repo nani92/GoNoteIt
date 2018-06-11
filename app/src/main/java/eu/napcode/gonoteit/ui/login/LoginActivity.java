@@ -9,6 +9,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextWatcher;
+import android.transition.Explode;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
@@ -42,6 +43,7 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_login);
         setupInputFields();
+        setupAnimations();
 
         AndroidInjection.inject(this);
         setupViewModel();
@@ -66,6 +68,13 @@ public class LoginActivity extends AppCompatActivity {
         });
 
         this.binding.loginButton.setOnClickListener(view -> login());
+    }
+
+    private void setupAnimations() {
+        Explode explode = new Explode();
+        explode.setDuration(getResources().getInteger(R.integer.anim_duration_medium));
+
+        getWindow().setEnterTransition(explode);
     }
 
     private void login() {

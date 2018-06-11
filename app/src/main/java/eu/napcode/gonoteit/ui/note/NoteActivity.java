@@ -6,6 +6,7 @@ import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.Menu;
@@ -73,10 +74,13 @@ public class NoteActivity extends AppCompatActivity {
     }
 
     void showUpdateScreen() {
+        ActivityOptionsCompat options = ActivityOptionsCompat.
+                makeSceneTransitionAnimation(this);
+
         Intent intent = new Intent(this, CreateActivity.class);
         intent.putExtras(getBundleForUpdate());
 
-        startActivity(intent);
+        startActivity(intent, options.toBundle());
     }
 
     private Bundle getBundleForUpdate() {
@@ -133,6 +137,7 @@ public class NoteActivity extends AppCompatActivity {
             textView.setVisibility(GONE);
         } else {
             textView.setText(text);
+            textView.setVisibility(VISIBLE);
         }
     }
 
