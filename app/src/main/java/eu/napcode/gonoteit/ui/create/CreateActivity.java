@@ -30,6 +30,7 @@ import eu.napcode.gonoteit.di.modules.viewmodel.ViewModelFactory;
 import eu.napcode.gonoteit.model.note.NoteModel;
 import eu.napcode.gonoteit.repository.Resource.Status;
 import eu.napcode.gonoteit.repository.Resource;
+import eu.napcode.gonoteit.utils.GlideBase64Loader;
 import eu.napcode.gonoteit.utils.ImageUtils;
 import pl.aprilapps.easyphotopicker.DefaultCallback;
 import pl.aprilapps.easyphotopicker.EasyImage;
@@ -48,6 +49,9 @@ public class CreateActivity extends AppCompatActivity {
 
     @Inject
     Tracker tracker;
+
+    @Inject
+    GlideBase64Loader glideBase64Loader;
 
     private ActivityCreateBinding binding;
     private CreateViewModel viewModel;
@@ -113,15 +117,12 @@ public class CreateActivity extends AppCompatActivity {
         binding.contentEditText.setText(noteModel.getContent());
 
         if (TextUtils.isEmpty(noteModel.getImageBase64()) == false) {
-            displayImageBitmap(ImageUtils.decodeBase64ToBitmap(noteModel.getImageBase64()));
+            displayImage(noteModel);
         }
     }
 
-    private void displayImageBitmap(Bitmap bitmap) {
-        Glide.with(this)
-                .load(bitmap)
-                .into(binding.attachmentImageView);
-
+    private void displayImage(NoteModel noteModel) {
+        glideBase64Loader.loadBase64IntoView(noteModel.getImageBase64(), binding.attachmentImageView);
         binding.attachmentCardView.setVisibility(View.VISIBLE);
     }
 

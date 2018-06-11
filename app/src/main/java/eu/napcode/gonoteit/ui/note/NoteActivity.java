@@ -12,8 +12,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-
 import javax.inject.Inject;
 
 import dagger.android.AndroidInjection;
@@ -25,7 +23,6 @@ import eu.napcode.gonoteit.data.results.NoteResult;
 import eu.napcode.gonoteit.repository.Resource;
 import eu.napcode.gonoteit.ui.create.CreateActivity;
 import eu.napcode.gonoteit.utils.GlideBase64Loader;
-import eu.napcode.gonoteit.utils.ImageUtils;
 
 import static android.support.design.widget.Snackbar.LENGTH_LONG;
 import static android.view.View.GONE;
@@ -144,5 +141,4 @@ public class NoteActivity extends AppCompatActivity {
 
         binding.imageView.setVisibility(VISIBLE);
     }
-
 }

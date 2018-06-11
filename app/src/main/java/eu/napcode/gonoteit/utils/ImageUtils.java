@@ -16,8 +16,12 @@ public class ImageUtils {
     }
 
     public static Bitmap decodeBase64ToBitmap(String input) {
-        byte[] decodedBytes = Base64.decode(input,0);
+        byte [] bytes = decodeBase64ToBytes(input);
 
-        return BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.length);
+        return BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+    }
+
+    public static byte[] decodeBase64ToBytes(String input) {
+        return Base64.decode(input, 0);
     }
 }
