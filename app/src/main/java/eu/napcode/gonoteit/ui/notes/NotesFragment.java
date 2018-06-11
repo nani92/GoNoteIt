@@ -12,7 +12,6 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.util.Pair;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -37,6 +36,8 @@ import eu.napcode.gonoteit.ui.create.CreateActivity;
 import eu.napcode.gonoteit.ui.note.NoteActivity;
 
 import static eu.napcode.gonoteit.ui.note.NoteActivity.NOTE_ID_KEY;
+import static eu.napcode.gonoteit.utils.RevealActivityHelper.REVEAL_X_KEY;
+import static eu.napcode.gonoteit.utils.RevealActivityHelper.REVEAL_Y_KEY;
 
 public class NotesFragment extends Fragment implements NotesAdapter.NoteListener {
 
@@ -113,8 +114,31 @@ public class NotesFragment extends Fragment implements NotesAdapter.NoteListener
     private void setupViews() {
         setupRecyclerView();
 
-        this.binding.createFab.setOnClickListener(v ->
-                startActivity(new Intent(NotesFragment.this.getContext(), CreateActivity.class)));
+        this.binding.createFab.setOnClickListener(v -> displayCreateActivity());
+    }
+
+    private void displayCreateActivity() {
+        Intent intent = new Intent(NotesFragment.this.getContext(), CreateActivity.class);
+        intent.putExtra(REVEAL_X_KEY, getRevealXForCreateActivity());
+        intent.putExtra(REVEAL_Y_KEY, getRevealXForCreateActivity());
+
+        startActivity(intent, getOptionsForCreateActivity());
+    }
+
+    private Bundle getOptionsForCreateActivity() {
+        String transitionName = getString(R.string.transition_circular_reveal_create_screen);
+        ActivityOptionsCompat options = ActivityOptionsCompat.
+                makeSceneTransitionAnimation(getActivity(), binding.createFab, transitionName);
+
+        return options.toBundle();
+    }
+
+    private int getRevealXForCreateActivity() {
+        return (int) (binding.createFab.getX() + binding.createFab.getWidth() / 2);
+    }
+
+    private int getRevealYForCreateActivity() {
+        return (int) (binding.createFab.getY() + binding.createFab.getHeight() / 2);
     }
 
     private void setupRecyclerView() {

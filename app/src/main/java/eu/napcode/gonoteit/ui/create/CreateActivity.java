@@ -4,14 +4,15 @@ import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
-import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.transition.Explode;
 import android.view.View;
+import android.view.WindowManager;
 
 import com.bumptech.glide.Glide;
 import com.google.android.gms.analytics.HitBuilders;
@@ -32,11 +33,14 @@ import eu.napcode.gonoteit.repository.Resource.Status;
 import eu.napcode.gonoteit.repository.Resource;
 import eu.napcode.gonoteit.utils.GlideBase64Loader;
 import eu.napcode.gonoteit.utils.ImageUtils;
+import eu.napcode.gonoteit.utils.RevealActivityHelper;
 import pl.aprilapps.easyphotopicker.DefaultCallback;
 import pl.aprilapps.easyphotopicker.EasyImage;
-import timber.log.Timber;
 
 import static android.graphics.Bitmap.CompressFormat.JPEG;
+import static android.view.View.VISIBLE;
+import static eu.napcode.gonoteit.utils.RevealActivityHelper.REVEAL_X_KEY;
+import static eu.napcode.gonoteit.utils.RevealActivityHelper.REVEAL_Y_KEY;
 
 public class CreateActivity extends AppCompatActivity {
 
@@ -59,6 +63,7 @@ public class CreateActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_create);
 
         AndroidInjection.inject(this);
@@ -67,6 +72,7 @@ public class CreateActivity extends AppCompatActivity {
                 .of(this, this.viewModelFactory)
                 .get(CreateViewModel.class);
 
+        setupAnimations();
         setupViews();
 
         if (isInEditMode()) {
@@ -76,10 +82,32 @@ public class CreateActivity extends AppCompatActivity {
         trackScreen();
     }
 
+    private void setupAnimations() {
+
+        if (shouldDisplayCircularReveal()) {
+            new RevealActivityHelper(this, binding.constraintLayout, getIntent());
+        } else {
+            binding.constraintLayout.setVisibility(VISIBLE);
+        }
+
+        setupReturnTransition();
+    }
+
+    private boolean shouldDisplayCircularReveal() {
+        return getIntent().hasExtra(REVEAL_X_KEY) && getIntent().hasExtra(REVEAL_Y_KEY);
+    }
+
+    private void setupReturnTransition() {
+        Explode explode = new Explode();
+        explode.setDuration(getResources().getInteger(R.integer.anim_duration_medium));
+
+        getWindow().setReturnTransition(explode);
+    }
+
     private void setupViews() {
         binding.createNoteButton.setOnClickListener(v -> {
                     LiveData<Resource> createResource = viewModel.createNote(getNoteModelFromInputs());
-                    createResource.observe(this, resource -> processResponse(resource, createResource));
+                    createResource.observe(this, resource -> processResponseCreateNote(resource));
                     trackCreateNoteClick();
                 }
         );
@@ -97,14 +125,14 @@ public class CreateActivity extends AppCompatActivity {
     }
 
     private boolean isInEditMode() {
-        return getIntent().getExtras() != null;
+        return getIntent().hasExtra(EDIT_NOTE_ID_KEY);
     }
 
     private void getNoteToEdit() {
         NoteResult noteResult = viewModel.getNote(getNoteToEditId());
 
         noteResult.getNote().observe(this, this::displayNote);
-        noteResult.getResource().observe(this, resource -> processResponse(resource, noteResult.getResource()));
+        noteResult.getResource().observe(this, resource -> processResponseGetNoteToEdit(resource, noteResult.getResource()));
     }
 
     private Long getNoteToEditId() {
@@ -123,10 +151,10 @@ public class CreateActivity extends AppCompatActivity {
 
     private void displayImage(NoteModel noteModel) {
         glideBase64Loader.loadBase64IntoView(noteModel.getImageBase64(), binding.attachmentImageView);
-        binding.attachmentCardView.setVisibility(View.VISIBLE);
+        binding.attachmentCardView.setVisibility(VISIBLE);
     }
 
-    private void processResponse(Resource resource, LiveData<Resource> resourceLiveData) {
+    private void processResponseCreateNote(Resource resource) {
         updateForLoading(resource.status == Status.LOADING);
 
         if (resource.status == Status.SUCCESS) {
@@ -138,15 +166,21 @@ public class CreateActivity extends AppCompatActivity {
         if (resource.status == Status.ERROR) {
             showError(resource.message);
         }
+    }
 
-        resourceLiveData.removeObservers(this);
+    private void processResponseGetNoteToEdit(Resource resource, LiveData<Resource> resourceLiveData) {
+        updateForLoading(resource.status == Status.LOADING);
+
+        if (resource.status == Status.ERROR) {
+            showError(resource.message);
+        }
     }
 
     private void updateForLoading(boolean loading) {
 
         if (loading) {
             this.binding.createNoteButton.setEnabled(false);
-            this.binding.progressBar.setVisibility(View.VISIBLE);
+            this.binding.progressBar.setVisibility(VISIBLE);
         } else {
             this.binding.createNoteButton.setEnabled(true);
             this.binding.progressBar.setVisibility(View.GONE);
@@ -220,6 +254,6 @@ public class CreateActivity extends AppCompatActivity {
                 .load(file)
                 .into(binding.attachmentImageView);
 
-        binding.attachmentCardView.setVisibility(View.VISIBLE);
+        binding.attachmentCardView.setVisibility(VISIBLE);
     }
 }
