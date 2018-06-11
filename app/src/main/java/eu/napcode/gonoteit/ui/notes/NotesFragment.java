@@ -51,6 +51,8 @@ public class NotesFragment extends Fragment implements NotesAdapter.NoteListener
     private NotesViewModel viewModel;
     private NotesAdapter notesAdapter;
 
+    boolean recyclerViewLoadAnimationDisplayed;
+
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -88,7 +90,11 @@ public class NotesFragment extends Fragment implements NotesAdapter.NoteListener
 
     private void displayNotes(PagedList<NoteModel> noteModels) {
         notesAdapter.submitList(noteModels);
-        this.binding.recyclerView.scheduleLayoutAnimation();
+
+        if (recyclerViewLoadAnimationDisplayed == false) {
+            recyclerViewLoadAnimationDisplayed = true;
+            this.binding.recyclerView.scheduleLayoutAnimation();
+        }
     }
 
     private void processResource(Resource resource) {

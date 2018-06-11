@@ -69,9 +69,10 @@ public class NotesAdapter extends PagedListAdapter<NoteModel, NotesAdapter.NoteV
     private Pair<View, String>[] getSharedElementPairs(ItemNoteBinding binding) {
         Pair<View, String> titlePair = new Pair<>(binding.noteTitleTextView, context.getString(R.string.transition_note_title));
         Pair<View, String> notePair = new Pair<>(binding.noteTextView, context.getString(R.string.transition_note_content));
-        Pair<View, String> imagePair = new Pair<>(binding.attachmentImageView, context.getString(R.string.transition_note_image));
+        //TODO image shared animation will be added when proper images will be displayed
+        //Pair<View, String> imagePair = new Pair<>(binding.attachmentImageView, context.getString(R.string.transition_note_image));
 
-        return new Pair[] {titlePair, notePair, imagePair};
+        return new Pair[] {titlePair, notePair, /**imagePair*/};
     }
 
     //TODO replace placeholder image
