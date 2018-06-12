@@ -58,21 +58,27 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         this.headerBinding = DataBindingUtil.inflate(getLayoutInflater(), R.layout.drawer_header, binding.navigationView, false);
 
         AndroidInjection.inject(this);
-
-        this.mainViewModel = ViewModelProviders
-                .of(this, this.viewModelFactory)
-                .get(MainViewModel.class);
-
+        setupViewModel();
         setSupportActionBar(this.binding.toolbar);
 
         setupDrawer();
         setupUser();
-        displayFragment(new NotesFragment());
 
+        displayFirstScreen();
+
+        trackScreen();
+        showAd();
+    }
+
+    private void trackScreen() {
         tracker.setScreenName("Main Activity");
         tracker.send(new HitBuilders.ScreenViewBuilder().build());
+    }
 
-        showAd();
+    private void setupViewModel() {
+        this.mainViewModel = ViewModelProviders
+                .of(this, this.viewModelFactory)
+                .get(MainViewModel.class);
     }
 
     private void showAd() {
@@ -150,6 +156,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         headerBinding.loginButton.setVisibility(View.GONE);
 
         binding.navigationView.getMenu().findItem(R.id.logout).setVisible(true);
+    }
+
+    private void displayFirstScreen() {
+        displayFragment(new NotesFragment());
+        this.binding.navigationView.getMenu().getItem(0).setChecked(true);
     }
 
     @Override
