@@ -19,6 +19,7 @@
                 android:id="@+id/attachmentImageView"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:contentDescription="@string/content_description_image_view_for_attachment"
                 android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
