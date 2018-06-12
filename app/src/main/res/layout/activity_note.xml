@@ -41,7 +41,7 @@
                 android:id="@+id/imageView"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:contentDescription="@string/image_view_for_attachment"
+                android:contentDescription="@string/content_description_image_view_for_attachment"
                 android:transitionName="@string/transition_note_image"
                 android:visibility="gone"
                 app:layout_constraintLeft_toLeftOf="parent"

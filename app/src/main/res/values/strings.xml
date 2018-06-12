@@ -17,39 +17,47 @@
     <string name="login_error">Error occurred during login. Please try again.</string>
     <string name="not_logged_in">You are not logged in.</string>
 
+    <!--Main Screen-->
     <string name="logout_message">Are you sure you want to log out?</string>
 
-    <!--Image descriptions-->
-    <string name="content_description_application_logo">Go Note It logo</string>
-
+    <!--Create note screen-->
     <string name="title">Note Title</string>
     <string name="create_note">Create Note</string>
     <string name="your_note">Type in your note here</string>
     <string name="error_with_saving_note">We encountered error during saving your note.</string>
+    <string name="error_with_capture_image">Couldn\'t capture your image.</string>
+    <string name="error_image_not_found">Image not found</string>
+    <string name="update_note">Update Note</string>
+
+    <!--Image descriptions-->
+    <string name="content_description_application_logo">Go Note It logo</string>
+    <string name="content_description_delete_note_action">Delete note</string><string name="content_description_image_view_for_attachment">Image View for attachment. If it\'s visible then there
+    is attachment.</string>
 
     <!--Widgets-->
     <string name="add_note_widget">Add Note Widget</string>
     <string name="add_note">Add note</string>
-    <string name="delete_note_action">Delete note]</string>
-    <string name="error_with_capture_image">Couldn\'t capture your image.</string>
-    <string name="error_image_not_found">Image not found</string>
-    <string name="image_view_for_attachment">Image View for attachment. If it\'s visible then there
-        is attachment.
-    </string>
 
-    <string name="add_id">ca-app-pub-3940256099942544/1033173712</string>
-
+    <!--Errors-->
     <string name="error_not_implemented_offline">%1$s offline is not implemented yet.</string>
     <string name="creating_note">Creating note</string>
     <string name="deleting_note">Deleting note</string>
     <string name="updating_note">Updating note</string>
     <string name="youre_offline">You are offline.</string>
+
+    <!--Display Note-->
     <string name="edit">Edit</string>
-    <string name="update_note">Update Note</string>
+
+    <!--Transitions-->
     <string name="transition_note_title">title transition</string>
     <string name="transition_note_content">note ct transition</string>
     <string name="transition_note_image">transition image</string>
     <string name="transition_circular_reveal_create_screen">create screen transition</string>
+
+    <!--Favs-->
     <string name="fav_not_implemented">Favorites are not implemented yet.\nStay tuned.</string>
 
+    <!--Ad id-->
+    <string name="add_id">ca-app-pub-3940256099942544/1033173712</string>
+    
 </resources>

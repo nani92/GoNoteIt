@@ -57,7 +57,7 @@
                 android:id="@+id/deleteNoteButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:contentDescription="@string/delete_note_action"
+                android:contentDescription="@string/content_description_delete_note_action"
                 android:padding="@dimen/base_margin"
                 android:src="@drawable/ic_delete_black_24dp"
                 android:transitionName="@string/transition_note_image"
