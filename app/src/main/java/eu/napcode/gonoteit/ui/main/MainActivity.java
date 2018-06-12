@@ -18,23 +18,18 @@ import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 
-import com.apollographql.apollo.ApolloClient;
-import com.google.android.gms.ads.AdListener;
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.InterstitialAd;
-import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
 
 import javax.inject.Inject;
 
 import dagger.android.AndroidInjection;
-import eu.napcode.gonoteit.BuildConfig;
 import eu.napcode.gonoteit.R;
 import eu.napcode.gonoteit.databinding.ActivityMainBinding;
 import eu.napcode.gonoteit.databinding.DrawerHeaderBinding;
 import eu.napcode.gonoteit.di.modules.viewmodel.ViewModelFactory;
 import eu.napcode.gonoteit.model.UserModel;
+import eu.napcode.gonoteit.ui.favorites.FavoritesFragment;
 import eu.napcode.gonoteit.ui.login.LoginActivity;
 import eu.napcode.gonoteit.ui.notes.NotesFragment;
 
@@ -58,36 +53,26 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         this.headerBinding = DataBindingUtil.inflate(getLayoutInflater(), R.layout.drawer_header, binding.navigationView, false);
 
         AndroidInjection.inject(this);
-
-        this.mainViewModel = ViewModelProviders
-                .of(this, this.viewModelFactory)
-                .get(MainViewModel.class);
-
+        setupViewModel();
         setSupportActionBar(this.binding.toolbar);
 
         setupDrawer();
         setupUser();
-        displayFragment(new NotesFragment());
 
-        tracker.setScreenName("Main Activity");
-        tracker.send(new HitBuilders.ScreenViewBuilder().build());
+        displayFirstScreen();
 
-        showAd();
+        trackScreen();
     }
 
-    private void showAd() {
-        MobileAds.initialize(this, BuildConfig.ADMOB_ID);
-        InterstitialAd interstitialAd = new InterstitialAd(this);
-        interstitialAd.setAdUnitId(getString(R.string.add_id));
-        interstitialAd.loadAd(new AdRequest.Builder().build());
-        interstitialAd.setAdListener(new AdListener() {
+    private void trackScreen() {
+        tracker.setScreenName("Main Activity");
+        tracker.send(new HitBuilders.ScreenViewBuilder().build());
+    }
 
-            @Override
-            public void onAdLoaded() {
-                super.onAdLoaded();
-                interstitialAd.show();
-            }
-        });
+    private void setupViewModel() {
+        this.mainViewModel = ViewModelProviders
+                .of(this, this.viewModelFactory)
+                .get(MainViewModel.class);
     }
 
     private void setupDrawer() {
@@ -152,6 +137,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         binding.navigationView.getMenu().findItem(R.id.logout).setVisible(true);
     }
 
+    private void displayFirstScreen() {
+        displayFragment(new NotesFragment());
+        this.binding.navigationView.getMenu().getItem(0).setChecked(true);
+    }
+
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
@@ -186,7 +176,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
                 return true;
             case R.id.fav_notes:
-                //TODO display favorite notes
+                displayFragment(new FavoritesFragment());
+
                 return true;
             case R.id.about:
                 //TODO display about

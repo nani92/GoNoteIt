@@ -20,7 +20,7 @@
     <string name="logout_message">Are you sure you want to log out?</string>
 
     <!--Image descriptions-->
-    <string name="application_logo">Go Note It logo</string>
+    <string name="content_description_application_logo">Go Note It logo</string>
 
     <string name="title">Note Title</string>
     <string name="create_note">Create Note</string>
@@ -50,5 +50,6 @@
     <string name="transition_note_content">note ct transition</string>
     <string name="transition_note_image">transition image</string>
     <string name="transition_circular_reveal_create_screen">create screen transition</string>
+    <string name="fav_not_implemented">Favorites are not implemented yet.\nStay tuned.</string>
 
 </resources>
