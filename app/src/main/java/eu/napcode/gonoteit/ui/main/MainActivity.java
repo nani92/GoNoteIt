@@ -186,7 +186,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 return true;
             case R.id.about:
                 displayFragment(new AboutFragment());
-                
+
                 return true;
             case R.id.logout:
                 displayLogoutDialogFragment();

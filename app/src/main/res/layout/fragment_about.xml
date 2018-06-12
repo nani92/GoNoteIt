@@ -1,9 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
     <android.support.constraint.ConstraintLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@drawable/background"
+        android:paddingLeft="@dimen/base_margin"
+        android:paddingRight="@dimen/base_margin"
+        android:paddingTop="?android:attr/actionBarSize">
+
+        <android.support.v7.widget.AppCompatImageView
+            android:id="@+id/logoImageView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:contentDescription="@string/content_description_application_logo"
+            android:cropToPadding="false"
+            android:scaleType="fitCenter"
+            app:layout_constraintBottom_toTopOf="@id/loginTextInputLayout"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_chainStyle="packed"
+            app:srcCompat="@drawable/gonoteit_logo"/>
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/cardView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/base_margin"
+            android:background="@color/colorPrimaryLight"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/logoImageView">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/base_margin"
+                android:text="@string/gonoteit_about"
+                android:textSize="@dimen/about_content_text_size"/>
+
+        </android.support.v7.widget.CardView>
 
     </android.support.constraint.ConstraintLayout>
 </layout>

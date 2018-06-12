@@ -13,4 +13,5 @@
     <dimen name="bigger_margin">30dp</dimen>
     <dimen name="small_margin">8dp</dimen>
     <dimen name="big_text_size">32sp</dimen>
+    <dimen name="about_content_text_size">20sp</dimen>
 </resources>
