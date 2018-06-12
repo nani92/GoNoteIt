@@ -26,6 +26,7 @@ import eu.napcode.gonoteit.databinding.ActivityLoginBinding;
 import eu.napcode.gonoteit.di.modules.viewmodel.ViewModelFactory;
 import eu.napcode.gonoteit.repository.Resource;
 import eu.napcode.gonoteit.ui.main.MainActivity;
+import eu.napcode.gonoteit.utils.TrackerUtils;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -34,6 +35,9 @@ public class LoginActivity extends AppCompatActivity {
 
     @Inject
     Tracker tracker;
+
+    @Inject
+    TrackerUtils trackerUtils;
 
     private LoginViewModel viewModel;
     private ActivityLoginBinding binding;
@@ -48,7 +52,7 @@ public class LoginActivity extends AppCompatActivity {
         AndroidInjection.inject(this);
         setupViewModel();
 
-        tracker.setScreenName("Login Screen");
+        tracker.setScreenName(trackerUtils.getLoginScreenName());
         tracker.send(new HitBuilders.ScreenViewBuilder().build());
     }
 

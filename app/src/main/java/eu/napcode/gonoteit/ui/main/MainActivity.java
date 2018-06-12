@@ -32,6 +32,7 @@ import eu.napcode.gonoteit.model.UserModel;
 import eu.napcode.gonoteit.ui.favorites.FavoritesFragment;
 import eu.napcode.gonoteit.ui.login.LoginActivity;
 import eu.napcode.gonoteit.ui.notes.NotesFragment;
+import eu.napcode.gonoteit.utils.TrackerUtils;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -40,6 +41,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Inject
     Tracker tracker;
+
+    @Inject
+    TrackerUtils trackerUtils;
 
     private MainViewModel mainViewModel;
     private ActivityMainBinding binding;
@@ -65,7 +69,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void trackScreen() {
-        tracker.setScreenName("Main Activity");
+        tracker.setScreenName(trackerUtils.getMainScreenName());
         tracker.send(new HitBuilders.ScreenViewBuilder().build());
     }
 

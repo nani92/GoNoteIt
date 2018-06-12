@@ -59,5 +59,11 @@
 
     <!--Ad id-->
     <string name="add_id">ca-app-pub-3940256099942544/1033173712</string>
-    
+
+    <!--Tracker-->
+    <string name="tracker_main_screen">Main Screen</string>
+    <string name="tracker_create_note_screen">Create note screen</string>
+    <string name="tracker_category_action">Action</string>
+    <string name="tracker_action_create_note">Create Note</string>
+    <string name="tracker_login_screen">Login Screen</string>
 </resources>
