@@ -35,6 +35,7 @@ import eu.napcode.gonoteit.repository.Resource;
 import eu.napcode.gonoteit.utils.GlideBase64Loader;
 import eu.napcode.gonoteit.utils.ImageUtils;
 import eu.napcode.gonoteit.utils.RevealActivityHelper;
+import eu.napcode.gonoteit.utils.TrackerUtils;
 import pl.aprilapps.easyphotopicker.DefaultCallback;
 import pl.aprilapps.easyphotopicker.EasyImage;
 
@@ -54,6 +55,9 @@ public class CreateActivity extends AppCompatActivity {
 
     @Inject
     Tracker tracker;
+
+    @Inject
+    TrackerUtils trackerUtils;
 
     @Inject
     GlideBase64Loader glideBase64Loader;
@@ -128,8 +132,8 @@ public class CreateActivity extends AppCompatActivity {
 
     private void trackCreateNoteClick() {
         tracker.send(new HitBuilders.EventBuilder()
-                .setCategory("Action")
-                .setAction("Create note")
+                .setCategory(trackerUtils.getCategoryAction())
+                .setAction(trackerUtils.getActionCreateNote())
                 .build());
     }
 
@@ -206,7 +210,7 @@ public class CreateActivity extends AppCompatActivity {
     }
 
     private void trackScreen() {
-        tracker.setScreenName("Create note screen");
+        tracker.setScreenName(trackerUtils.getCreateNoteScreenName());
         tracker.send(new HitBuilders.ScreenViewBuilder().build());
     }
 
