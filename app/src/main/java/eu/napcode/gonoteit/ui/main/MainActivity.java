@@ -29,6 +29,7 @@ import eu.napcode.gonoteit.databinding.ActivityMainBinding;
 import eu.napcode.gonoteit.databinding.DrawerHeaderBinding;
 import eu.napcode.gonoteit.di.modules.viewmodel.ViewModelFactory;
 import eu.napcode.gonoteit.model.UserModel;
+import eu.napcode.gonoteit.ui.about.AboutFragment;
 import eu.napcode.gonoteit.ui.favorites.FavoritesFragment;
 import eu.napcode.gonoteit.ui.login.LoginActivity;
 import eu.napcode.gonoteit.ui.notes.NotesFragment;
@@ -184,7 +185,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
                 return true;
             case R.id.about:
-                //TODO display about
+                displayFragment(new AboutFragment());
+
                 return true;
             case R.id.logout:
                 displayLogoutDialogFragment();

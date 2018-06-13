@@ -31,5 +31,11 @@
         <item name="android:textSize">@dimen/hint_text_size</item>
     </style>
 
-    <dimen name="hint_text_size">16sp</dimen>
+    <style name="AboutTitle" parent="TextAppearance.AppCompat">
+        <item name="android:textSize">@dimen/about_title_text_size</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/colorPrimaryDark</item>
+        <item name="android:layout_marginBottom">@dimen/base_margin</item>
+    </style>
+
 </resources>
