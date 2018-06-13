@@ -1,6 +1,5 @@
 package eu.napcode.gonoteit.ui.about;
 
-import android.animation.LayoutTransition;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.net.Uri;
@@ -20,12 +19,13 @@ import eu.napcode.gonoteit.databinding.FragmentAboutBinding;
 
 import static android.content.Intent.ACTION_VIEW;
 
-public class AboutFragment extends Fragment {
+public class AboutFragment extends Fragment implements GithubDescriptionDownloadAsyncTask.GithubDescriptionListener {
 
     @Inject
     AboutAnimationHelper animationHelper;
 
     private FragmentAboutBinding binding;
+    private GithubDescriptionDownloadAsyncTask asyncTask;
 
     @Nullable
     @Override
@@ -42,6 +42,8 @@ public class AboutFragment extends Fragment {
         AndroidSupportInjection.inject(this);
 
         setupViews();
+
+        downloadGithubDescription();
     }
 
     private void setupViews() {
@@ -89,7 +91,6 @@ public class AboutFragment extends Fragment {
                 R.layout.about_card_about_expanded, R.layout.about_card_about);
     }
 
-
     private void toggleDev() {
         animationHelper.toggleViews(
                 binding.devIncluded.expandGroup, binding.devIncluded.constraintLayout,
@@ -100,5 +101,23 @@ public class AboutFragment extends Fragment {
         animationHelper.toggleViews(
                 binding.repoIncluded.expandGroup, binding.repoIncluded.constraintLayout,
                 R.layout.about_card_repo_expanded, R.layout.about_card_repo);
+    }
+
+    private void downloadGithubDescription() {
+        asyncTask = new GithubDescriptionDownloadAsyncTask();
+        asyncTask.attachListener(this);
+        asyncTask.execute();
+    }
+
+    @Override
+    public void onDescriptionReceived(String description) {
+        binding.repoIncluded.descriptionTextView.setText(description);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+
+        asyncTask.attachListener(null);
     }
 }

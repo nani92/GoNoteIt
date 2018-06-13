@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import com.apollographql.apollo.ApolloClient;
-import com.apollographql.apollo.response.CustomTypeAdapter;
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.Tracker;
 
@@ -12,17 +11,20 @@ import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
-import eu.napcode.gonoteit.R;
 import eu.napcode.gonoteit.api.ApolloRxHelper;
 import eu.napcode.gonoteit.api.NoteAdapter;
 import eu.napcode.gonoteit.api.UUIDAdapter;
 import eu.napcode.gonoteit.app.GoNoteItApp;
-import eu.napcode.gonoteit.type.CustomType;
 import eu.napcode.gonoteit.utils.NetworkHelper;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 
+import static android.content.Context.MODE_PRIVATE;
+import static eu.napcode.gonoteit.R.xml.global_tracker;
 import static eu.napcode.gonoteit.api.ApiConsts.API_URL;
+import static eu.napcode.gonoteit.type.CustomType.GENERICSCALAR;
+import static eu.napcode.gonoteit.type.CustomType.UUID;
+import static okhttp3.logging.HttpLoggingInterceptor.Level.BODY;
 
 @Module
 public class AppModule {
@@ -36,7 +38,7 @@ public class AppModule {
     @Provides
     ApolloClient provideGoNoteItClient() {
         HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor();
-        httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+        httpLoggingInterceptor.setLevel(BODY);
 
         OkHttpClient okHttpClient = new OkHttpClient.Builder()
                 .addInterceptor(httpLoggingInterceptor)
@@ -45,14 +47,14 @@ public class AppModule {
         return ApolloClient.builder()
                 .serverUrl(API_URL)
                 .okHttpClient(okHttpClient)
-                .addCustomTypeAdapter(CustomType.GENERICSCALAR, new NoteAdapter())
-                .addCustomTypeAdapter(CustomType.UUID, new UUIDAdapter())
+                .addCustomTypeAdapter(GENERICSCALAR, new NoteAdapter())
+                .addCustomTypeAdapter(UUID, new UUIDAdapter())
                 .build();
     }
 
     @Provides
     SharedPreferences provideSharedPrefs(Context context) {
-        return context.getSharedPreferences("gonoteit", Context.MODE_PRIVATE);
+        return context.getSharedPreferences("gonoteit", MODE_PRIVATE);
     }
 
     @Provides
@@ -68,6 +70,6 @@ public class AppModule {
     @Singleton
     @Provides
     Tracker providesTracker(Context context) {
-        return GoogleAnalytics.getInstance(context).newTracker(R.xml.global_tracker);
+        return GoogleAnalytics.getInstance(context).newTracker(global_tracker);
     }
 }
