@@ -47,6 +47,7 @@ public class AboutFragment extends Fragment {
 
         binding.aboutCardView.setOnClickListener(v -> toggleAbout());
         binding.devCardView.setOnClickListener(v -> toggleDev());
+        binding.repoCardView.setOnClickListener(v -> toggleRepo());
     }
 
     private void setupLayoutTransitions() {
@@ -113,6 +114,15 @@ public class AboutFragment extends Fragment {
             expandLayout(binding.devIncluded.constraintLayout, R.layout.about_card_dev_expanded);
         } else {
             collapseLayout(binding.devIncluded.constraintLayout, R.layout.about_card_dev);
+        }
+    }
+
+    private void toggleRepo() {
+
+        if (shouldExpand(binding.repoIncluded.expandGroup)) {
+            expandLayout(binding.repoIncluded.constraintLayout, R.layout.about_card_repo_expanded);
+        } else {
+            collapseLayout(binding.repoIncluded.constraintLayout, R.layout.about_card_repo);
         }
     }
 }

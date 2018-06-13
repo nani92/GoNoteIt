@@ -68,7 +68,7 @@
             </android.support.v7.widget.CardView>
 
             <android.support.v7.widget.CardView
-                android:id="@+id/techCardView"
+                android:id="@+id/repoCardView"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/base_margin"
@@ -77,12 +77,9 @@
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/devCardView">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="@dimen/base_margin"
-                    android:text="@string/gonoteit_about"
-                    android:textSize="@dimen/about_content_text_size"/>
+                <include
+                    android:id="@+id/repoIncluded"
+                    layout="@layout/about_card_repo"/>
 
             </android.support.v7.widget.CardView>
 
