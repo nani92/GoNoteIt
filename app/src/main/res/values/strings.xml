@@ -71,4 +71,8 @@
     <string name="gonoteit_about_title">About</string>
     <string name="gonoteit_about">GoNote.it is an application to take and share notes.
         \n\nAndroid application GoNote.it was started as Capstone Project for Android Developer Nanodegree in May 2018.</string>
+    <string name="dev_about_title">Developers</string>
+    <string name="dev_about">GoNote.it is being developed by NapCode.
+        \nAndroid dev: Natalia Jastrzębska
+        \nBackend dev: Paweł Jastrzębski</string>
 </resources>

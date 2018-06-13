@@ -41,6 +41,7 @@ public class AboutFragment extends Fragment {
         setupLayoutTransitions();
 
         binding.aboutCardView.setOnClickListener(v -> toggleAbout());
+        binding.devCardView.setOnClickListener(v -> toggleDev());
     }
 
     private void setupLayoutTransitions() {
@@ -53,11 +54,15 @@ public class AboutFragment extends Fragment {
 
     private void toggleAbout() {
 
-        if (binding.aboutIncluded.contentTextView.getVisibility() == GONE) {
+        if (shouldExpand(binding.aboutIncluded.contentTextView)) {
             expandLayout(binding.aboutIncluded.constraintLayout, R.layout.about_card_about_expanded);
         } else {
             collapseLayout(binding.aboutIncluded.constraintLayout, R.layout.about_card_about);
         }
+    }
+
+    private boolean shouldExpand(View view) {
+        return view.getVisibility() == GONE;
     }
 
     private void expandLayout(ConstraintLayout layoutToExpand, int expandLayoutId) {
@@ -74,5 +79,14 @@ public class AboutFragment extends Fragment {
         expandedConstraintSet.applyTo(layoutToCollapse);
 
         TransitionManager.beginDelayedTransition(layoutToCollapse);
+    }
+
+    private void toggleDev() {
+
+        if (shouldExpand(binding.devIncluded.expandGroup)) {
+            expandLayout(binding.devIncluded.constraintLayout, R.layout.about_card_dev_expanded);
+        } else  {
+            collapseLayout(binding.devIncluded.constraintLayout, R.layout.about_card_dev);
+        }
     }
 }
