@@ -103,6 +103,7 @@ public class AboutFragment extends Fragment {
         constraintSet.clone(getContext(), layoutId);
         constraintSet.applyTo(constraintLayout);
 
+
         TransitionManager.beginDelayedTransition(constraintLayout);
     }
 

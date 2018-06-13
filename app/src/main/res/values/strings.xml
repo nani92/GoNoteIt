@@ -78,4 +78,6 @@
     <string name="napcode_web">http://napcode.eu</string>
     <string name="playstore_market">market://dev?id=8034018404241334903</string>
     <string name="playstore_web">https://play.google.com/store/apps/dev?id=8034018404241334903</string>
+    <string name="repo_about_title">Repository</string>
+    <string name="repo_about">Source code for mobile app is available on Github</string>
 </resources>
