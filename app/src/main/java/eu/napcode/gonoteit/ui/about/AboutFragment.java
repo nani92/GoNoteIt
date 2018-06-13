@@ -1,7 +1,9 @@
 package eu.napcode.gonoteit.ui.about;
 
 import android.animation.LayoutTransition;
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -16,6 +18,7 @@ import android.view.ViewGroup;
 import eu.napcode.gonoteit.R;
 import eu.napcode.gonoteit.databinding.FragmentAboutBinding;
 
+import static android.content.Intent.ACTION_VIEW;
 import static android.view.View.GONE;
 
 public class AboutFragment extends Fragment {
@@ -40,6 +43,8 @@ public class AboutFragment extends Fragment {
     private void setupViews() {
         setupLayoutTransitions();
 
+        setupDevViews();
+
         binding.aboutCardView.setOnClickListener(v -> toggleAbout());
         binding.devCardView.setOnClickListener(v -> toggleDev());
     }
@@ -49,7 +54,27 @@ public class AboutFragment extends Fragment {
         layoutTransition.setDuration(getResources().getInteger(R.integer.anim_duration_medium));
         layoutTransition.enableTransitionType(LayoutTransition.CHANGING);
         binding.constraintLayout.setLayoutTransition(layoutTransition);
+    }
 
+    private void setupDevViews() {
+        binding.devIncluded.webImageView.setOnClickListener(v -> openNapcodeWeb());
+        binding.devIncluded.playstoreImageView.setOnClickListener(v -> openPlayStore());
+    }
+
+    private void openNapcodeWeb() {
+        Intent intent = new Intent(ACTION_VIEW, Uri.parse(getString(R.string.napcode_web)));
+        startActivity(intent);
+    }
+
+    private void openPlayStore() {
+        Intent marketIntent = new Intent(ACTION_VIEW, Uri.parse(getString(R.string.playstore_market)));
+        Intent webIntent = new Intent(ACTION_VIEW, Uri.parse(getString(R.string.playstore_web)));
+
+        try {
+            startActivity(marketIntent);
+        } catch (Exception e) {
+            startActivity(webIntent);
+        }
     }
 
     private void toggleAbout() {
@@ -66,26 +91,26 @@ public class AboutFragment extends Fragment {
     }
 
     private void expandLayout(ConstraintLayout layoutToExpand, int expandLayoutId) {
-        ConstraintSet expandedConstraintSet = new ConstraintSet();
-        expandedConstraintSet.clone(getContext(), expandLayoutId);
-        expandedConstraintSet.applyTo(layoutToExpand);
-
-        TransitionManager.beginDelayedTransition(layoutToExpand);
+        layoutToChange(layoutToExpand, expandLayoutId);
     }
 
     private void collapseLayout(ConstraintLayout layoutToCollapse, int collapseLayoutId) {
-        ConstraintSet expandedConstraintSet = new ConstraintSet();
-        expandedConstraintSet.clone(getContext(), collapseLayoutId);
-        expandedConstraintSet.applyTo(layoutToCollapse);
+        layoutToChange(layoutToCollapse, collapseLayoutId);
+    }
 
-        TransitionManager.beginDelayedTransition(layoutToCollapse);
+    private void layoutToChange(ConstraintLayout constraintLayout, int layoutId) {
+        ConstraintSet constraintSet = new ConstraintSet();
+        constraintSet.clone(getContext(), layoutId);
+        constraintSet.applyTo(constraintLayout);
+
+        TransitionManager.beginDelayedTransition(constraintLayout);
     }
 
     private void toggleDev() {
 
         if (shouldExpand(binding.devIncluded.expandGroup)) {
             expandLayout(binding.devIncluded.constraintLayout, R.layout.about_card_dev_expanded);
-        } else  {
+        } else {
             collapseLayout(binding.devIncluded.constraintLayout, R.layout.about_card_dev);
         }
     }

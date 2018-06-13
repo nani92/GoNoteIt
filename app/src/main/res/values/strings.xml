@@ -75,4 +75,7 @@
     <string name="dev_about">GoNote.it is being developed by NapCode.
         \nAndroid dev: Natalia Jastrzębska
         \nBackend dev: Paweł Jastrzębski</string>
+    <string name="napcode_web">http://napcode.eu</string>
+    <string name="playstore_market">market://dev?id=8034018404241334903</string>
+    <string name="playstore_web">https://play.google.com/store/apps/dev?id=8034018404241334903</string>
 </resources>
