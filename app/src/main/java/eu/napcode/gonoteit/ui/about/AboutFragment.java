@@ -44,6 +44,7 @@ public class AboutFragment extends Fragment {
         setupLayoutTransitions();
 
         setupDevViews();
+        binding.repoIncluded.githubImageView.setOnClickListener(v -> openGithub());
 
         binding.aboutCardView.setOnClickListener(v -> toggleAbout());
         binding.devCardView.setOnClickListener(v -> toggleDev());
@@ -58,6 +59,7 @@ public class AboutFragment extends Fragment {
     }
 
     private void setupDevViews() {
+        binding.devIncluded.napcodeImageView.setOnClickListener(v -> openNapcodeWeb());
         binding.devIncluded.webImageView.setOnClickListener(v -> openNapcodeWeb());
         binding.devIncluded.playstoreImageView.setOnClickListener(v -> openPlayStore());
     }
@@ -76,6 +78,11 @@ public class AboutFragment extends Fragment {
         } catch (Exception e) {
             startActivity(webIntent);
         }
+    }
+
+    private void openGithub() {
+        Intent intent = new Intent(ACTION_VIEW, Uri.parse(getString(R.string.repo_github)));
+        startActivity(intent);
     }
 
     private void toggleAbout() {
