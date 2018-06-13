@@ -7,21 +7,23 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.constraint.ConstraintLayout;
-import android.support.constraint.ConstraintSet;
 import android.support.v4.app.Fragment;
-import android.transition.TransitionManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import javax.inject.Inject;
+
+import dagger.android.support.AndroidSupportInjection;
 import eu.napcode.gonoteit.R;
 import eu.napcode.gonoteit.databinding.FragmentAboutBinding;
 
 import static android.content.Intent.ACTION_VIEW;
-import static android.view.View.GONE;
 
 public class AboutFragment extends Fragment {
+
+    @Inject
+    AboutAnimationHelper animationHelper;
 
     private FragmentAboutBinding binding;
 
@@ -37,11 +39,13 @@ public class AboutFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        AndroidSupportInjection.inject(this);
+
         setupViews();
     }
 
     private void setupViews() {
-        setupLayoutTransitions();
+        animationHelper.setupLayoutTransitions(binding.constraintLayout);
 
         setupDevViews();
         binding.repoIncluded.githubImageView.setOnClickListener(v -> openGithub());
@@ -49,13 +53,6 @@ public class AboutFragment extends Fragment {
         binding.aboutCardView.setOnClickListener(v -> toggleAbout());
         binding.devCardView.setOnClickListener(v -> toggleDev());
         binding.repoCardView.setOnClickListener(v -> toggleRepo());
-    }
-
-    private void setupLayoutTransitions() {
-        LayoutTransition layoutTransition = new LayoutTransition();
-        layoutTransition.setDuration(getResources().getInteger(R.integer.anim_duration_medium));
-        layoutTransition.enableTransitionType(LayoutTransition.CHANGING);
-        binding.constraintLayout.setLayoutTransition(layoutTransition);
     }
 
     private void setupDevViews() {
@@ -86,50 +83,22 @@ public class AboutFragment extends Fragment {
     }
 
     private void toggleAbout() {
-
-        if (shouldExpand(binding.aboutIncluded.contentTextView)) {
-            expandLayout(binding.aboutIncluded.constraintLayout, R.layout.about_card_about_expanded);
-        } else {
-            collapseLayout(binding.aboutIncluded.constraintLayout, R.layout.about_card_about);
-        }
+        animationHelper.toggleViews(
+                binding.aboutIncluded.contentTextView,
+                binding.aboutIncluded.constraintLayout,
+                R.layout.about_card_about_expanded, R.layout.about_card_about);
     }
 
-    private boolean shouldExpand(View view) {
-        return view.getVisibility() == GONE;
-    }
-
-    private void expandLayout(ConstraintLayout layoutToExpand, int expandLayoutId) {
-        layoutToChange(layoutToExpand, expandLayoutId);
-    }
-
-    private void collapseLayout(ConstraintLayout layoutToCollapse, int collapseLayoutId) {
-        layoutToChange(layoutToCollapse, collapseLayoutId);
-    }
-
-    private void layoutToChange(ConstraintLayout constraintLayout, int layoutId) {
-        ConstraintSet constraintSet = new ConstraintSet();
-        constraintSet.clone(getContext(), layoutId);
-        constraintSet.applyTo(constraintLayout);
-
-
-        TransitionManager.beginDelayedTransition(constraintLayout);
-    }
 
     private void toggleDev() {
-
-        if (shouldExpand(binding.devIncluded.expandGroup)) {
-            expandLayout(binding.devIncluded.constraintLayout, R.layout.about_card_dev_expanded);
-        } else {
-            collapseLayout(binding.devIncluded.constraintLayout, R.layout.about_card_dev);
-        }
+        animationHelper.toggleViews(
+                binding.devIncluded.expandGroup, binding.devIncluded.constraintLayout,
+                R.layout.about_card_dev_expanded, R.layout.about_card_dev);
     }
 
     private void toggleRepo() {
-
-        if (shouldExpand(binding.repoIncluded.expandGroup)) {
-            expandLayout(binding.repoIncluded.constraintLayout, R.layout.about_card_repo_expanded);
-        } else {
-            collapseLayout(binding.repoIncluded.constraintLayout, R.layout.about_card_repo);
-        }
+        animationHelper.toggleViews(
+                binding.repoIncluded.expandGroup, binding.repoIncluded.constraintLayout,
+                R.layout.about_card_repo_expanded, R.layout.about_card_repo);
     }
 }
