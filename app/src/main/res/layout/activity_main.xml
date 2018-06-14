@@ -26,7 +26,23 @@
                     android:layout_height="?attr/actionBarSize"
                     android:background="?attr/colorPrimary"
                     android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
-                    app:title="@string/app_name"/>
+                    app:title="@string/app_name">
+
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingRight="@dimen/base_margin">
+
+                        <ProgressBar
+                            android:id="@+id/progressBar"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="right"
+                            android:visibility="gone"
+                            tools:visibility="visible"/>
+                    </FrameLayout>
+
+                </android.support.v7.widget.Toolbar>
             </android.support.design.widget.AppBarLayout>
 
         </FrameLayout>

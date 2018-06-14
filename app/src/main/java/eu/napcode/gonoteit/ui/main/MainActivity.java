@@ -35,6 +35,9 @@ import eu.napcode.gonoteit.ui.login.LoginActivity;
 import eu.napcode.gonoteit.ui.notes.NotesFragment;
 import eu.napcode.gonoteit.utils.TrackerUtils;
 
+import static android.view.View.GONE;
+import static android.view.View.VISIBLE;
+
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     @Inject
@@ -111,7 +114,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private void setViewsForNotLoggedInUser() {
         headerBinding.usernameTextView.setText(R.string.not_logged_in);
         headerBinding.usernameTextView.setCompoundDrawables(null, null, null, null);
-        headerBinding.loginButton.setVisibility(View.VISIBLE);
+        headerBinding.loginButton.setVisibility(VISIBLE);
         headerBinding.loginButton.setOnClickListener(v -> startLoginActivity());
 
         binding.navigationView.getMenu().findItem(R.id.logout).setVisible(false);
@@ -137,7 +140,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private void setViewsForLoggedInUser(UserModel user) {
         headerBinding.usernameTextView.setText(user.getUserName());
         headerBinding.usernameTextView.setCompoundDrawables(null, null, getDrawable(R.drawable.ic_edit_24px), null);
-        headerBinding.loginButton.setVisibility(View.GONE);
+        headerBinding.loginButton.setVisibility(GONE);
 
         binding.navigationView.getMenu().findItem(R.id.logout).setVisible(true);
     }
@@ -214,5 +217,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 .create();
 
         dialog.show();
+    }
+
+    public void showProgressBar() {
+        binding.progressBar.setVisibility(VISIBLE);
+    }
+
+    public void hideProgressBar() {
+        binding.progressBar.setVisibility(GONE);
     }
 }
