@@ -18,6 +18,8 @@ import eu.napcode.gonoteit.R;
 import eu.napcode.gonoteit.databinding.FragmentAboutBinding;
 
 import static android.content.Intent.ACTION_VIEW;
+import static eu.napcode.gonoteit.ui.main.MainActivityProgressManager.hideProgressBar;
+import static eu.napcode.gonoteit.ui.main.MainActivityProgressManager.showProgressBar;
 
 public class AboutFragment extends Fragment implements GithubDescriptionDownloadAsyncTask.GithubDescriptionListener {
 
@@ -107,11 +109,18 @@ public class AboutFragment extends Fragment implements GithubDescriptionDownload
         asyncTask = new GithubDescriptionDownloadAsyncTask();
         asyncTask.attachListener(this);
         asyncTask.execute();
+        showProgressBar(getActivity());
     }
 
     @Override
     public void onDescriptionReceived(String description) {
         binding.repoIncluded.descriptionTextView.setText(description);
+        hideProgressBar(getActivity());
+    }
+
+    @Override
+    public void onDescriptionFetchFailed() {
+        hideProgressBar(getActivity());
     }
 
     @Override

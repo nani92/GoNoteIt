@@ -37,6 +37,10 @@ public class GithubDescriptionDownloadAsyncTask extends AsyncTask<String, Void, 
             urlConnection.disconnect();
         } catch (IOException | JSONException e) {
             e.printStackTrace();
+
+            if (githubDescriptionListener != null) {
+                githubDescriptionListener.onDescriptionFetchFailed();
+            }
         }
 
         return description;
@@ -82,5 +86,7 @@ public class GithubDescriptionDownloadAsyncTask extends AsyncTask<String, Void, 
 
     public interface GithubDescriptionListener {
         void onDescriptionReceived(String description);
+
+        void onDescriptionFetchFailed();
     }
 }

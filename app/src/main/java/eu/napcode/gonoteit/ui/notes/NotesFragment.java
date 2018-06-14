@@ -5,6 +5,7 @@ import android.arch.paging.PagedList;
 import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
+import android.databinding.ViewDataBinding;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -26,15 +27,17 @@ import javax.inject.Inject;
 import dagger.android.support.AndroidSupportInjection;
 import eu.napcode.gonoteit.R;
 import eu.napcode.gonoteit.data.results.DeletedResult;
-import eu.napcode.gonoteit.databinding.FragmentBoardBinding;
+import eu.napcode.gonoteit.databinding.FragmentNotesBinding;
 import eu.napcode.gonoteit.di.modules.viewmodel.ViewModelFactory;
 import eu.napcode.gonoteit.data.results.NotesResult;
 import eu.napcode.gonoteit.model.note.NoteModel;
 import eu.napcode.gonoteit.repository.Resource;
 import eu.napcode.gonoteit.repository.Resource.Status;
 import eu.napcode.gonoteit.ui.create.CreateActivity;
+import eu.napcode.gonoteit.ui.main.MainActivity;
 import eu.napcode.gonoteit.ui.note.NoteActivity;
 
+import static eu.napcode.gonoteit.ui.main.MainActivityProgressManager.manageProgressBarDisplaying;
 import static eu.napcode.gonoteit.ui.note.NoteActivity.NOTE_ID_KEY;
 import static eu.napcode.gonoteit.utils.RevealActivityHelper.REVEAL_X_KEY;
 import static eu.napcode.gonoteit.utils.RevealActivityHelper.REVEAL_Y_KEY;
@@ -47,7 +50,7 @@ public class NotesFragment extends Fragment implements NotesAdapter.NoteListener
     @Inject
     Tracker tracker;
 
-    private FragmentBoardBinding binding;
+    private FragmentNotesBinding binding;
 
     private NotesViewModel viewModel;
     private NotesAdapter notesAdapter;
@@ -64,7 +67,7 @@ public class NotesFragment extends Fragment implements NotesAdapter.NoteListener
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_board, container, false);
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_notes, container, false);
 
         return binding.getRoot();
     }
@@ -99,12 +102,7 @@ public class NotesFragment extends Fragment implements NotesAdapter.NoteListener
     }
 
     private void processResource(Resource resource) {
-        //TODO display pb in appbar
-        boolean loading = resource.status == Status.LOADING;
-        binding.progressBar.setVisibility(loading ? View.VISIBLE : View.GONE);
-
-        if (resource.status == Status.SUCCESS) {
-        }
+       manageProgressBarDisplaying(getActivity(), resource.status);
 
         if (resource.status == Status.ERROR) {
             Snackbar.make(binding.constraintLayout, resource.message, Snackbar.LENGTH_LONG).show();
@@ -187,7 +185,6 @@ public class NotesFragment extends Fragment implements NotesAdapter.NoteListener
     }
 
     private void processDeleteResponse(Resource<Boolean> booleanResource) {
-        boolean loading = booleanResource.status == Status.LOADING;
-        binding.progressBar.setVisibility(loading ? View.VISIBLE : View.GONE);
+        manageProgressBarDisplaying(getActivity(), booleanResource.status);
     }
 }
