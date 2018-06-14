@@ -9,15 +9,14 @@ import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.NavUtils;
 import android.support.v4.view.GravityCompat;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.transition.Slide;
 import android.view.Gravity;
 import android.view.MenuItem;
-import android.view.View;
 
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
@@ -202,10 +201,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void displayFragment(Fragment fragment) {
+        fragment.setEnterTransition(getTransitionForFragment());
+
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.mainContainerFrame, fragment)
                 .commit();
+    }
+
+    private Slide getTransitionForFragment() {
+        Slide slide = new Slide();
+        slide.setDuration(getResources().getInteger(R.integer.anim_duration_medium));
+
+        return slide;
     }
 
     private void displayLogoutDialogFragment() {
