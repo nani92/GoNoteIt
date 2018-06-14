@@ -66,6 +66,7 @@
     <string name="tracker_category_action">Action</string>
     <string name="tracker_action_create_note">Create Note</string>
     <string name="tracker_login_screen">Login Screen</string>
+    <string name="tracker_displaying_notes_screen">Displaying notes</string>
 
     <!--About-->
     <string name="gonoteit_about_title">About</string>

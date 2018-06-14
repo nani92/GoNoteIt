@@ -34,4 +34,8 @@ public class TrackerUtils {
     public String getLoginScreenName() {
         return context.getString(R.string.tracker_login_screen);
     }
+
+    public String getDisplayingNotesScreenName() {
+        return context.getString(R.string.tracker_displaying_notes_screen);
+    }
 }

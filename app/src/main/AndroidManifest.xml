@@ -33,6 +33,7 @@
 
         <activity
             android:name=".ui.create.CreateActivity"
+            android:parentActivityName=".ui.main.MainActivity"
             android:theme="@style/AppTheme.Transparent"/>
 
         <provider

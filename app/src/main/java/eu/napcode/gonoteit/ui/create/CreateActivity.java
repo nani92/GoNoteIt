@@ -118,6 +118,8 @@ public class CreateActivity extends AppCompatActivity {
     }
 
     private void setupViews() {
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         binding.createNoteButton.setOnClickListener(v -> {
                     LiveData<Resource> createResource = viewModel.createNote(getNoteModelFromInputs());
                     createResource.observe(this, resource -> processResponseCreateNote(resource));

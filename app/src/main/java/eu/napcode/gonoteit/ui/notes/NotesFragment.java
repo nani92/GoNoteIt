@@ -35,6 +35,7 @@ import eu.napcode.gonoteit.repository.Resource;
 import eu.napcode.gonoteit.repository.Resource.Status;
 import eu.napcode.gonoteit.ui.create.CreateActivity;
 import eu.napcode.gonoteit.ui.note.NoteActivity;
+import eu.napcode.gonoteit.utils.TrackerUtils;
 
 import static android.content.res.Configuration.ORIENTATION_LANDSCAPE;
 import static eu.napcode.gonoteit.ui.main.MainActivityProgressBarManager.manageProgressBarDisplaying;
@@ -49,6 +50,9 @@ public class NotesFragment extends Fragment implements NotesAdapter.NoteListener
 
     @Inject
     Tracker tracker;
+
+    @Inject
+    TrackerUtils trackerUtils;
 
     private FragmentNotesBinding binding;
 
@@ -162,7 +166,7 @@ public class NotesFragment extends Fragment implements NotesAdapter.NoteListener
     }
 
     private void trackScreen() {
-        tracker.setScreenName("Displaying notes");
+        tracker.setScreenName(trackerUtils.getDisplayingNotesScreenName());
         tracker.send(new HitBuilders.ScreenViewBuilder().build());
     }
 
