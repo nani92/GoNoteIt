@@ -64,7 +64,7 @@ public class NotesFragment extends Fragment implements NotesAdapter.NoteListener
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_board, container, false);
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_notes, container, false);
 
         return binding.getRoot();
     }
