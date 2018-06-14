@@ -21,7 +21,7 @@ public class AddNoteWidgetProvider extends AppWidgetProvider {
         int[] allWidgetIds = appWidgetManager.getAppWidgetIds(thisWidget);
 
         for (int widgetId : allWidgetIds) {
-            RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.add_note_widget_layout);
+            RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.widget_add_note_layout);
             Intent intent = new Intent(context, CreateActivity.class);
 
             intent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
