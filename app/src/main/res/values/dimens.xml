@@ -16,4 +16,5 @@
     <dimen name="about_content_text_size">20sp</dimen>
     <dimen name="about_title_text_size">22sp</dimen>
     <dimen name="hint_text_size">16sp</dimen>
+    <dimen name="very_small_margin">4dp</dimen>
 </resources>

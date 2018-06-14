@@ -30,8 +30,20 @@
 
                     <FrameLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
                         android:paddingRight="@dimen/base_margin">
+
+                        <ImageView
+                            android:id="@+id/titleImageView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="left"
+                            android:adjustViewBounds="true"
+                            android:cropToPadding="false"
+                            android:paddingBottom="@dimen/very_small_margin"
+                            android:paddingTop="@dimen/very_small_margin"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/gonoteit_logo"/>
 
                         <ProgressBar
                             android:id="@+id/progressBar"
