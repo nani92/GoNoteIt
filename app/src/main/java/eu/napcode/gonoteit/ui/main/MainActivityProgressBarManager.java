@@ -4,7 +4,7 @@ import android.app.Activity;
 
 import eu.napcode.gonoteit.repository.Resource;
 
-public class MainActivityProgressManager {
+public class MainActivityProgressBarManager {
 
     public static void manageProgressBarDisplaying(Activity activity, Resource.Status status) {
 

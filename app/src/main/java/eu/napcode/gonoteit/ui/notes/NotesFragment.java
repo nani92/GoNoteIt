@@ -5,7 +5,6 @@ import android.arch.paging.PagedList;
 import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
-import android.databinding.ViewDataBinding;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -13,6 +12,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.util.Pair;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -34,10 +34,10 @@ import eu.napcode.gonoteit.model.note.NoteModel;
 import eu.napcode.gonoteit.repository.Resource;
 import eu.napcode.gonoteit.repository.Resource.Status;
 import eu.napcode.gonoteit.ui.create.CreateActivity;
-import eu.napcode.gonoteit.ui.main.MainActivity;
 import eu.napcode.gonoteit.ui.note.NoteActivity;
 
-import static eu.napcode.gonoteit.ui.main.MainActivityProgressManager.manageProgressBarDisplaying;
+import static android.content.res.Configuration.ORIENTATION_LANDSCAPE;
+import static eu.napcode.gonoteit.ui.main.MainActivityProgressBarManager.manageProgressBarDisplaying;
 import static eu.napcode.gonoteit.ui.note.NoteActivity.NOTE_ID_KEY;
 import static eu.napcode.gonoteit.utils.RevealActivityHelper.REVEAL_X_KEY;
 import static eu.napcode.gonoteit.utils.RevealActivityHelper.REVEAL_Y_KEY;
@@ -56,6 +56,8 @@ public class NotesFragment extends Fragment implements NotesAdapter.NoteListener
     private NotesAdapter notesAdapter;
 
     boolean recyclerViewLoadAnimationDisplayed;
+
+    private static final int LANDSCAPE_COLUMNS = 2;
 
     @Override
     public void onAttach(Context context) {
@@ -140,8 +142,7 @@ public class NotesFragment extends Fragment implements NotesAdapter.NoteListener
     }
 
     private void setupRecyclerView() {
-        //ToDO grid/linear changes no of columns depends on orientation and size
-        this.binding.recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        setupLayoutManager();
 
         this.notesAdapter = new NotesAdapter(getContext(), this);
         this.binding.recyclerView.setAdapter(notesAdapter);
@@ -149,6 +150,15 @@ public class NotesFragment extends Fragment implements NotesAdapter.NoteListener
         this.binding.recyclerView.setLayoutAnimation(
                 AnimationUtils.loadLayoutAnimation(getContext(), R.anim.recycler_view_animation)
         );
+    }
+
+    private void setupLayoutManager() {
+
+        if (getResources().getConfiguration().orientation == ORIENTATION_LANDSCAPE) {
+            this.binding.recyclerView.setLayoutManager(new GridLayoutManager(getContext(), LANDSCAPE_COLUMNS));
+        } else  {
+            this.binding.recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        }
     }
 
     private void trackScreen() {
