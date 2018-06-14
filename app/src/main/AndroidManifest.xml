@@ -34,7 +34,8 @@
         <activity
             android:name=".ui.create.CreateActivity"
             android:parentActivityName=".ui.main.MainActivity"
-            android:theme="@style/AppTheme.Transparent"/>
+            android:theme="@style/AppTheme.Transparent">
+        </activity>
 
         <provider
             android:name=".provider.NotesContentProvider"

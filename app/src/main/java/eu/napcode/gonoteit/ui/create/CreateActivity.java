@@ -8,10 +8,12 @@ import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.transition.Explode;
 import android.transition.Slide;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 
@@ -41,6 +43,7 @@ import pl.aprilapps.easyphotopicker.EasyImage;
 
 import static android.graphics.Bitmap.CompressFormat.JPEG;
 import static android.view.View.VISIBLE;
+import static eu.napcode.gonoteit.repository.Resource.Status.ERROR;
 import static eu.napcode.gonoteit.utils.RevealActivityHelper.REVEAL_X_KEY;
 import static eu.napcode.gonoteit.utils.RevealActivityHelper.REVEAL_Y_KEY;
 
@@ -169,6 +172,18 @@ public class CreateActivity extends AppCompatActivity {
         binding.attachmentCardView.setVisibility(VISIBLE);
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        if (item.getItemId() == android.R.id.home) {
+            NavUtils.navigateUpFromSameTask(this);
+
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
     private void processResponseCreateNote(Resource resource) {
         updateForLoading(resource.status == Status.LOADING);
 
@@ -178,7 +193,7 @@ public class CreateActivity extends AppCompatActivity {
             return;
         }
 
-        if (resource.status == Status.ERROR) {
+        if (resource.status == ERROR) {
             showError(resource.message);
         }
     }
@@ -186,7 +201,7 @@ public class CreateActivity extends AppCompatActivity {
     private void processResponseGetNoteToEdit(Resource resource, LiveData<Resource> resourceLiveData) {
         updateForLoading(resource.status == Status.LOADING);
 
-        if (resource.status == Status.ERROR) {
+        if (resource.status == ERROR) {
             showError(resource.message);
         }
     }
