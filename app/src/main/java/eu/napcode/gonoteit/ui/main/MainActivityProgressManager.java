@@ -21,4 +21,18 @@ public class MainActivityProgressManager {
             activity.hideProgressBar();
         }
     }
+
+    public static void showProgressBar(Activity activity) {
+
+        if (activity instanceof MainActivity) {
+            ((MainActivity) activity).showProgressBar();
+        }
+    }
+
+    public static void hideProgressBar(Activity activity) {
+
+        if (activity instanceof MainActivity) {
+            ((MainActivity) activity).hideProgressBar();
+        }
+    }
 }
