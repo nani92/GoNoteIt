@@ -24,6 +24,7 @@ import eu.napcode.gonoteit.dao.NoteDao;
 import eu.napcode.gonoteit.data.notes.NotesRemote;
 import eu.napcode.gonoteit.model.note.NoteModel;
 import eu.napcode.gonoteit.repository.Resource;
+import eu.napcode.gonoteit.utils.TimestampStore;
 import io.reactivex.Observable;
 import io.reactivex.observers.TestObserver;
 import io.reactivex.subscribers.TestSubscriber;
@@ -62,11 +63,14 @@ public class NotesRepositoryRemoteImplTest {
     @Mock
     NoteDao noteDao;
 
+    @Mock
+    TimestampStore timestampStore;
+
     private NotesRemote notesRemote;
 
     @Before
     public void init() {
-        this.notesRemote = new NotesRemote(apolloClient, storeAuth, apolloRxHelper, new MockRxSchedulers());
+        this.notesRemote = new NotesRemote(apolloClient, storeAuth, apolloRxHelper, new MockRxSchedulers(), timestampStore);
 
         Mockito.when(apolloClient.query(Mockito.any(GetNotesQuery.class)))
                 .thenReturn(apolloGetNotesCall);
