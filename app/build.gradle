@@ -7,6 +7,7 @@ localProperties.load(new FileInputStream(localPropertiesFile))
 
 android {
     compileSdkVersion 27
+
     defaultConfig {
         applicationId "eu.napcode.gonoteit"
         minSdkVersion 21
@@ -18,15 +19,35 @@ android {
         buildConfigField "String", "API_PASSWORD", localProperties['api.password']
         buildConfigField "String", "ADMOB_ID", localProperties['admob']
     }
+
+    signingConfigs {
+
+        release {
+            Properties properties = new Properties()
+            properties.load(project.rootProject.file('local.properties').newDataInputStream())
+
+            try {
+                storeFile file("../keystores/gonoteit.jks")
+                storePassword properties.getProperty('KEYSTORE_PASSWORD')
+                keyAlias 'GONOTEIT'
+                keyPassword properties.getProperty('KEY_PASSWORD')
+            } catch (ex) {
+                throw new InvalidUserDataException("invalid user" + ex.getLocalizedMessage())
+            }
+        }
+    }
+
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
     dataBinding {
         enabled = true
     }
+
     compileOptions {
         targetCompatibility 1.8
         sourceCompatibility 1.8
@@ -34,7 +55,7 @@ android {
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation "com.android.support:appcompat-v7:${supportLibVersion}"
     implementation 'com.android.support.constraint:constraint-layout:1.1.0'
     testImplementation 'junit:junit:4.12'
@@ -79,7 +100,7 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.8.4'
 
     //mockito
-    testImplementation group: 'org.mockito', name: 'mockito-core', version: '2.18.3'
+    testImplementation 'org.mockito:mockito-core:2.18.3'
 
     //timber logging
     implementation 'com.jakewharton.timber:timber:4.7.0'
@@ -98,8 +119,8 @@ dependencies {
     annotationProcessor "com.github.bumptech.glide:compiler:${glideVersion}"
 
     //play services
-    implementation "com.google.android.gms:play-services-analytics:15.0.2"
-    implementation "com.google.android.gms:play-services-ads:15.0.1"
+    implementation 'com.google.android.gms:play-services-analytics:15.0.2'
+    implementation 'com.google.android.gms:play-services-ads:15.0.1'
 
     //pagelist
     implementation "android.arch.paging:runtime:${pageVersion}"
