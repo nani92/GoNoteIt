@@ -15,9 +15,11 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 import java.util.ArrayList;
 
+import eu.napcode.gonoteit.CreateNoteMutation;
 import eu.napcode.gonoteit.GetChangelogMutation;
 import eu.napcode.gonoteit.data.notes.NotesLocal;
 import eu.napcode.gonoteit.data.notes.NotesRemote;
+import eu.napcode.gonoteit.model.note.NoteModel;
 import eu.napcode.gonoteit.utils.ErrorMessages;
 import eu.napcode.gonoteit.utils.NetworkHelper;
 import io.reactivex.Observable;
@@ -82,13 +84,34 @@ public class NotesRepositoryTest {
 
     @Test
     public void testGetNotesForNetworkNotAvailable() {
-        Mockito.when(networkHelper.isNetworkAvailable())
-                .thenReturn(false);
-
         this.notesRepository.getNotes();
 
         Mockito.verify(notesLocal).getNotes();
         Mockito.verify(notesRemote, times(0)).getChangelog();
         Mockito.verify(notesRemote, times(0)).getNotes();
     }
+
+    @Mock
+    NoteModel noteModel;
+
+    @Mock
+    Response<CreateNoteMutation.Data> createNoteResponse;
+
+    @Test
+    public void testCreateNoteForNetworkAvailable() {
+        Mockito.when(networkHelper.isNetworkAvailable()).thenReturn(true);
+        Mockito.when(notesRemote.createNote(noteModel)).thenReturn(Observable.just(createNoteResponse));
+
+        this.notesRepository.createNote(noteModel);
+
+        Mockito.verify(notesRemote).createNote(noteModel);
+    }
+
+    @Test
+    public void testCreateNoteForNetworkNotAvailable() {
+        this.notesRepository.createNote(noteModel);
+
+        Mockito.verify(notesRemote, times(0)).createNote(noteModel);
+    }
+
 }
