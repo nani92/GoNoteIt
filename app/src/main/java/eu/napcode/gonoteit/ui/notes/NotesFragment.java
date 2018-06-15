@@ -38,6 +38,7 @@ import eu.napcode.gonoteit.ui.note.NoteActivity;
 import eu.napcode.gonoteit.utils.TrackerUtils;
 
 import static android.content.res.Configuration.ORIENTATION_LANDSCAPE;
+import static eu.napcode.gonoteit.repository.Resource.Status.ERROR;
 import static eu.napcode.gonoteit.ui.main.MainActivityProgressBarManager.manageProgressBarDisplaying;
 import static eu.napcode.gonoteit.ui.note.NoteActivity.NOTE_ID_KEY;
 import static eu.napcode.gonoteit.utils.RevealActivityHelper.REVEAL_X_KEY;
@@ -110,9 +111,13 @@ public class NotesFragment extends Fragment implements NotesAdapter.NoteListener
     private void processResource(Resource resource) {
        manageProgressBarDisplaying(getActivity(), resource.status);
 
-        if (resource.status == Status.ERROR) {
-            Snackbar.make(binding.constraintLayout, resource.message, Snackbar.LENGTH_LONG).show();
+        if (resource.status == ERROR) {
+            displayMessage(resource.message);
         }
+    }
+
+    private void displayMessage(String message) {
+        Snackbar.make(binding.constraintLayout, message, Snackbar.LENGTH_LONG).show();
     }
 
     private void setupViews() {
@@ -200,5 +205,9 @@ public class NotesFragment extends Fragment implements NotesAdapter.NoteListener
 
     private void processDeleteResponse(Resource<Boolean> booleanResource) {
         manageProgressBarDisplaying(getActivity(), booleanResource.status);
+
+        if (booleanResource.status == ERROR) {
+            displayMessage(booleanResource.message);
+        }
     }
 }
