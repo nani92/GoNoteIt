@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import eu.napcode.gonoteit.CreateNoteMutation;
 import eu.napcode.gonoteit.DeleteNoteMutation;
 import eu.napcode.gonoteit.GetChangelogMutation;
+import eu.napcode.gonoteit.GetNoteByIdQuery;
 import eu.napcode.gonoteit.data.notes.NotesLocal;
 import eu.napcode.gonoteit.data.notes.NotesRemote;
 import eu.napcode.gonoteit.model.note.NoteModel;
@@ -137,5 +138,29 @@ public class NotesRepositoryTest {
         notesRepository.deleteNote(noteId);
 
         Mockito.verify(notesRemote, times(0)).deleteNote(noteId);
+    }
+
+    @Test
+    public void testGetNoteByIdForNetworkAvailable() {
+        Mockito.when(networkHelper.isNetworkAvailable())
+                .thenReturn(true);
+        Mockito.when(notesRemote.getNote(Mockito.anyLong()))
+                .thenReturn(Observable.just(noteModel));
+        Long noteId = 2l;
+
+        this.notesRepository.getNote(noteId);
+
+        Mockito.verify(notesLocal).getNote(noteId);
+        Mockito.verify(notesRemote).getNote(noteId);
+    }
+
+    @Test
+    public void testGetNoteByIdForNetworkNotAvailable() {
+        Long noteId = 2l;
+
+        this.notesRepository.getNote(noteId);
+
+        Mockito.verify(notesLocal).getNote(noteId);
+        Mockito.verify(notesRemote, times(0)).getNote(noteId);
     }
 }
