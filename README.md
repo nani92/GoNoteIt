@@ -1,5 +1,7 @@
 # GoNoteIt
 
+<img src="https://raw.githubusercontent.com/nani92/GoNoteIt/gh-pages/logo-primaryColor.png"/>
+
 ## About
 *GoNoteIt* is an application to take and share notes. 
 In this repository you can find Android application for GoNoteIt which 
