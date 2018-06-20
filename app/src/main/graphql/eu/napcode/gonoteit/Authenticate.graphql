@@ -1,5 +1,0 @@
-mutation authenticate($userName: String!, $password: String!) {
- tokenAuth(username: $userName, password: $password) {
-   token
- }
-}
