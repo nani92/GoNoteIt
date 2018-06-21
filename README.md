@@ -21,6 +21,11 @@ Android Architecture Components.
 * RxAndroid + RxJava
 * GSON
 
+## How to run
+* Use Android Studio to run this project.
+* In your `local.properties` file add `admob` variable with testing id for admob:
+`admob = "ca-app-pub-3940256099942544/6300978111"`
+
 ## Author
 Natalia Jastrzębska
 
