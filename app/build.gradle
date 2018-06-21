@@ -15,8 +15,6 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-        buildConfigField "String", "API_LOGIN", localProperties['api.login']
-        buildConfigField "String", "API_PASSWORD", localProperties['api.password']
         buildConfigField "String", "ADMOB_ID", localProperties['admob']
     }
 
