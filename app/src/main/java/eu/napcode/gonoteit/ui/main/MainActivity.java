@@ -10,6 +10,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -17,6 +18,7 @@ import android.os.Bundle;
 import android.transition.Slide;
 import android.view.Gravity;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
@@ -53,6 +55,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private ActivityMainBinding binding;
     private DrawerHeaderBinding headerBinding;
     private ActionBarDrawerToggle drawerToggle;
+
+    private Fragment fragmentToSet;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,6 +98,34 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         this.drawerToggle.syncState();
 
         this.binding.navigationView.setNavigationItemSelectedListener(this);
+
+        this.binding.drawerLayout.addDrawerListener(onDrawerClosedDrawerListener);
+    }
+
+    private OnDrawerClosedDrawerListener onDrawerClosedDrawerListener = new OnDrawerClosedDrawerListener(){
+
+        @Override
+        public void onDrawerClosed(@NonNull View drawerView) {
+            super.onDrawerClosed(drawerView);
+
+            displayFragment();
+        }
+    };
+
+    private void displayFragment() {
+        fragmentToSet.setEnterTransition(getTransitionForFragment());
+
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.mainContainerFrame, fragmentToSet)
+                .commit();
+    }
+
+    private Slide getTransitionForFragment() {
+        Slide slide = new Slide();
+        slide.setDuration(getResources().getInteger(R.integer.anim_duration_medium));
+
+        return slide;
     }
 
     private void setupUser() {
@@ -146,7 +178,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void displayFirstScreen() {
-        displayFragment(new NotesFragment());
+        fragmentToSet = new NotesFragment();
+        displayFragment();
         this.binding.navigationView.getMenu().getItem(0).setChecked(true);
     }
 
@@ -180,15 +213,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         switch (item.getItemId()) {
             case R.id.notes:
-                displayFragment(new NotesFragment());
+                fragmentToSet = new NotesFragment();
 
                 return true;
             case R.id.fav_notes:
-                displayFragment(new FavoritesFragment());
+                fragmentToSet = new FavoritesFragment();
 
                 return true;
             case R.id.about:
-                displayFragment(new AboutFragment());
+                fragmentToSet = new AboutFragment();
 
                 return true;
             case R.id.logout:
@@ -198,22 +231,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             default:
                 return false;
         }
-    }
-
-    private void displayFragment(Fragment fragment) {
-        fragment.setEnterTransition(getTransitionForFragment());
-
-        getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.mainContainerFrame, fragment)
-                .commit();
-    }
-
-    private Slide getTransitionForFragment() {
-        Slide slide = new Slide();
-        slide.setDuration(getResources().getInteger(R.integer.anim_duration_medium));
-
-        return slide;
     }
 
     private void displayLogoutDialogFragment() {
