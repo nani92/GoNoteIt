@@ -196,6 +196,12 @@ public class NotesFragment extends Fragment implements NotesAdapter.NoteListener
         startActivity(intent, getAnimationBundle(sharedElementPairs));
     }
 
+    @Override
+    public void onNoteListChanged() {
+        ((LinearLayoutManager)binding.recyclerView.getLayoutManager())
+                .scrollToPositionWithOffset(0, 0);
+    }
+
     private Bundle getAnimationBundle(Pair<View, String>... sharedElementPairs) {
         ActivityOptionsCompat optionsCompat = ActivityOptionsCompat
                 .makeSceneTransitionAnimation(getActivity(), sharedElementPairs);

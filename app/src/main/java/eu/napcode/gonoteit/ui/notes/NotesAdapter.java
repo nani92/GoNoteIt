@@ -1,9 +1,11 @@
 package eu.napcode.gonoteit.ui.notes;
 
+import android.arch.paging.PagedList;
 import android.arch.paging.PagedListAdapter;
 import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintSet;
 import android.support.v4.util.Pair;
 import android.support.v7.util.DiffUtil;
@@ -111,6 +113,13 @@ public class NotesAdapter extends PagedListAdapter<NoteModel, NotesAdapter.NoteV
         constraintSet.applyTo(holder.itemNoteBinding.constraintLayout);
     }
 
+    @Override
+    public void onCurrentListChanged(@Nullable PagedList<NoteModel> currentList) {
+        super.onCurrentListChanged(currentList);
+
+        this.noteListener.onNoteListChanged();
+    }
+
     public class NoteViewHolder extends RecyclerView.ViewHolder {
 
         public final ItemNoteBinding itemNoteBinding;
@@ -126,6 +135,8 @@ public class NotesAdapter extends PagedListAdapter<NoteModel, NotesAdapter.NoteV
         void onDeleteNote(Long id);
 
         void onClickNote(NoteModel noteModel, Pair<View, String>... sharedElementPairs);
+
+        void onNoteListChanged();
     }
 
     public static final DiffUtil.ItemCallback<NoteModel> DIFF_CALLBACK =
