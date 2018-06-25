@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:drawable="@drawable/background"
+        android:gravity="right|center_vertical"/>
+
+    <item>
+        <bitmap
+            android:gravity="center"
+            android:src="@drawable/napcode_logo_name_alpha"/>
+    </item>
+
+</layer-list>
