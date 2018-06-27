@@ -1,14 +1,18 @@
 package eu.napcode.gonoteit.ui.create;
 
+import android.Manifest;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.databinding.DataBindingUtil;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.NavUtils;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.transition.Explode;
@@ -67,6 +71,7 @@ public class CreateActivity extends AppCompatActivity {
 
     private ActivityCreateBinding binding;
     private CreateViewModel viewModel;
+    private int PERMISSIONS_REQUEST_EXTERNAL_STORAGE = 303;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -113,7 +118,7 @@ public class CreateActivity extends AppCompatActivity {
         getWindow().setEnterTransition(slide);
     }
 
-        private void setupReturnTransition() {
+    private void setupReturnTransition() {
         Explode explode = new Explode();
         explode.setDuration(getResources().getInteger(R.integer.anim_duration_medium));
 
@@ -131,7 +136,7 @@ public class CreateActivity extends AppCompatActivity {
         );
 
         binding.addImageButton.setOnClickListener(v ->
-                EasyImage.openGallery(this, 0)
+                getImageFromGallery()
         );
     }
 
@@ -140,6 +145,31 @@ public class CreateActivity extends AppCompatActivity {
                 .setCategory(trackerUtils.getCategoryAction())
                 .setAction(trackerUtils.getActionCreateNote())
                 .build());
+    }
+
+    private void getImageFromGallery() {
+
+        if (hasPermissions()) {
+            EasyImage.openGallery(this, 0);
+        } else {
+            askForPermissions();
+        }
+    }
+
+    private boolean hasPermissions() {
+
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+            return false;
+        }
+
+        return true;
+    }
+
+    private void askForPermissions() {
+        //TODO add rationale when needed
+        ActivityCompat.requestPermissions(this,
+                new String[] {Manifest.permission.WRITE_EXTERNAL_STORAGE}, PERMISSIONS_REQUEST_EXTERNAL_STORAGE);
     }
 
     private boolean isInEditMode() {
@@ -285,5 +315,18 @@ public class CreateActivity extends AppCompatActivity {
                 .into(binding.attachmentImageView);
 
         binding.attachmentCardView.setVisibility(VISIBLE);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+
+        if (requestCode == PERMISSIONS_REQUEST_EXTERNAL_STORAGE) {
+
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                getImageFromGallery();
+            }
+
+            //TODO else display info that we're not able to grab a photo
+        }
     }
 }
