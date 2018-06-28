@@ -128,6 +128,8 @@ public class NoteActivity extends AppCompatActivity {
 
         if (!TextUtils.isEmpty(noteModel.getImageBase64())) {
             displayImage(noteModel);
+        } else {
+            binding.imageView.setVisibility(GONE);
         }
     }
 
