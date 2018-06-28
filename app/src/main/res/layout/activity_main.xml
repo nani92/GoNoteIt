@@ -39,6 +39,7 @@
                             android:layout_height="match_parent"
                             android:layout_gravity="left"
                             android:adjustViewBounds="true"
+                            android:contentDescription="@null"
                             android:cropToPadding="false"
                             android:paddingBottom="@dimen/very_small_margin"
                             android:paddingTop="@dimen/very_small_margin"

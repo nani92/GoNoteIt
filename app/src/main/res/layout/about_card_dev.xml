@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools">
+<layout
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
     <android.support.constraint.ConstraintLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/constraintLayout"
@@ -39,6 +41,7 @@
             android:id="@+id/webImageView"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:contentDescription="@string/content_description_home_page"
             android:paddingBottom="@dimen/base_margin"
             android:paddingTop="@dimen/base_margin"
             android:src="@drawable/ic_grid_world"
@@ -51,6 +54,7 @@
             android:id="@+id/playstoreImageView"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:contentDescription="@string/content_description_play_store"
             android:paddingBottom="@dimen/base_margin"
             android:paddingTop="@dimen/base_margin"
             android:src="@drawable/ic_playstore"

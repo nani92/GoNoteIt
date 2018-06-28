@@ -28,6 +28,8 @@
     <string name="error_with_capture_image">Couldn\'t capture your image.</string>
     <string name="error_image_not_found">Image not found</string>
     <string name="update_note">Update Note</string>
+    <string name="content_description_add_image">Add image</string>
+    <string name="content_description_delete_image">Delete image</string>
 
     <!--Image descriptions-->
     <string name="content_description_application_logo">Go Note It logo</string>
@@ -82,4 +84,7 @@
     <string name="repo_about_title">Repository</string>
     <string name="repo_about">Source code for mobile app is available on Github</string>
     <string name="repo_github">https://github.com/nani92/GoNoteIt</string>
+    <string name="content_description_home_page">Home page</string>
+    <string name="content_description_play_store">Playstore</string>
+    <string name="content_description_github_page">Github</string>
 </resources>
