@@ -145,6 +145,11 @@ public class CreateActivity extends AppCompatActivity {
         binding.addImageButton.setOnClickListener(v ->
                 getImageFromGallery()
         );
+
+        binding.removeImageButton.setOnClickListener(v -> {
+            binding.attachmentCardView.setVisibility(View.GONE);
+            binding.attachmentImageView.setImageDrawable(null);
+        });
     }
 
     private void trackCreateNoteClick() {
