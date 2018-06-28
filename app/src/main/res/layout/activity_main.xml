@@ -31,13 +31,13 @@
                     <FrameLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:paddingRight="@dimen/base_margin">
+                        android:paddingEnd="@dimen/base_margin">
 
                         <ImageView
                             android:id="@+id/titleImageView"
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
-                            android:layout_gravity="left"
+                            android:layout_gravity="start"
                             android:adjustViewBounds="true"
                             android:contentDescription="@null"
                             android:cropToPadding="false"
@@ -50,7 +50,7 @@
                             android:id="@+id/progressBar"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="right"
+                            android:layout_gravity="end"
                             android:visibility="gone"
                             tools:visibility="visible"/>
                     </FrameLayout>

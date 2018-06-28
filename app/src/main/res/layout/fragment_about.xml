@@ -16,8 +16,8 @@
             android:layout_height="wrap_content"
             android:animateLayoutChanges="true"
             android:paddingBottom="@dimen/base_margin"
-            android:paddingLeft="@dimen/base_margin"
-            android:paddingRight="@dimen/base_margin"
+            android:paddingStart="@dimen/base_margin"
+            android:paddingEnd="@dimen/base_margin"
             android:paddingTop="?android:attr/actionBarSize">
 
             <android.support.v7.widget.AppCompatImageView

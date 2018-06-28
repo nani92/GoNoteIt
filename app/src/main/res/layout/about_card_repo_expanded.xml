@@ -34,7 +34,7 @@
             android:id="@+id/contentTextView"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/base_margin"
+            android:layout_marginStart="@dimen/base_margin"
             android:text="@string/repo_about"
             android:textSize="@dimen/about_content_text_size"
             app:layout_constraintLeft_toRightOf="@id/imageGuideline"

@@ -32,7 +32,7 @@
                 android:id="@+id/noteTitleTextView"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/base_margin"
+                android:layout_marginStart="@dimen/base_margin"
                 android:ellipsize="end"
                 android:maxLines="@integer/list_note_title_max_lines"
                 android:textSize="@dimen/note_title_text_size"
