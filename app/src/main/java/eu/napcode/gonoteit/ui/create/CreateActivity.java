@@ -6,6 +6,7 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.databinding.DataBindingUtil;
+import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -71,7 +72,9 @@ public class CreateActivity extends AppCompatActivity {
 
     private ActivityCreateBinding binding;
     private CreateViewModel viewModel;
-    private int PERMISSIONS_REQUEST_EXTERNAL_STORAGE = 303;
+
+    private static int PERMISSIONS_REQUEST_EXTERNAL_STORAGE = 303;
+    private static String IMAGE_STATE_KEY = "image";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -87,6 +90,10 @@ public class CreateActivity extends AppCompatActivity {
 
         setupAnimations();
         setupViews();
+
+        if (savedInstanceState != null) {
+            displaySavedImage(savedInstanceState);
+        }
 
         if (isInEditMode()) {
             getNoteToEdit();
@@ -170,6 +177,19 @@ public class CreateActivity extends AppCompatActivity {
         //TODO add rationale when needed
         ActivityCompat.requestPermissions(this,
                 new String[] {Manifest.permission.WRITE_EXTERNAL_STORAGE}, PERMISSIONS_REQUEST_EXTERNAL_STORAGE);
+    }
+
+    private void displaySavedImage(Bundle savedInstanceState) {
+        Bitmap bitmap = savedInstanceState.getParcelable(IMAGE_STATE_KEY);
+
+        if (bitmap == null) {
+            return;
+        }
+
+        Glide.with(this)
+                .load(bitmap)
+                .into(binding.attachmentImageView);
+        binding.attachmentCardView.setVisibility(VISIBLE);
     }
 
     private boolean isInEditMode() {
@@ -329,4 +349,22 @@ public class CreateActivity extends AppCompatActivity {
             //TODO else display info that we're not able to grab a photo
         }
     }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        saveBitmapToOutState(outState);
+
+        super.onSaveInstanceState(outState);
+    }
+
+    private void saveBitmapToOutState(Bundle outState) {
+        BitmapDrawable bitmapDrawable = (BitmapDrawable) binding.attachmentImageView.getDrawable();
+
+        if (bitmapDrawable == null) {
+            return;
+        }
+
+        outState.putParcelable(IMAGE_STATE_KEY, bitmapDrawable.getBitmap());
+    }
+
 }
