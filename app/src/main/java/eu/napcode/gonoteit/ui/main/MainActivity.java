@@ -71,7 +71,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setupDrawer();
         setupUser();
 
-        displayFirstScreen();
+        if (savedInstanceState == null) {
+            displayFirstScreen();
+        }
 
         trackScreen();
     }
