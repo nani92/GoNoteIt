@@ -1,3 +1,11 @@
+# Nanodegree Capstone
+This branch shows state of application uploaded as Capstone Project to Android Developer Nanodegree.
+There were some restrictions and requirements for Capstone Project:
+* application written solely in Java
+* use AsyncTask <a href="https://github.com/nani92/GoNoteIt/blob/master_nanodegree/app/src/main/java/eu/napcode/gonoteit/ui/about/GithubDescriptionDownloadAsyncTask.java">example here</a>
+* at least two chosen Google services: <a href="https://github.com/nani92/GoNoteIt/blob/master_nanodegree/app/src/main/java/eu/napcode/gonoteit/ui/favorites/FavoritesFragment.java">AdMob</a> and <a href="https://github.com/nani92/GoNoteIt/blob/master_nanodegree/app/src/main/java/eu/napcode/gonoteit/ui/create/CreateActivity.java">Analytics</a>
+* <a href="https://github.com/nani92/GoNoteIt/blob/master_nanodegree/app/build.gradle">Gradle singng configuration</a> and <a href="https://github.com/nani92/GoNoteIt/blob/master_nanodegree/test_gonoteit.jks">Keystore file </a>
+
 # GoNoteIt
 
 <img src="https://raw.githubusercontent.com/nani92/GoNoteIt/gh-pages/logo-primaryColor.png"/>
