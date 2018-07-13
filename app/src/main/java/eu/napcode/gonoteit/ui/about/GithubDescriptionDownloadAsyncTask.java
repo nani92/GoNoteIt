@@ -22,7 +22,7 @@ public class GithubDescriptionDownloadAsyncTask extends AsyncTask<String, Void, 
 
     private static String GITHUB_URL = "https://api.github.com/repos/nani92/gonoteit";
 
-    private GithubDescriptionListener githubDescriptionListener;
+    private static GithubDescriptionListener githubDescriptionListener;
 
     @Override
     protected String doInBackground(String... strings) {
