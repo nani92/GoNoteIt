@@ -2,6 +2,9 @@
 
 <img src="https://raw.githubusercontent.com/nani92/GoNoteIt/gh-pages/logo-primaryColor.png"/>
 
+## Nanodegree
+To see nanodegree version of project go to <a href="https://github.com/nani92/GoNoteIt/blob/master_nanodegree/test_gonoteit.jks">`master_nanodegree`</a> branch.
+
 ## About
 *GoNoteIt* is an application to take and share notes. 
 In this repository you can find Android application for GoNoteIt which 
