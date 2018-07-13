@@ -41,11 +41,6 @@
             android:theme="@style/AppTheme.Transparent">
         </activity>
 
-        <provider
-            android:name=".provider.NotesContentProvider"
-            android:authorities="eu.napcode.gonoteit.provider"
-            android:exported="false"/>
-
         <receiver
             android:name=".ui.widget.AddNoteWidgetProvider"
             android:icon="@mipmap/ic_launcher"
