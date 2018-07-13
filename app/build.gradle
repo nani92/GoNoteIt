@@ -15,7 +15,6 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-        buildConfigField "String", "ADMOB_ID", localProperties['admob']
     }
 
     signingConfigs {
@@ -115,10 +114,6 @@ dependencies {
     //glide
     implementation "com.github.bumptech.glide:glide:${glideVersion}"
     annotationProcessor "com.github.bumptech.glide:compiler:${glideVersion}"
-
-    //play services
-    implementation 'com.google.android.gms:play-services-analytics:15.0.2'
-    implementation 'com.google.android.gms:play-services-ads:15.0.1'
 
     //pagelist
     implementation "android.arch.paging:runtime:${pageVersion}"

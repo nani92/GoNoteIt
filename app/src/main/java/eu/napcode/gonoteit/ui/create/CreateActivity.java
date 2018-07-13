@@ -23,8 +23,6 @@ import android.view.View;
 import android.view.WindowManager;
 
 import com.bumptech.glide.Glide;
-import com.google.android.gms.analytics.HitBuilders;
-import com.google.android.gms.analytics.Tracker;
 
 import java.io.File;
 import java.util.List;
@@ -42,7 +40,6 @@ import eu.napcode.gonoteit.repository.Resource;
 import eu.napcode.gonoteit.utils.GlideBase64Loader;
 import eu.napcode.gonoteit.utils.ImageUtils;
 import eu.napcode.gonoteit.utils.RevealActivityHelper;
-import eu.napcode.gonoteit.utils.TrackerUtils;
 import pl.aprilapps.easyphotopicker.DefaultCallback;
 import pl.aprilapps.easyphotopicker.EasyImage;
 
@@ -60,12 +57,6 @@ public class CreateActivity extends AppCompatActivity {
 
     @Inject
     ViewModelFactory viewModelFactory;
-
-    @Inject
-    Tracker tracker;
-
-    @Inject
-    TrackerUtils trackerUtils;
 
     @Inject
     GlideBase64Loader glideBase64Loader;
@@ -98,8 +89,6 @@ public class CreateActivity extends AppCompatActivity {
         if (isInEditMode()) {
             getNoteToEdit();
         }
-
-        trackScreen();
     }
 
     private void setupAnimations() {
@@ -138,7 +127,6 @@ public class CreateActivity extends AppCompatActivity {
         binding.createNoteButton.setOnClickListener(v -> {
                     LiveData<Resource> createResource = viewModel.createNote(getNoteModelFromInputs());
                     createResource.observe(this, resource -> processResponseCreateNote(resource));
-                    trackCreateNoteClick();
                 }
         );
 
@@ -150,13 +138,6 @@ public class CreateActivity extends AppCompatActivity {
             binding.attachmentCardView.setVisibility(View.GONE);
             binding.attachmentImageView.setImageDrawable(null);
         });
-    }
-
-    private void trackCreateNoteClick() {
-        tracker.send(new HitBuilders.EventBuilder()
-                .setCategory(trackerUtils.getCategoryAction())
-                .setAction(trackerUtils.getActionCreateNote())
-                .build());
     }
 
     private void getImageFromGallery() {
@@ -279,11 +260,6 @@ public class CreateActivity extends AppCompatActivity {
         }
 
         Snackbar.make(binding.constraintLayout, message, Snackbar.LENGTH_LONG).show();
-    }
-
-    private void trackScreen() {
-        tracker.setScreenName(trackerUtils.getCreateNoteScreenName());
-        tracker.send(new HitBuilders.ScreenViewBuilder().build());
     }
 
     private NoteModel getNoteModelFromInputs() {

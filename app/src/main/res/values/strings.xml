@@ -60,17 +60,6 @@
     <!--Favs-->
     <string name="fav_not_implemented">Favorites are not implemented yet.\nStay tuned.</string>
 
-    <!--Ad id-->
-    <string name="add_id">ca-app-pub-3940256099942544/1033173712</string>
-
-    <!--Tracker-->
-    <string name="tracker_main_screen">Main Screen</string>
-    <string name="tracker_create_note_screen">Create note screen</string>
-    <string name="tracker_category_action">Action</string>
-    <string name="tracker_action_create_note">Create Note</string>
-    <string name="tracker_login_screen">Login Screen</string>
-    <string name="tracker_displaying_notes_screen">Displaying notes</string>
-
     <!--About-->
     <string name="gonoteit_about_title">About</string>
     <string name="gonoteit_about">GoNote.it is an application to take and share notes.

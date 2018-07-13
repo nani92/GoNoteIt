@@ -19,9 +19,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
 
-import com.google.android.gms.analytics.HitBuilders;
-import com.google.android.gms.analytics.Tracker;
-
 import javax.inject.Inject;
 
 import dagger.android.support.AndroidSupportInjection;
@@ -32,10 +29,8 @@ import eu.napcode.gonoteit.di.modules.viewmodel.ViewModelFactory;
 import eu.napcode.gonoteit.data.results.NotesResult;
 import eu.napcode.gonoteit.model.note.NoteModel;
 import eu.napcode.gonoteit.repository.Resource;
-import eu.napcode.gonoteit.repository.Resource.Status;
 import eu.napcode.gonoteit.ui.create.CreateActivity;
 import eu.napcode.gonoteit.ui.note.NoteActivity;
-import eu.napcode.gonoteit.utils.TrackerUtils;
 
 import static android.content.res.Configuration.ORIENTATION_LANDSCAPE;
 import static eu.napcode.gonoteit.repository.Resource.Status.ERROR;
@@ -48,12 +43,6 @@ public class NotesFragment extends Fragment implements NotesAdapter.NoteListener
 
     @Inject
     ViewModelFactory viewModelFactory;
-
-    @Inject
-    Tracker tracker;
-
-    @Inject
-    TrackerUtils trackerUtils;
 
     private FragmentNotesBinding binding;
 
@@ -89,8 +78,6 @@ public class NotesFragment extends Fragment implements NotesAdapter.NoteListener
 
         setupViews();
         subscribeToNotes();
-
-        trackScreen();
     }
 
     private void subscribeToNotes() {
@@ -168,11 +155,6 @@ public class NotesFragment extends Fragment implements NotesAdapter.NoteListener
         } else  {
             this.binding.recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         }
-    }
-
-    private void trackScreen() {
-        tracker.setScreenName(trackerUtils.getDisplayingNotesScreenName());
-        tracker.send(new HitBuilders.ScreenViewBuilder().build());
     }
 
     @Override

@@ -14,9 +14,6 @@ import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 
-import com.google.android.gms.analytics.HitBuilders;
-import com.google.android.gms.analytics.Tracker;
-
 import javax.inject.Inject;
 
 import dagger.android.AndroidInjection;
@@ -26,18 +23,11 @@ import eu.napcode.gonoteit.databinding.ActivityLoginBinding;
 import eu.napcode.gonoteit.di.modules.viewmodel.ViewModelFactory;
 import eu.napcode.gonoteit.repository.Resource;
 import eu.napcode.gonoteit.ui.main.MainActivity;
-import eu.napcode.gonoteit.utils.TrackerUtils;
 
 public class LoginActivity extends AppCompatActivity {
 
     @Inject
     ViewModelFactory viewModelFactory;
-
-    @Inject
-    Tracker tracker;
-
-    @Inject
-    TrackerUtils trackerUtils;
 
     private LoginViewModel viewModel;
     private ActivityLoginBinding binding;
@@ -51,9 +41,6 @@ public class LoginActivity extends AppCompatActivity {
 
         AndroidInjection.inject(this);
         setupViewModel();
-
-        tracker.setScreenName(trackerUtils.getLoginScreenName());
-        tracker.send(new HitBuilders.ScreenViewBuilder().build());
     }
 
     private void setupInputFields() {

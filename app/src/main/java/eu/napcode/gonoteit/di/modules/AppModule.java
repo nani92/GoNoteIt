@@ -4,8 +4,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import com.apollographql.apollo.ApolloClient;
-import com.google.android.gms.analytics.GoogleAnalytics;
-import com.google.android.gms.analytics.Tracker;
 
 import javax.inject.Singleton;
 
@@ -20,7 +18,6 @@ import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 
 import static android.content.Context.MODE_PRIVATE;
-import static eu.napcode.gonoteit.R.xml.global_tracker;
 import static eu.napcode.gonoteit.api.ApiConsts.API_URL;
 import static eu.napcode.gonoteit.type.CustomType.GENERICSCALAR;
 import static eu.napcode.gonoteit.type.CustomType.UUID;
@@ -65,11 +62,5 @@ public class AppModule {
     @Provides
     NetworkHelper providesNetworkHelper(Context context) {
         return new NetworkHelper(context);
-    }
-
-    @Singleton
-    @Provides
-    Tracker providesTracker(Context context) {
-        return GoogleAnalytics.getInstance(context).newTracker(global_tracker);
     }
 }

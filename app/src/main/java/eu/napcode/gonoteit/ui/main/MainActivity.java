@@ -10,7 +10,6 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -19,9 +18,6 @@ import android.transition.Slide;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
-
-import com.google.android.gms.analytics.HitBuilders;
-import com.google.android.gms.analytics.Tracker;
 
 import javax.inject.Inject;
 
@@ -35,7 +31,6 @@ import eu.napcode.gonoteit.ui.about.AboutFragment;
 import eu.napcode.gonoteit.ui.favorites.FavoritesFragment;
 import eu.napcode.gonoteit.ui.login.LoginActivity;
 import eu.napcode.gonoteit.ui.notes.NotesFragment;
-import eu.napcode.gonoteit.utils.TrackerUtils;
 
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
@@ -44,12 +39,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Inject
     ViewModelFactory viewModelFactory;
-
-    @Inject
-    Tracker tracker;
-
-    @Inject
-    TrackerUtils trackerUtils;
 
     private MainViewModel mainViewModel;
     private ActivityMainBinding binding;
@@ -74,13 +63,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (savedInstanceState == null) {
             displayFirstScreen();
         }
-
-        trackScreen();
-    }
-
-    private void trackScreen() {
-        tracker.setScreenName(trackerUtils.getMainScreenName());
-        tracker.send(new HitBuilders.ScreenViewBuilder().build());
     }
 
     private void setupViewModel() {
