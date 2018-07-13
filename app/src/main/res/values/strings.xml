@@ -19,6 +19,7 @@
 
     <!--Main Screen-->
     <string name="logout_message">Are you sure you want to log out?</string>
+    <string name="content_description_add_note">Add note</string>
 
     <!--Create note screen-->
     <string name="title">Note Title</string>
@@ -87,4 +88,6 @@
     <string name="content_description_home_page">Home page</string>
     <string name="content_description_play_store">Playstore</string>
     <string name="content_description_github_page">Github</string>
+
+    <!--not clean string below :D -->
 </resources>
