@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
 apply plugin: 'com.apollographql.android'
 
 def localPropertiesFile = rootProject.file("local.properties")
@@ -117,9 +118,15 @@ dependencies {
 
     //pagelist
     implementation "android.arch.paging:runtime:${pageVersion}"
+
+    //kotlin
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 }
 
 apollo {
     customTypeMapping['data'] = "eu.napcode.gonoteit.api.Note"
     customTypeMapping['uuid'] = "java.lang.String"
+}
+repositories {
+    mavenCentral()
 }
