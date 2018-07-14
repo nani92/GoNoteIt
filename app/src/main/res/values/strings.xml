@@ -77,6 +77,7 @@
     <string name="content_description_home_page">Home page</string>
     <string name="content_description_play_store">Playstore</string>
     <string name="content_description_github_page">Github</string>
+    <string name="permisions">permisions</string>
 
     <!--not clean string below :D -->
 </resources>

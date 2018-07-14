@@ -18,6 +18,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.transition.Explode;
 import android.transition.Slide;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
@@ -217,6 +218,12 @@ public class CreateActivity extends AppCompatActivity {
             return true;
         }
 
+        if (item.getItemId() == R.id.perms) {
+            //todo display dialog with perm settings
+
+            return true;
+        }
+
         return super.onOptionsItemSelected(item);
     }
 
@@ -348,4 +355,10 @@ public class CreateActivity extends AppCompatActivity {
         outState.putParcelable(IMAGE_STATE_KEY, bitmapDrawable.getBitmap());
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.create_menu, menu);
+
+        return true;
+    }
 }
