@@ -4,14 +4,17 @@ import android.app.AlertDialog
 import android.app.Dialog
 import android.os.Bundle
 import android.support.v4.app.DialogFragment
+import android.view.View
+import android.widget.RadioGroup
 import eu.napcode.gonoteit.R
 import eu.napcode.gonoteit.model.note.NoteModel
+import eu.napcode.gonoteit.model.note.NoteModel.ReadPerms.*
 
 class PermissionsDialogFragment : DialogFragment() {
 
     companion object {
-        private val ARG_READ_PERMS = "read perms"
-        private val ARG_WRITE_PERMS = "write perms"
+        private const val ARG_READ_PERMS = "read perms"
+        private const val ARG_WRITE_PERMS = "write perms"
 
         fun newInstance(readPerms: NoteModel.ReadPerms, writePerms: NoteModel.WritePerms): PermissionsDialogFragment {
             val args = Bundle()
@@ -27,6 +30,7 @@ class PermissionsDialogFragment : DialogFragment() {
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         var view = activity!!.layoutInflater.inflate(R.layout.dialog_privacy, null)
+        displayReadPerms(view)
 
         return AlertDialog.Builder(activity)
                 .setTitle(R.string.permissions_dialog_title)
@@ -34,4 +38,17 @@ class PermissionsDialogFragment : DialogFragment() {
                 .setView(view)
                 .create()
     }
+
+    private fun displayReadPerms(view: View) {
+        var readRadioGroup = view.findViewById<RadioGroup>(R.id.readPermsRadioGroup)
+
+        when (getReadPerms()) {
+            PUBLIC -> readRadioGroup.check(R.id.read_public_radio_button)
+            PRIVATE -> readRadioGroup.check(R.id.read_private_radio_button)
+            VIA_LINK -> readRadioGroup.check(R.id.read_via_link_radio_button)
+        }
+    }
+
+    private fun getReadPerms() = arguments!!.getSerializable(ARG_READ_PERMS) as NoteModel.ReadPerms
+
 }

@@ -25,16 +25,19 @@
         app:layout_constraintTop_toTopOf="@id/readPermsTextView">
 
         <RadioButton
+            android:id="@+id/read_public_radio_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/perms_read_public"/>
 
         <RadioButton
+            android:id="@+id/read_private_radio_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/perms_read_private"/>
 
         <RadioButton
+            android:id="@+id/read_via_link_radio_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/perms_read_via_link"/>
