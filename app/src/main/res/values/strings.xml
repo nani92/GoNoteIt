@@ -87,15 +87,5 @@
     <string name="perms_read_via_link">Via Link</string>
     <string name="perms_write_owner">Only Owner</string>
     <string name="perms_write_everyone">Everyone</string>
-
-    <string-array name="perms_read_array">
-        <item>@string/perms_read_public</item>
-        <item>@string/perms_read_private</item>
-        <item>@string/perms_read_via_link</item>
-    </string-array>
-
-    <string-array name="perms_write_array">
-        <item>@string/perms_write_owner</item>
-        <item>@string/perms_write_everyone</item>
-    </string-array>
+    <string name="permissions_dialog_title">Choose permissions for your note</string>
 </resources>

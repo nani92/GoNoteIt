@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.NavUtils;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -219,7 +220,9 @@ public class CreateActivity extends AppCompatActivity {
         }
 
         if (item.getItemId() == R.id.perms) {
-            //todo display dialog with perm settings
+            PermissionsDialogFragment dialog = new PermissionsDialogFragment();
+            dialog.setStyle(DialogFragment.STYLE_NORMAL, R.style.CustomDialog);
+            dialog.show(getSupportFragmentManager(), "");
 
             return true;
         }
