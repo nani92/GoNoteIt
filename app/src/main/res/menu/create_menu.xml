@@ -6,6 +6,6 @@
     <item
         android:id="@+id/perms"
         android:icon="@drawable/ic_perms"
-        android:title="@string/permisions"
+        android:title="@string/permissions"
         app:showAsAction="always"/>
 </menu>
