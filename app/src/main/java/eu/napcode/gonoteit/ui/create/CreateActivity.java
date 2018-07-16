@@ -220,7 +220,7 @@ public class CreateActivity extends AppCompatActivity {
         }
 
         if (item.getItemId() == R.id.perms) {
-            PermissionsDialogFragment dialog = new PermissionsDialogFragment();
+            PermissionsDialogFragment dialog = PermissionsDialogFragment.Companion.newInstance(NoteModel.ReadPerms.PRIVATE, NoteModel.WritePerms.EVERYONE);
             dialog.setStyle(DialogFragment.STYLE_NORMAL, R.style.CustomDialog);
             dialog.show(getSupportFragmentManager(), "");
 
