@@ -69,11 +69,13 @@
         app:layout_constraintTop_toTopOf="@id/writePermsTextView">
 
         <RadioButton
+            android:id="@+id/write_everyone_radio_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/perms_write_everyone"/>
 
         <RadioButton
+            android:id="@+id/write_only_owner_radio_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/perms_write_owner"/>

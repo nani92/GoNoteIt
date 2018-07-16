@@ -8,7 +8,11 @@ import android.view.View
 import android.widget.RadioGroup
 import eu.napcode.gonoteit.R
 import eu.napcode.gonoteit.model.note.NoteModel
+import eu.napcode.gonoteit.model.note.NoteModel.ReadPerms
 import eu.napcode.gonoteit.model.note.NoteModel.ReadPerms.*
+import eu.napcode.gonoteit.model.note.NoteModel.WritePerms
+import eu.napcode.gonoteit.model.note.NoteModel.WritePerms.EVERYONE
+import eu.napcode.gonoteit.model.note.NoteModel.WritePerms.ONLY_OWNER
 
 class PermissionsDialogFragment : DialogFragment() {
 
@@ -16,7 +20,7 @@ class PermissionsDialogFragment : DialogFragment() {
         private const val ARG_READ_PERMS = "read perms"
         private const val ARG_WRITE_PERMS = "write perms"
 
-        fun newInstance(readPerms: NoteModel.ReadPerms, writePerms: NoteModel.WritePerms): PermissionsDialogFragment {
+        fun newInstance(readPerms: ReadPerms, writePerms: WritePerms): PermissionsDialogFragment {
             val args = Bundle()
             args.putSerializable(ARG_READ_PERMS, readPerms)
             args.putSerializable(ARG_WRITE_PERMS, writePerms)
@@ -31,6 +35,7 @@ class PermissionsDialogFragment : DialogFragment() {
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         var view = activity!!.layoutInflater.inflate(R.layout.dialog_privacy, null)
         displayReadPerms(view)
+        displayWritePerms(view)
 
         return AlertDialog.Builder(activity)
                 .setTitle(R.string.permissions_dialog_title)
@@ -49,6 +54,16 @@ class PermissionsDialogFragment : DialogFragment() {
         }
     }
 
-    private fun getReadPerms() = arguments!!.getSerializable(ARG_READ_PERMS) as NoteModel.ReadPerms
+    private fun getReadPerms() = arguments!!.getSerializable(ARG_READ_PERMS) as ReadPerms
 
+    private fun displayWritePerms(view: View) {
+        var readRadioGroup = view.findViewById<RadioGroup>(R.id.writePermsRadioGroup)
+
+        when (getWritePerms()) {
+            EVERYONE -> readRadioGroup.check(R.id.write_everyone_radio_button)
+            ONLY_OWNER -> readRadioGroup.check(R.id.write_only_owner_radio_button)
+        }
+    }
+
+    private fun getWritePerms() = arguments!!.getSerializable(ARG_WRITE_PERMS) as WritePerms
 }
