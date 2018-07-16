@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="@dimen/base_margin">
+
+    <TextView
+        android:id="@+id/readPermsTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/perms_read"
+        android:textSize="@dimen/base_text_size"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <Spinner
+        android:id="@+id/readPermsSpinner"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/base_margin"
+        app:layout_constraintBottom_toBottomOf="@id/readPermsTextView"
+        app:layout_constraintLeft_toRightOf="@id/labelBarrier"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@id/readPermsTextView"/>
+
+    <TextView
+        android:id="@+id/writePermsTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/perms_write"
+        android:textSize="@dimen/base_text_size"
+        app:layout_constraintTop_toBottomOf="@id/readPermsTextView"/>
+
+    <Spinner
+        android:id="@+id/writePermsSpinner"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/base_margin"
+        app:layout_constraintBottom_toBottomOf="@id/writePermsTextView"
+        app:layout_constraintLeft_toRightOf="@id/labelBarrier"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@id/writePermsTextView"/>
+
+    <android.support.constraint.Barrier
+        android:id="@+id/labelBarrier"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierDirection="right"
+        app:constraint_referenced_ids="readPermsTextView,writePermsTextView"/>
+
+
+</android.support.constraint.ConstraintLayout>
