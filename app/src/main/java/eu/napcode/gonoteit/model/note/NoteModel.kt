@@ -10,7 +10,10 @@ open class NoteModel {
     var id: Long? = null
     var imageBase64: String? = null
     var updatedAt: Long? = null
+    var readPerms: ReadPerms = ReadPerms.PRIVATE
+    var writePerms: WritePerms = WritePerms.ONLY_OWNER
 
+    //TODO check if could be removed
     constructor()
 
     constructor(noteEntity: NoteEntity) {
