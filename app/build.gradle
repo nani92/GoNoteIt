@@ -1,6 +1,7 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'com.apollographql.android'
+apply plugin: 'kotlin-kapt'
 
 def localPropertiesFile = rootProject.file("local.properties")
 def localProperties = new Properties()
@@ -71,12 +72,15 @@ dependencies {
     implementation "android.arch.persistence.room:runtime:${roomVersion}"
     implementation "android.arch.persistence.room:rxjava2:${roomVersion}"
     annotationProcessor "android.arch.persistence.room:compiler:${roomVersion}"
+    kapt "android.arch.persistence.room:compiler:${roomVersion}"
 
     //dagger
     implementation "com.google.dagger:dagger-android:${daggerVersion}"
     implementation "com.google.dagger:dagger-android-support:${daggerVersion}"
     annotationProcessor "com.google.dagger:dagger-android-processor:${daggerVersion}"
     annotationProcessor "com.google.dagger:dagger-compiler:${daggerVersion}"
+    kapt "com.google.dagger:dagger-compiler:$daggerVersion"
+    kapt "com.google.dagger:dagger-android-processor:$daggerVersion"
 
     //graphQL
     implementation "com.apollographql.apollo:apollo-runtime:${graphQLVersion}"

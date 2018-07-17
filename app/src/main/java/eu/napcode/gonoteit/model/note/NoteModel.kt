@@ -2,8 +2,7 @@ package eu.napcode.gonoteit.model.note
 
 import eu.napcode.gonoteit.dao.NoteEntity
 
-open class NoteModel {
-
+open class NoteModel (){
     var uuid: String? = null
     var title: String? = null
     var content: String? = null
@@ -13,16 +12,14 @@ open class NoteModel {
     var readPerms: ReadPerms = ReadPerms.PRIVATE
     var writePerms: WritePerms = WritePerms.ONLY_OWNER
 
-    //TODO check if could be removed
-    constructor()
 
-    constructor(noteEntity: NoteEntity) {
-        this.uuid = noteEntity.uuid
-        this.title = noteEntity.title
-        this.content = noteEntity.content
-        this.id = noteEntity.id
-        this.imageBase64 = noteEntity.imageBase64
-        this.updatedAt = noteEntity.updatedAt
+    constructor(noteEntity: NoteEntity): this() {
+        uuid = noteEntity.uuid
+        title = noteEntity.title
+        content = noteEntity.content
+        id = noteEntity.id
+        imageBase64 = noteEntity.imageBase64
+        updatedAt = noteEntity.updatedAt
     }
 
     override fun equals(obj: Any?): Boolean {

@@ -7,29 +7,24 @@ import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.OnConflictStrategy;
 import android.arch.persistence.room.Query;
 
-import static eu.napcode.gonoteit.dao.NoteEntity.COLUMN_ID;
-import static eu.napcode.gonoteit.dao.NoteEntity.COLUMN_UPDATED_AT;
-import static eu.napcode.gonoteit.dao.NoteEntity.COLUMN_UUID;
-import static eu.napcode.gonoteit.dao.NoteEntity.TABLE_NAME;
-
 @Dao
 public interface NoteDao {
 
-    @Query("SELECT * FROM " + TABLE_NAME + " ORDER BY " + COLUMN_UPDATED_AT + " DESC")
+    @Query("SELECT * FROM " + NoteEntity.TABLE_NAME + " ORDER BY " + NoteEntity.COLUMN_UPDATED_AT + " DESC")
     DataSource.Factory<Integer, NoteEntity> getAllNoteEntities();
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertNote(NoteEntity noteEntity);
 
-    @Query("DELETE FROM " + TABLE_NAME)
+    @Query("DELETE FROM " + NoteEntity.TABLE_NAME)
     void removeAll();
 
-    @Query("DELETE FROM " + TABLE_NAME + " WHERE " + COLUMN_ID + " = :id")
+    @Query("DELETE FROM " + NoteEntity.TABLE_NAME + " WHERE " + NoteEntity.COLUMN_ID + " = :id")
     void removeNote(Long id);
 
-    @Query("DELETE FROM " + TABLE_NAME + " WHERE " + COLUMN_UUID + " = :id")
+    @Query("DELETE FROM " + NoteEntity.TABLE_NAME + " WHERE " + NoteEntity.COLUMN_UUID + " = :id")
     void removeNoteByUuid(String id);
 
-    @Query("SELECT * FROM " + TABLE_NAME +" WHERE " + COLUMN_ID + " = :id")
+    @Query("SELECT * FROM " + NoteEntity.TABLE_NAME +" WHERE " + NoteEntity.COLUMN_ID + " = :id")
     LiveData<NoteEntity> getNoteById(Long id);
 }
