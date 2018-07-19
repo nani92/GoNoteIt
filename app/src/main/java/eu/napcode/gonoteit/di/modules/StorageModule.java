@@ -15,7 +15,7 @@ public class StorageModule {
 
     @Singleton
     @Provides
-    NotesDataBase bookDataBase(Context context) {
+    NotesDataBase noteDataBase(Context context) {
         return Room
                 .databaseBuilder(context, NotesDataBase.class, NotesDataBase.NOTES_DATA_BASE_NAME)
                 .fallbackToDestructiveMigration()
@@ -25,6 +25,6 @@ public class StorageModule {
     @Singleton
     @Provides
     NoteDao noteDao(Context context) {
-        return bookDataBase(context).noteDao();
+        return noteDataBase(context).noteDao();
     }
 }

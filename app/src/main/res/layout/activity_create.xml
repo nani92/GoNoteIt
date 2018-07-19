@@ -16,6 +16,18 @@
             android:background="@android:color/background_light"
             android:padding="@dimen/base_margin">
 
+            <TextView
+                android:id="@+id/permsExplanationTextView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/ic_perms"
+                android:drawablePadding="@dimen/small_margin"
+                android:drawableTint="@color/colorPrimary"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/createNoteButton"
+                tools:text="@tools:sample/lorem"/>
+
             <EditText
                 android:id="@+id/titleEditText"
                 android:layout_width="0dp"

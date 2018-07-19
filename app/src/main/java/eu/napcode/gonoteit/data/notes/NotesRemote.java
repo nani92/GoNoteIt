@@ -59,7 +59,7 @@ public class NotesRemote {
         Note note = new Note(noteModel);
 
         return apolloRxHelper
-                .from(apolloClient.mutate(new CreateNoteMutation(note.getNoteDataString())))
+                .from(apolloClient.mutate(new CreateNoteMutation(note.getNoteDataString(), noteModel.getReadAccess(), noteModel.getWriteAccess())))
                 .subscribeOn(rxSchedulers.io())
                 .observeOn(rxSchedulers.io());
     }
@@ -83,7 +83,7 @@ public class NotesRemote {
         Note note = new Note(noteModel);
 
         return apolloRxHelper
-                .from(apolloClient.mutate(new UpdateNoteMutation(noteModel.getId(), note.getNoteDataString())))
+                .from(apolloClient.mutate(new UpdateNoteMutation(noteModel.getId(), note.getNoteDataString(), noteModel.getReadAccess(), noteModel.getWriteAccess())))
                 .subscribeOn(rxSchedulers.io())
                 .observeOn(rxSchedulers.io());
     }

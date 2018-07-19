@@ -4,7 +4,9 @@ query GetNotesQuery {
        data,
        id,
        uuid,
-       updatedAt
+       updatedAt,
+       readAccess,
+       writeAccess
      },
     timestamp
 }
@@ -15,6 +17,8 @@ query GetNoteByIdQuery($id: Int!) {
         data,
         id,
         uuid,
-        updatedAt
+        updatedAt,
+        readAccess,
+        writeAccess
     }
 }

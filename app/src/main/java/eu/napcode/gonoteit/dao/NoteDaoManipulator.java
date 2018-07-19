@@ -24,7 +24,7 @@ public class NoteDaoManipulator {
 
         try {
             noteDao.insertNote(noteEntity);
-            Timber.d("insert note completed %s", noteEntity.id);
+            Timber.d("insert note completed %s", noteEntity.getId());
         } catch (Exception e) {
             Timber.d("insert note exception %s", e.getLocalizedMessage());
         }
