@@ -26,6 +26,8 @@ import android.view.WindowManager;
 
 import com.bumptech.glide.Glide;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.io.File;
 import java.util.List;
 
@@ -53,7 +55,7 @@ import static eu.napcode.gonoteit.repository.Resource.Status.ERROR;
 import static eu.napcode.gonoteit.utils.RevealActivityHelper.REVEAL_X_KEY;
 import static eu.napcode.gonoteit.utils.RevealActivityHelper.REVEAL_Y_KEY;
 
-public class CreateActivity extends AppCompatActivity {
+public class CreateActivity extends AppCompatActivity implements PermissionsDialogFragment.PermissionsDialogListener {
 
     //TODO: add back nav
 
@@ -70,9 +72,9 @@ public class CreateActivity extends AppCompatActivity {
 
     private static int PERMISSIONS_REQUEST_EXTERNAL_STORAGE = 303;
     private static String IMAGE_STATE_KEY = "image";
-    private PermissionsDialogFragment permissionsDialogFragment = PermissionsDialogFragment
-            .Companion
-            .newInstance(ReadAccess.PRIVATE, WriteAccess.ONLY_OWNER);
+
+    private ReadAccess readPermissions = ReadAccess.PRIVATE;
+    private WriteAccess writePermissions = WriteAccess.ONLY_OWNER;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -205,9 +207,8 @@ public class CreateActivity extends AppCompatActivity {
         binding.createNoteButton.setText(R.string.update_note);
         binding.titleEditText.setText(noteModel.getTitle());
         binding.contentEditText.setText(noteModel.getContent());
-        permissionsDialogFragment = PermissionsDialogFragment
-                .Companion
-                .newInstance(noteModel.getReadAccess(), noteModel.getWriteAccess());
+        this.readPermissions = noteModel.getReadAccess();
+        this.writePermissions = noteModel.getWriteAccess();
 
         if (TextUtils.isEmpty(noteModel.getImageBase64()) == false) {
             displayImage(noteModel);
@@ -229,8 +230,11 @@ public class CreateActivity extends AppCompatActivity {
         }
 
         if (item.getItemId() == R.id.perms) {
-            permissionsDialogFragment.setStyle(DialogFragment.STYLE_NORMAL, R.style.CustomDialog);
-            permissionsDialogFragment.show(getSupportFragmentManager(), "");
+            PermissionsDialogFragment dialog = PermissionsDialogFragment
+                    .Companion
+                    .newInstance(readPermissions, writePermissions);
+            dialog.setStyle(DialogFragment.STYLE_NORMAL, R.style.CustomDialog);
+            dialog.show(getSupportFragmentManager(), "");
 
             return true;
         }
@@ -285,6 +289,8 @@ public class CreateActivity extends AppCompatActivity {
         noteModel.setTitle(binding.titleEditText.getText().toString());
         noteModel.setContent(binding.contentEditText.getText().toString());
         setImageForNote(noteModel);
+        noteModel.setReadAccess(readPermissions);
+        noteModel.setWriteAccess(writePermissions);
 
         if (isInEditMode()) {
             noteModel.setId(getNoteToEditId());
@@ -371,5 +377,15 @@ public class CreateActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.create_menu, menu);
 
         return true;
+    }
+
+    @Override
+    public void onChangedReadPerms(@NotNull ReadAccess readAccess) {
+        this.readPermissions = readAccess;
+    }
+
+    @Override
+    public void onChangedWritePerms(@NotNull WriteAccess writeAccess) {
+        this.writePermissions = writeAccess;
     }
 }

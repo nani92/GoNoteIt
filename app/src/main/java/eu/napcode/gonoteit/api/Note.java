@@ -1,6 +1,9 @@
 package eu.napcode.gonoteit.api;
 
+import com.google.gson.ExclusionStrategy;
+import com.google.gson.FieldAttributes;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import eu.napcode.gonoteit.model.note.NoteModel;
 import eu.napcode.gonoteit.model.note.SimpleNoteModel;
@@ -17,8 +20,26 @@ public class Note {
     }
 
     public Note(NoteModel noteModel) {
-        Gson gson = new Gson();
+        Gson gson = new GsonBuilder()
+                .setExclusionStrategies(new NoteModelToJsonExclusionStrategy())
+                .create();
         this.noteDataString = gson.toJson(noteModel);
+    }
+
+    public class NoteModelToJsonExclusionStrategy implements ExclusionStrategy {
+
+        public boolean shouldSkipClass(Class<?> arg0) {
+            return false;
+        }
+
+        public boolean shouldSkipField(FieldAttributes f) {
+
+            return (f.getDeclaringClass() == NoteModel.class && f.getName().equals("id")) ||
+                    (f.getDeclaringClass() == NoteModel.class && f.getName().equals("uuid")) ||
+                    (f.getDeclaringClass() == NoteModel.class && f.getName().equals("readAccess")) ||
+                    (f.getDeclaringClass() == NoteModel.class && f.getName().equals("writeAccess"));
+        }
+
     }
 
     public String getNoteDataString() {

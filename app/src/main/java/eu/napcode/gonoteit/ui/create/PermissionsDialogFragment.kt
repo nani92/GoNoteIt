@@ -33,17 +33,24 @@ class PermissionsDialogFragment : DialogFragment() {
         var view = activity!!.layoutInflater.inflate(R.layout.dialog_privacy, null)
         displayReadPerms(view)
         displayWritePerms(view)
+        var listener = activity as PermissionsDialogListener
 
         return AlertDialog.Builder(activity)
                 .setTitle(R.string.permissions_dialog_title)
-                .setPositiveButton(R.string.ok) { _, _ -> dismiss() }
+                .setPositiveButton(R.string.ok) { _, _ ->
+                    run {
+                        listener.onChangedReadPerms(getChosenReadPerm(view))
+                        listener.onChangedWritePerms(getChosenWritePerm(view))
+                        dismiss()
+                    }
+                }
                 .setView(view)
                 .create()
     }
 
     private fun displayReadPerms(view: View) {
         var readRadioGroup = view.findViewById<RadioGroup>(R.id.readPermsRadioGroup)
-        readRadioGroup.setOnCheckedChangeListener { _, _ -> displayReadExplanation(view)}
+        readRadioGroup.setOnCheckedChangeListener { _, _ -> displayReadExplanation(view) }
 
         when (getReadPerms()) {
             ReadAccess.PUBLIC -> readRadioGroup.check(R.id.read_public_radio_button)
@@ -56,7 +63,7 @@ class PermissionsDialogFragment : DialogFragment() {
 
     private fun displayWritePerms(view: View) {
         var writeRadioGroup = view.findViewById<RadioGroup>(R.id.writePermsRadioGroup)
-        writeRadioGroup.setOnCheckedChangeListener { _, _ -> displayWriteExplanation(view)}
+        writeRadioGroup.setOnCheckedChangeListener { _, _ -> displayWriteExplanation(view) }
 
         when (getWritePerms()) {
             WriteAccess.EVERYONE -> writeRadioGroup.check(R.id.write_everyone_radio_button)
@@ -80,9 +87,9 @@ class PermissionsDialogFragment : DialogFragment() {
     }
 
     private fun displayWriteExplanation(view: View) {
-        var readRadioGroup = view.findViewById<RadioGroup>(R.id.writePermsRadioGroup)
+        var writeRadioGroup = view.findViewById<RadioGroup>(R.id.writePermsRadioGroup)
 
-        var permsText = when (readRadioGroup.checkedRadioButtonId) {
+        var permsText = when (writeRadioGroup.checkedRadioButtonId) {
             R.id.write_everyone_radio_button -> getString(R.string.perms_write_explanation_everyone)
             else -> getString(R.string.perms_write_explanation_owner)
         }
@@ -90,4 +97,31 @@ class PermissionsDialogFragment : DialogFragment() {
         view.findViewById<TextView>(R.id.writePermsExplanationTextView).text =
                 getString(R.string.perms_write_explanation, permsText)
     }
+
+    private fun getChosenReadPerm(view: View): ReadAccess {
+        var readRadioGroup = view.findViewById<RadioGroup>(R.id.readPermsRadioGroup)
+
+        return when (readRadioGroup.checkedRadioButtonId) {
+            R.id.read_public_radio_button -> ReadAccess.PUBLIC
+            R.id.read_via_link_radio_button -> ReadAccess.VIA_LINK
+            else -> ReadAccess.PRIVATE
+        }
+    }
+
+    private fun getChosenWritePerm(view: View): WriteAccess {
+        var writeRadioGroup = view.findViewById<RadioGroup>(R.id.writePermsRadioGroup)
+
+        return when (writeRadioGroup.checkedRadioButtonId) {
+            R.id.write_everyone_radio_button -> WriteAccess.EVERYONE
+            else -> WriteAccess.ONLY_OWNER
+        }
+    }
+
+    interface PermissionsDialogListener {
+
+        fun onChangedReadPerms(readAccess: ReadAccess)
+
+        fun onChangedWritePerms(writeAccess: WriteAccess)
+    }
 }
+
