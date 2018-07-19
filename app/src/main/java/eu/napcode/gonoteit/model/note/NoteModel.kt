@@ -39,31 +39,4 @@ open class NoteModel (){
     private fun areStringsEqual(s: String?, s2: String?): Boolean {
         return s == null && s2 == null || s == s2
     }
-
-    class ReadAccessConverter {
-
-        @TypeConverter
-        fun toReadPerms(ordinal: Int): ReadAccess {
-            return ReadAccess.values()[ordinal]
-        }
-
-        @TypeConverter
-        fun toOrdinal(readAccess: ReadAccess): Int? {
-            return readAccess.ordinal
-        }
-    }
-
-    class WriteAccessConverter {
-
-        @TypeConverter
-        fun toWritePerms(ordinal: Int): WriteAccess {
-            return WriteAccess.values()[ordinal]
-        }
-
-        @TypeConverter
-        fun toOrdinal(writePerms: WriteAccess): Int? {
-            return writePerms.ordinal
-        }
-    }
-
 }

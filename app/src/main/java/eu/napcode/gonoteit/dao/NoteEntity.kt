@@ -10,6 +10,8 @@ import eu.napcode.gonoteit.dao.NoteEntity.Companion.TABLE_NAME
 import eu.napcode.gonoteit.model.note.NoteModel
 import eu.napcode.gonoteit.type.ReadAccess
 import eu.napcode.gonoteit.type.WriteAccess
+import eu.napcode.gonoteit.utils.ReadAccessConverter
+import eu.napcode.gonoteit.utils.WriteAccessConverter
 
 @Entity(tableName = TABLE_NAME)
 data class NoteEntity(
@@ -34,11 +36,11 @@ data class NoteEntity(
         @ColumnInfo(name = COLUMN_UPDATED_AT)
         var updatedAt: Long,
 
-        @TypeConverters(NoteModel.ReadAccessConverter::class)
+        @TypeConverters(ReadAccessConverter::class)
         @ColumnInfo(name = COLUMN_READ_PERMS)
         var readAccess : ReadAccess,
 
-        @TypeConverters(NoteModel.WriteAccessConverter::class)
+        @TypeConverters(WriteAccessConverter::class)
         @ColumnInfo(name = COLUMN_WRITE_PERMS)
         var writeAccess: WriteAccess
 ) {
@@ -57,7 +59,7 @@ data class NoteEntity(
 
     companion object {
 
-        public const val TABLE_NAME = "notes"
+        const val TABLE_NAME = "notes"
 
         const val COLUMN_UUID = "UUID"
         const val COLUMN_ID = "ID"
