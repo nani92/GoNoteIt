@@ -52,6 +52,8 @@ import pl.aprilapps.easyphotopicker.EasyImage;
 import static android.graphics.Bitmap.CompressFormat.JPEG;
 import static android.view.View.VISIBLE;
 import static eu.napcode.gonoteit.repository.Resource.Status.ERROR;
+import static eu.napcode.gonoteit.ui.create.PermsExplanationHelperKt.getReadPermsExplanation;
+import static eu.napcode.gonoteit.ui.create.PermsExplanationHelperKt.getWritePermsExplanation;
 import static eu.napcode.gonoteit.utils.RevealActivityHelper.REVEAL_X_KEY;
 import static eu.napcode.gonoteit.utils.RevealActivityHelper.REVEAL_Y_KEY;
 
@@ -147,6 +149,15 @@ public class CreateActivity extends AppCompatActivity implements PermissionsDial
             binding.attachmentCardView.setVisibility(View.GONE);
             binding.attachmentImageView.setImageDrawable(null);
         });
+
+        displayPermsExplanation();
+        binding.permsExplanationTextView.setOnClickListener(view -> showPermDialog());
+    }
+
+    private void displayPermsExplanation() {
+        binding.permsExplanationTextView.setText(String.format("%s \n%s",
+                getReadPermsExplanation(this, readPermissions),
+                getWritePermsExplanation(this, writePermissions)));
     }
 
     private void getImageFromGallery() {
@@ -209,6 +220,7 @@ public class CreateActivity extends AppCompatActivity implements PermissionsDial
         binding.contentEditText.setText(noteModel.getContent());
         this.readPermissions = noteModel.getReadAccess();
         this.writePermissions = noteModel.getWriteAccess();
+        displayPermsExplanation();
 
         if (TextUtils.isEmpty(noteModel.getImageBase64()) == false) {
             displayImage(noteModel);
@@ -230,16 +242,20 @@ public class CreateActivity extends AppCompatActivity implements PermissionsDial
         }
 
         if (item.getItemId() == R.id.perms) {
-            PermissionsDialogFragment dialog = PermissionsDialogFragment
-                    .Companion
-                    .newInstance(readPermissions, writePermissions);
-            dialog.setStyle(DialogFragment.STYLE_NORMAL, R.style.CustomDialog);
-            dialog.show(getSupportFragmentManager(), "");
+            showPermDialog();
 
             return true;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void showPermDialog() {
+        PermissionsDialogFragment dialog = PermissionsDialogFragment
+                .Companion
+                .newInstance(readPermissions, writePermissions);
+        dialog.setStyle(DialogFragment.STYLE_NORMAL, R.style.CustomDialog);
+        dialog.show(getSupportFragmentManager(), "");
     }
 
     private void processResponseCreateNote(Resource resource) {

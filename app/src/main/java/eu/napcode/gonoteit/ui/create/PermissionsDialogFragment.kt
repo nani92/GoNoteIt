@@ -74,28 +74,14 @@ class PermissionsDialogFragment : DialogFragment() {
     private fun getWritePerms() = arguments!!.getSerializable(ARG_WRITE_PERMS) as WriteAccess
 
     private fun displayReadExplanation(view: View) {
-        var readRadioGroup = view.findViewById<RadioGroup>(R.id.readPermsRadioGroup)
-
-        var permsText = when (readRadioGroup.checkedRadioButtonId) {
-            R.id.read_public_radio_button -> getString(R.string.perms_read_explanation_everyone)
-            R.id.read_private_radio_button -> getString(R.string.perms_read_explanation_owner)
-            else -> getString(R.string.perms_read_explanation_link)
-        }
-
         view.findViewById<TextView>(R.id.readPermsExplanationTextView).text =
-                getString(R.string.perms_read_explanation, permsText)
+                        getReadPermsExplanation(context!!, getChosenReadPerm(view))
     }
 
     private fun displayWriteExplanation(view: View) {
-        var writeRadioGroup = view.findViewById<RadioGroup>(R.id.writePermsRadioGroup)
-
-        var permsText = when (writeRadioGroup.checkedRadioButtonId) {
-            R.id.write_everyone_radio_button -> getString(R.string.perms_write_explanation_everyone)
-            else -> getString(R.string.perms_write_explanation_owner)
-        }
 
         view.findViewById<TextView>(R.id.writePermsExplanationTextView).text =
-                getString(R.string.perms_write_explanation, permsText)
+                        getWritePermsExplanation(context!!, getChosenWritePerm(view))
     }
 
     private fun getChosenReadPerm(view: View): ReadAccess {
