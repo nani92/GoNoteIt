@@ -50,6 +50,8 @@ public class Note {
         noteModel.setUuid(apiEntity.uuid);
         noteModel.setId(apiEntity.id);
         noteModel.setUpdatedAt(apiEntity.updatedAt);
+        noteModel.setReadAccess(apiEntity.readAccess);
+        noteModel.setWriteAccess(apiEntity.writeAccess);
 
         return noteModel;
     }

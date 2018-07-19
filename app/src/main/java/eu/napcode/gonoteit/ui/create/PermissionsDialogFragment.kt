@@ -8,11 +8,8 @@ import android.view.View
 import android.widget.RadioGroup
 import android.widget.TextView
 import eu.napcode.gonoteit.R
-import eu.napcode.gonoteit.model.note.NoteModel.ReadPerms
-import eu.napcode.gonoteit.model.note.NoteModel.ReadPerms.*
-import eu.napcode.gonoteit.model.note.NoteModel.WritePerms
-import eu.napcode.gonoteit.model.note.NoteModel.WritePerms.EVERYONE
-import eu.napcode.gonoteit.model.note.NoteModel.WritePerms.ONLY_OWNER
+import eu.napcode.gonoteit.type.ReadAccess
+import eu.napcode.gonoteit.type.WriteAccess
 
 class PermissionsDialogFragment : DialogFragment() {
 
@@ -20,7 +17,7 @@ class PermissionsDialogFragment : DialogFragment() {
         private const val ARG_READ_PERMS = "read perms"
         private const val ARG_WRITE_PERMS = "write perms"
 
-        fun newInstance(readPerms: ReadPerms, writePerms: WritePerms): PermissionsDialogFragment {
+        fun newInstance(readPerms: ReadAccess, writePerms: WriteAccess): PermissionsDialogFragment {
             val args = Bundle()
             args.putSerializable(ARG_READ_PERMS, readPerms)
             args.putSerializable(ARG_WRITE_PERMS, writePerms)
@@ -49,25 +46,25 @@ class PermissionsDialogFragment : DialogFragment() {
         readRadioGroup.setOnCheckedChangeListener { _, _ -> displayReadExplanation(view)}
 
         when (getReadPerms()) {
-            PUBLIC -> readRadioGroup.check(R.id.read_public_radio_button)
-            PRIVATE -> readRadioGroup.check(R.id.read_private_radio_button)
-            VIA_LINK -> readRadioGroup.check(R.id.read_via_link_radio_button)
+            ReadAccess.PUBLIC -> readRadioGroup.check(R.id.read_public_radio_button)
+            ReadAccess.PRIVATE -> readRadioGroup.check(R.id.read_private_radio_button)
+            ReadAccess.VIA_LINK -> readRadioGroup.check(R.id.read_via_link_radio_button)
         }
     }
 
-    private fun getReadPerms() = arguments!!.getSerializable(ARG_READ_PERMS) as ReadPerms
+    private fun getReadPerms() = arguments!!.getSerializable(ARG_READ_PERMS) as ReadAccess
 
     private fun displayWritePerms(view: View) {
         var writeRadioGroup = view.findViewById<RadioGroup>(R.id.writePermsRadioGroup)
         writeRadioGroup.setOnCheckedChangeListener { _, _ -> displayWriteExplanation(view)}
 
         when (getWritePerms()) {
-            EVERYONE -> writeRadioGroup.check(R.id.write_everyone_radio_button)
-            ONLY_OWNER -> writeRadioGroup.check(R.id.write_only_owner_radio_button)
+            WriteAccess.EVERYONE -> writeRadioGroup.check(R.id.write_everyone_radio_button)
+            WriteAccess.ONLY_OWNER -> writeRadioGroup.check(R.id.write_only_owner_radio_button)
         }
     }
 
-    private fun getWritePerms() = arguments!!.getSerializable(ARG_WRITE_PERMS) as WritePerms
+    private fun getWritePerms() = arguments!!.getSerializable(ARG_WRITE_PERMS) as WriteAccess
 
     private fun displayReadExplanation(view: View) {
         var readRadioGroup = view.findViewById<RadioGroup>(R.id.readPermsRadioGroup)

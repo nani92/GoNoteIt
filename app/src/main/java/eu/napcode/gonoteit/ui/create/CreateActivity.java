@@ -39,6 +39,8 @@ import eu.napcode.gonoteit.di.modules.viewmodel.ViewModelFactory;
 import eu.napcode.gonoteit.model.note.NoteModel;
 import eu.napcode.gonoteit.repository.Resource.Status;
 import eu.napcode.gonoteit.repository.Resource;
+import eu.napcode.gonoteit.type.ReadAccess;
+import eu.napcode.gonoteit.type.WriteAccess;
 import eu.napcode.gonoteit.utils.GlideBase64Loader;
 import eu.napcode.gonoteit.utils.ImageUtils;
 import eu.napcode.gonoteit.utils.RevealActivityHelper;
@@ -68,6 +70,9 @@ public class CreateActivity extends AppCompatActivity {
 
     private static int PERMISSIONS_REQUEST_EXTERNAL_STORAGE = 303;
     private static String IMAGE_STATE_KEY = "image";
+    private PermissionsDialogFragment permissionsDialogFragment = PermissionsDialogFragment
+            .Companion
+            .newInstance(ReadAccess.PRIVATE, WriteAccess.ONLY_OWNER);
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -188,7 +193,8 @@ public class CreateActivity extends AppCompatActivity {
         NoteResult noteResult = viewModel.getNote(getNoteToEditId());
 
         noteResult.getNote().observe(this, this::displayNote);
-        noteResult.getResource().observe(this, resource -> processResponseGetNoteToEdit(resource, noteResult.getResource()));
+        noteResult.getResource().observe(this, resource ->
+                processResponseGetNoteToEdit(resource, noteResult.getResource()));
     }
 
     private Long getNoteToEditId() {
@@ -199,6 +205,9 @@ public class CreateActivity extends AppCompatActivity {
         binding.createNoteButton.setText(R.string.update_note);
         binding.titleEditText.setText(noteModel.getTitle());
         binding.contentEditText.setText(noteModel.getContent());
+        permissionsDialogFragment = PermissionsDialogFragment
+                .Companion
+                .newInstance(noteModel.getReadAccess(), noteModel.getWriteAccess());
 
         if (TextUtils.isEmpty(noteModel.getImageBase64()) == false) {
             displayImage(noteModel);
@@ -220,9 +229,8 @@ public class CreateActivity extends AppCompatActivity {
         }
 
         if (item.getItemId() == R.id.perms) {
-            PermissionsDialogFragment dialog = PermissionsDialogFragment.Companion.newInstance(NoteModel.ReadPerms.PRIVATE, NoteModel.WritePerms.EVERYONE);
-            dialog.setStyle(DialogFragment.STYLE_NORMAL, R.style.CustomDialog);
-            dialog.show(getSupportFragmentManager(), "");
+            permissionsDialogFragment.setStyle(DialogFragment.STYLE_NORMAL, R.style.CustomDialog);
+            permissionsDialogFragment.show(getSupportFragmentManager(), "");
 
             return true;
         }

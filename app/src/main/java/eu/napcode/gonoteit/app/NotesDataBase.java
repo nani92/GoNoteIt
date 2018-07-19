@@ -10,8 +10,8 @@ import eu.napcode.gonoteit.model.note.NoteModel;
 
 @Database(entities = {NoteEntity.class}, version = 1)
 @TypeConverters({
-        NoteModel.ReadPermsConverter.class,
-        NoteModel.WritePermsConverter.class})
+        NoteModel.ReadAccessConverter.class,
+        NoteModel.WriteAccessConverter.class})
 public abstract class NotesDataBase extends RoomDatabase {
 
     public static final String NOTES_DATA_BASE_NAME = "gonoteit.db";

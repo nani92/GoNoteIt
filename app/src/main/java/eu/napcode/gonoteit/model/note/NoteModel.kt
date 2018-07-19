@@ -2,6 +2,8 @@ package eu.napcode.gonoteit.model.note
 
 import android.arch.persistence.room.TypeConverter
 import eu.napcode.gonoteit.dao.NoteEntity
+import eu.napcode.gonoteit.type.ReadAccess
+import eu.napcode.gonoteit.type.WriteAccess
 
 open class NoteModel (){
     var uuid: String? = null
@@ -10,8 +12,8 @@ open class NoteModel (){
     var id: Long? = null
     var imageBase64: String? = null
     var updatedAt: Long? = null
-    var readPerms: ReadPerms = ReadPerms.PRIVATE
-    var writePerms: WritePerms = WritePerms.ONLY_OWNER
+    var readAccess = ReadAccess.PRIVATE
+    var writeAccess = WriteAccess.ONLY_OWNER
 
 
     constructor(noteEntity: NoteEntity): this() {
@@ -21,8 +23,8 @@ open class NoteModel (){
         id = noteEntity.id
         imageBase64 = noteEntity.imageBase64
         updatedAt = noteEntity.updatedAt
-        readPerms = noteEntity.readPerms
-        writePerms = noteEntity.writePerms
+        readAccess = noteEntity.readAccess
+        writeAccess = noteEntity.writeAccess
     }
 
     override fun equals(obj: Any?): Boolean {
@@ -38,39 +40,28 @@ open class NoteModel (){
         return s == null && s2 == null || s == s2
     }
 
-    enum class ReadPerms {
-        PUBLIC,
-        PRIVATE,
-        VIA_LINK
-    }
-
-    class ReadPermsConverter {
+    class ReadAccessConverter {
 
         @TypeConverter
-        fun toReadPerms(ordinal: Int): NoteModel.ReadPerms {
-            return NoteModel.ReadPerms.values()[ordinal]
+        fun toReadPerms(ordinal: Int): ReadAccess {
+            return ReadAccess.values()[ordinal]
         }
 
         @TypeConverter
-        fun toOrdinal(readPerms: NoteModel.ReadPerms): Int? {
-            return readPerms.ordinal
+        fun toOrdinal(readAccess: ReadAccess): Int? {
+            return readAccess.ordinal
         }
     }
 
-    enum class WritePerms {
-        ONLY_OWNER,
-        EVERYONE
-    }
-
-    class WritePermsConverter {
+    class WriteAccessConverter {
 
         @TypeConverter
-        fun toWritePerms(ordinal: Int): NoteModel.WritePerms {
-            return NoteModel.WritePerms.values()[ordinal]
+        fun toWritePerms(ordinal: Int): WriteAccess {
+            return WriteAccess.values()[ordinal]
         }
 
         @TypeConverter
-        fun toOrdinal(writePerms: NoteModel.WritePerms): Int? {
+        fun toOrdinal(writePerms: WriteAccess): Int? {
             return writePerms.ordinal
         }
     }

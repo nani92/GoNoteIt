@@ -8,8 +8,8 @@ import android.support.annotation.NonNull
 import eu.napcode.gonoteit.dao.NoteEntity.Companion.TABLE_NAME
 
 import eu.napcode.gonoteit.model.note.NoteModel
-import eu.napcode.gonoteit.model.note.NoteModel.ReadPerms
-import eu.napcode.gonoteit.model.note.NoteModel.WritePerms
+import eu.napcode.gonoteit.type.ReadAccess
+import eu.napcode.gonoteit.type.WriteAccess
 
 @Entity(tableName = TABLE_NAME)
 data class NoteEntity(
@@ -34,13 +34,13 @@ data class NoteEntity(
         @ColumnInfo(name = COLUMN_UPDATED_AT)
         var updatedAt: Long,
 
-        @TypeConverters(NoteModel.ReadPermsConverter::class)
+        @TypeConverters(NoteModel.ReadAccessConverter::class)
         @ColumnInfo(name = COLUMN_READ_PERMS)
-        var readPerms : ReadPerms,
+        var readAccess : ReadAccess,
 
-        @TypeConverters(NoteModel.WritePermsConverter::class)
+        @TypeConverters(NoteModel.WriteAccessConverter::class)
         @ColumnInfo(name = COLUMN_WRITE_PERMS)
-        var writePerms: WritePerms
+        var writeAccess: WriteAccess
 ) {
 
     constructor(noteModel: NoteModel) :
@@ -51,8 +51,8 @@ data class NoteEntity(
                     title = noteModel.title,
                     content = noteModel.content,
                     imageBase64 = noteModel.imageBase64,
-                    readPerms = noteModel.readPerms,
-                    writePerms = noteModel.writePerms)
+                    readAccess= noteModel.readAccess,
+                    writeAccess= noteModel.writeAccess)
 
 
     companion object {
