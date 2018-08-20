@@ -41,6 +41,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/perms_read_via_link"/>
+
+        <RadioButton
+            android:id="@+id/read_group_radio_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/perms_read_group"/>
     </RadioGroup>
 
     <TextView
@@ -80,6 +86,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/perms_write_owner"/>
+
+        <RadioButton
+            android:id="@+id/write_group_radio_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/perms_write_group"/>
     </RadioGroup>
 
     <TextView

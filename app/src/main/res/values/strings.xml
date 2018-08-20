@@ -85,15 +85,19 @@
     <string name="perms_read_public">Public</string>
     <string name="perms_read_private">Private</string>
     <string name="perms_read_via_link">Via Link</string>
+    <string name="perms_read_group">Group</string>
     <string name="perms_write_owner">Only Owner</string>
     <string name="perms_write_everyone">Everyone</string>
+    <string name="perms_write_group">Group</string>
     <string name="permissions_dialog_title">Choose permissions for your note</string>
     <string name="ok">OK</string>
     <string name="perms_read_explanation">%1s can read this note.</string>
     <string name="perms_read_explanation_everyone">Everyone</string>
     <string name="perms_read_explanation_owner">Only owner</string>
     <string name="perms_read_explanation_link">Everyone with link</string>
+    <string name="perms_read_explanation_group">Everyone within group</string>
     <string name="perms_write_explanation">%1s can modify this note.</string>
     <string name="perms_write_explanation_owner">Only owner</string>
     <string name="perms_write_explanation_everyone">Everyone</string>
+    <string name="perms_write_explanation_group">Everyone within group</string>
 </resources>

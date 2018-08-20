@@ -56,6 +56,7 @@ class PermissionsDialogFragment : DialogFragment() {
             ReadAccess.PUBLIC -> readRadioGroup.check(R.id.read_public_radio_button)
             ReadAccess.PRIVATE -> readRadioGroup.check(R.id.read_private_radio_button)
             ReadAccess.VIA_LINK -> readRadioGroup.check(R.id.read_via_link_radio_button)
+            ReadAccess.GROUP -> readRadioGroup.check(R.id.read_group_radio_button)
         }
     }
 
@@ -68,6 +69,7 @@ class PermissionsDialogFragment : DialogFragment() {
         when (getWritePerms()) {
             WriteAccess.EVERYONE -> writeRadioGroup.check(R.id.write_everyone_radio_button)
             WriteAccess.ONLY_OWNER -> writeRadioGroup.check(R.id.write_only_owner_radio_button)
+            WriteAccess.GROUP -> writeRadioGroup.check(R.id.write_group_radio_button)
         }
     }
 
@@ -90,6 +92,7 @@ class PermissionsDialogFragment : DialogFragment() {
         return when (readRadioGroup.checkedRadioButtonId) {
             R.id.read_public_radio_button -> ReadAccess.PUBLIC
             R.id.read_via_link_radio_button -> ReadAccess.VIA_LINK
+            R.id.read_group_radio_button -> ReadAccess.GROUP
             else -> ReadAccess.PRIVATE
         }
     }
@@ -99,6 +102,7 @@ class PermissionsDialogFragment : DialogFragment() {
 
         return when (writeRadioGroup.checkedRadioButtonId) {
             R.id.write_everyone_radio_button -> WriteAccess.EVERYONE
+            R.id.write_group_radio_button -> WriteAccess.GROUP
             else -> WriteAccess.ONLY_OWNER
         }
     }
