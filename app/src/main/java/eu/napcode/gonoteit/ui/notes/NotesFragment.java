@@ -104,6 +104,11 @@ public class NotesFragment extends Fragment implements NotesAdapter.NoteListener
     }
 
     private void displayMessage(String message) {
+
+        if (message == null || message.isEmpty()) {
+            message = getString(R.string.general_error_downloading);
+        }
+
         Snackbar.make(binding.constraintLayout, message, Snackbar.LENGTH_LONG).show();
     }
 
