@@ -72,6 +72,7 @@ public class NotesRepositoryImpl implements NotesRepository {
                         dataResponse -> {
 
                             if (dataResponse.hasErrors()) {
+                                resource.postValue(Resource.success(null));
                                 //TODO auth error already displayed
                                 //    resource.postValue(Resource.error(dataResponse.errors().get(0)));
                             } else {
