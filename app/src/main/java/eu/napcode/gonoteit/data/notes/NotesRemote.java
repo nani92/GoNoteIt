@@ -1,7 +1,6 @@
 package eu.napcode.gonoteit.data.notes;
 
 import android.annotation.SuppressLint;
-import android.util.Log;
 
 import com.apollographql.apollo.ApolloClient;
 import com.apollographql.apollo.api.Response;
@@ -52,13 +51,8 @@ public class NotesRemote {
                 .from(apolloClient.query(new GetNotesQuery()))
                 .subscribeOn(rxSchedulers.io())
                 .observeOn(rxSchedulers.io())
-                .doOnNext(dataResponse -> {
-                    try {
-                        timestampStore.saveTimestamp(dataResponse.data().timestamp());
-                    } catch (Exception e) {
-                        Log.d("e", e.getLocalizedMessage());
-                    }
-                })
+                .doOnNext(dataResponse ->
+                        timestampStore.saveTimestamp(dataResponse.data().timestamp()))
                 .flatMap(dataResponse -> Observable.fromArray(dataResponse.data().allEntities()));
     }
 

@@ -59,15 +59,30 @@ public class NotesRepositoryImpl implements NotesRepository {
 
     @SuppressLint("CheckResult")
     private void getNotesChangelog() {
+        //TODO Clean it up
         notesRemote.getChangelog()
                 .doOnSubscribe(it -> resource.postValue(Resource.loading(null)))
-                .filter(dataResponse -> dataResponse.data().changelog() != null)
-                .singleOrError()
-                .map(dataResponse -> dataResponse.data().changelog())
-                .doOnSuccess(it -> notesLocal.saveChangelog(it))
-                .doOnSuccess(it -> notesRemote.saveTimestamp(it.timestamp()))
+//                .filter(dataResponse -> dataResponse.hasErrors())
+//                .filter(dataResponse -> dataResponse.data().changelog() != null)
+//                .singleOrError()
+//                .map(dataResponse -> dataResponse.data().changelog())
+//                .doOnSuccess(it -> notesLocal.saveChangelog(it))
+//                .doOnSuccess(it -> notesRemote.saveTimestamp(it.timestamp()))
                 .subscribe(
-                        changelog -> resource.postValue(Resource.success(null)),
+                        dataResponse -> {
+
+                            if (dataResponse.hasErrors()) {
+                                //TODO auth error already displayed
+                                //    resource.postValue(Resource.error(dataResponse.errors().get(0)));
+                            } else {
+                                resource.postValue(Resource.success(null));
+                            }
+
+                            if (dataResponse.data().changelog() != null) {
+                                notesLocal.saveChangelog(dataResponse.data().changelog());
+                                notesRemote.saveTimestamp(dataResponse.data().changelog().timestamp());
+                            }
+                        },
                         error -> resource.postValue(Resource.error(error))
                 );
     }
