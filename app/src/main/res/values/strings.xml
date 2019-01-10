@@ -101,4 +101,5 @@
     <string name="perms_write_explanation_owner">Only owner</string>
     <string name="perms_write_explanation_everyone">Everyone</string>
     <string name="perms_write_explanation_group">Everyone within group</string>
+    <string name="favorite">Favorite</string>
 </resources>
