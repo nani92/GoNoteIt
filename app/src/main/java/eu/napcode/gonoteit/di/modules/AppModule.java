@@ -13,8 +13,10 @@ import eu.napcode.gonoteit.api.ApolloRxHelper;
 import eu.napcode.gonoteit.api.NoteAdapter;
 import eu.napcode.gonoteit.api.UUIDAdapter;
 import eu.napcode.gonoteit.app.GoNoteItApp;
+import eu.napcode.gonoteit.auth.StoreAuth;
 import eu.napcode.gonoteit.utils.NetworkHelper;
 import okhttp3.OkHttpClient;
+import okhttp3.Request;
 import okhttp3.logging.HttpLoggingInterceptor;
 
 import static android.content.Context.MODE_PRIVATE;
@@ -33,12 +35,20 @@ public class AppModule {
 
     @Singleton
     @Provides
-    ApolloClient provideGoNoteItClient() {
+    ApolloClient provideGoNoteItClient(StoreAuth storeAuth) {
         HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor();
         httpLoggingInterceptor.setLevel(BODY);
 
         OkHttpClient okHttpClient = new OkHttpClient.Builder()
                 .addInterceptor(httpLoggingInterceptor)
+                .addInterceptor(chain -> {
+                    Request original = chain.request();
+                    Request.Builder builder = original.newBuilder()
+                            .method(original.method(), original.body());
+                    builder.header("Authorization", "JWT " + storeAuth.getToken());
+
+                    return chain.proceed(builder.build());
+                })
                 .build();
 
         return ApolloClient.builder()

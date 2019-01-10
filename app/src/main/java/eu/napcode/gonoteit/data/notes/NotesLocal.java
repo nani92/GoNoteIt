@@ -60,7 +60,11 @@ public class NotesLocal {
     }
 
     public void deleteNote(Long id) {
-        noteDao.removeNote(id);
+        noteDao.deleteNote(id);
+    }
+
+    public void deleteAllNotes() {
+        noteDao.deleteAll();
     }
 
     @SuppressLint("CheckResult")
@@ -71,7 +75,7 @@ public class NotesLocal {
         Observable.just(changelog.deleted())
                 .flatMapIterable(deleteds -> deleteds)
                 .map(deleted -> deleted.toString())
-                .subscribe(deleted ->noteDao.removeNoteByUuid(deleted));
+                .subscribe(deleted ->noteDao.deleteNoteByUuid(deleted));
     }
 
     private Observable<NoteModel> getNoteModelsToSaveObservable(Changelog changelog) {

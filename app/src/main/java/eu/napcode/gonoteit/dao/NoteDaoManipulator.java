@@ -30,30 +30,30 @@ public class NoteDaoManipulator {
         }
     }
 
-    public void removeAll() {
+    public void deleteAll() {
 
         try {
-            noteDao.removeAll();
-            Timber.d("remove all completed");
+            noteDao.deleteAll();
+            Timber.d("delete all completed");
         } catch (Exception e) {
-            Timber.d("remove all exception %s", e.getLocalizedMessage());
+            Timber.d("delete all exception %s", e.getLocalizedMessage());
         }
     }
 
-    public void removeNote(Long id) {
+    public void deleteNote(Long id) {
 
         try {
-            noteDao.removeNote(id);
+            noteDao.deleteNote(id);
             Timber.d("remove note completed %s", id.toString());
         } catch (Exception e) {
             Timber.d("remove note exception %s", e.getLocalizedMessage());
         }
     }
 
-    public void removeNoteByUuid(String id) {
+    public void deleteNoteByUuid(String id) {
 
         try {
-            noteDao.removeNoteByUuid(id);
+            noteDao.deleteNoteByUuid(id);
             Timber.d("remove note by uuid completed %s", id);
         } catch (Exception e) {
             Timber.d("remove note by uuid exception %s", e.getLocalizedMessage());

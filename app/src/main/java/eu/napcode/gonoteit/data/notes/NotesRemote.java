@@ -51,7 +51,8 @@ public class NotesRemote {
                 .from(apolloClient.query(new GetNotesQuery()))
                 .subscribeOn(rxSchedulers.io())
                 .observeOn(rxSchedulers.io())
-                .doOnNext(dataResponse -> timestampStore.saveTimestamp(dataResponse.data().timestamp()))
+                .doOnNext(dataResponse ->
+                        timestampStore.saveTimestamp(dataResponse.data().timestamp()))
                 .flatMap(dataResponse -> Observable.fromArray(dataResponse.data().allEntities()));
     }
 

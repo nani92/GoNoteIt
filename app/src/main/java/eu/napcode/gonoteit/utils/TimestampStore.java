@@ -35,4 +35,11 @@ public class TimestampStore {
 
         return sharedPreferences.contains(TIMESTAMP_KEY);
     }
+
+    public void removeTimestamp() {
+        Timber.d("Delete timestamp");
+        sharedPreferences.edit()
+                .remove(TIMESTAMP_KEY)
+                .apply();
+    }
 }

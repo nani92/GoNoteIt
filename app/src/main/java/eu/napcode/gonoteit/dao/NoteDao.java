@@ -17,13 +17,13 @@ public interface NoteDao {
     void insertNote(NoteEntity noteEntity);
 
     @Query("DELETE FROM " + NoteEntity.TABLE_NAME)
-    void removeAll();
+    void deleteAll();
 
     @Query("DELETE FROM " + NoteEntity.TABLE_NAME + " WHERE " + NoteEntity.COLUMN_ID + " = :id")
-    void removeNote(Long id);
+    void deleteNote(Long id);
 
     @Query("DELETE FROM " + NoteEntity.TABLE_NAME + " WHERE " + NoteEntity.COLUMN_UUID + " = :id")
-    void removeNoteByUuid(String id);
+    void deleteNoteByUuid(String id);
 
     @Query("SELECT * FROM " + NoteEntity.TABLE_NAME +" WHERE " + NoteEntity.COLUMN_ID + " = :id")
     LiveData<NoteEntity> getNoteById(Long id);
