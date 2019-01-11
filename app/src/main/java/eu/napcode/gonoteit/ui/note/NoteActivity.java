@@ -70,6 +70,10 @@ public class NoteActivity extends AppCompatActivity {
             showUpdateScreen();
         }
 
+        if (item.getItemId() == R.id.favourite) {
+            viewModel.updateFavorites(getIntent().getLongExtra(NOTE_ID_KEY, 0));
+        }
+
         return super.onOptionsItemSelected(item);
     }
 

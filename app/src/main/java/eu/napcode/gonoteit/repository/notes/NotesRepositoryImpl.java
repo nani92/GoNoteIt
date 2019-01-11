@@ -4,6 +4,9 @@ import android.annotation.SuppressLint;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.inject.Inject;
 
 import eu.napcode.gonoteit.api.ApiEntity;
@@ -196,6 +199,7 @@ public class NotesRepositoryImpl implements NotesRepository {
         return resource;
     }
 
+
     @SuppressLint("CheckResult")
     private void updateNoteOnRemote(NoteModel noteModel) {
         notesRemote.updateNote(noteModel)
@@ -212,5 +216,18 @@ public class NotesRepositoryImpl implements NotesRepository {
                         response -> resource.postValue(Resource.success(null)),
                         error -> resource.postValue(Resource.error(error))
                 );
+    }
+
+    @Override
+    public LiveData<Resource> updateFavorites(Long id) {
+        List<Long> list = new ArrayList<>();
+        list.add(id);
+        if (networkHelper.isNetworkAvailable()) {
+            notesRemote.updateFavorites(list).subscribe();
+        } else {
+            resource.postValue(Resource.error(errorMessages.getUpdatingNoteNotImplementedOfflineMessage()));
+        }
+
+        return resource;
     }
 }
