@@ -1,4 +1,4 @@
-package eu.napcode.gonoteit.dao;
+package eu.napcode.gonoteit.dao.note;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.paging.DataSource;

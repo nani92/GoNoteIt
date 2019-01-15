@@ -1,0 +1,20 @@
+package eu.napcode.gonoteit.dao.user;
+
+import android.arch.lifecycle.LiveData;
+import android.arch.persistence.room.Dao;
+import android.arch.persistence.room.Insert;
+import android.arch.persistence.room.OnConflictStrategy;
+import android.arch.persistence.room.Query;
+
+@Dao
+public interface UserDao {
+
+    @Query("SELECT 1 FROM " + UserEntity.TABLE_NAME)
+    LiveData <UserEntity> getUserEntity();
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    void insertUser(UserEntity userEntity);
+
+    @Query("DELETE FROM " + UserEntity.TABLE_NAME)
+    void deleteAll();
+}
