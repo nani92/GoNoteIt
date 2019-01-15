@@ -6,13 +6,15 @@ import android.arch.persistence.room.PrimaryKey
 import eu.napcode.gonoteit.dao.user.UserEntity.Companion.TABLE_NAME
 import eu.napcode.gonoteit.data.user.favoritesMapToString
 import eu.napcode.gonoteit.model.UserModel
+import io.reactivex.annotations.NonNull
 
 @Entity(tableName = TABLE_NAME)
 data class UserEntity(
 
         @PrimaryKey
+        @NonNull
         @ColumnInfo(name = COLUMN_NAME)
-        var name: String?,
+        var name: String,
 
         @ColumnInfo(name = COLUMN_FAVORITES)
         var favorites: String?

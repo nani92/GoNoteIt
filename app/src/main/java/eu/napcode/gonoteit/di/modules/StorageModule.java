@@ -8,7 +8,7 @@ import javax.inject.Singleton;
 import dagger.Module;
 import dagger.Provides;
 import eu.napcode.gonoteit.app.NotesDataBase;
-import eu.napcode.gonoteit.dao.NoteDao;
+import eu.napcode.gonoteit.dao.note.NoteDao;
 
 @Module
 public class StorageModule {
@@ -17,7 +17,7 @@ public class StorageModule {
     @Provides
     NotesDataBase noteDataBase(Context context) {
         return Room
-                .databaseBuilder(context, NotesDataBase.class, NotesDataBase.NOTES_DATA_BASE_NAME)
+                .databaseBuilder(context, NotesDataBase.class, NotesDataBase.Companion.getNOTES_DATA_BASE_NAME())
                 .fallbackToDestructiveMigration()
                 .build();
     }

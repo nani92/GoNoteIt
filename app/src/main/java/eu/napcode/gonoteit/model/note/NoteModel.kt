@@ -1,7 +1,7 @@
 package eu.napcode.gonoteit.model.note
 
 import android.arch.persistence.room.TypeConverter
-import eu.napcode.gonoteit.dao.NoteEntity
+import eu.napcode.gonoteit.dao.note.NoteEntity
 import eu.napcode.gonoteit.type.ReadAccess
 import eu.napcode.gonoteit.type.WriteAccess
 
