@@ -167,7 +167,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void displayFirstScreen() {
-        fragmentToSet = new NotesFragment();
+        fragmentToSet = NotesFragment.Companion.newInstance(false);
         displayFragment();
         this.binding.navigationView.getMenu().getItem(0).setChecked(true);
     }
@@ -202,11 +202,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         switch (item.getItemId()) {
             case R.id.notes:
-                fragmentToSet = new NotesFragment();
+                fragmentToSet = NotesFragment.Companion.newInstance(false);
 
                 return true;
             case R.id.fav_notes:
-                fragmentToSet = new FavoritesFragment();
+                fragmentToSet = NotesFragment.Companion.newInstance(true);
 
                 return true;
             case R.id.about:

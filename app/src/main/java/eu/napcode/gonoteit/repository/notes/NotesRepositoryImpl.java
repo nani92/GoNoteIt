@@ -230,4 +230,9 @@ public class NotesRepositoryImpl implements NotesRepository {
 
         return resource;
     }
+
+    @Override
+    public NotesResult getFavoriteNotes() {
+        return new NotesResult(notesLocal.getFavoriteNotes(), resource);
+    }
 }

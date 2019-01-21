@@ -21,4 +21,6 @@ public interface NotesRepository {
     LiveData<Resource> updateNote(NoteModel noteModel);
 
     LiveData<Resource> updateFavorites(Long id);
+
+    NotesResult getFavoriteNotes();
 }
