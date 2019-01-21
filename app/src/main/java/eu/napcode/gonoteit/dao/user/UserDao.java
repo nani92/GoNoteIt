@@ -9,7 +9,7 @@ import android.arch.persistence.room.Query;
 @Dao
 public interface UserDao {
 
-    @Query("SELECT 1 FROM " + UserEntity.TABLE_NAME)
+    @Query("SELECT * FROM " + UserEntity.TABLE_NAME + " LIMIT 1")
     LiveData <UserEntity> getUserEntity();
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)

@@ -63,28 +63,17 @@ public class LoginViewModel extends ViewModel {
     @SuppressLint("CheckResult")
     public MutableLiveData<Resource<AuthenticateMutation.Data>> login() {
         userRepository
-                .authenticateUser(login, password)
+                .authenticateUser(login, password, authenticationResource)
                 .subscribeOn(rxSchedulers.io())
                 .observeOn(rxSchedulers.androidMainThread())
                 .doOnSubscribe(it -> authenticationResource.postValue(Resource.loading(null)))
-                .subscribe(
-                        this::processAuthResponse,
-                        error -> {
-                            authenticationResource.postValue(Resource.error(error));
-                            Timber.d("Login error: %s", error.getLocalizedMessage());
-                        });
+                .doOnError(error -> {
+                    authenticationResource.postValue(Resource.error(error));
+                    Timber.d("Login error: %s", error.getLocalizedMessage());
+                })
+                .subscribe();
 
         return authenticationResource;
     }
 
-    private void processAuthResponse(Response<AuthenticateMutation.Data> authMutation) {
-        AuthenticateMutation.TokenAuth tokenAuth = authMutation.data().tokenAuth();
-
-        if (tokenAuth != null && userValidator.isTokenValid(tokenAuth.token())) {
-            authenticationResource.postValue(Resource.success(authMutation.data()));
-            userRepository.saveUserAuthData(login, tokenAuth.token());
-        } else {
-            authenticationResource.postValue(Resource.error(authMutation.errors().get(0)));
-        }
-    }
 }

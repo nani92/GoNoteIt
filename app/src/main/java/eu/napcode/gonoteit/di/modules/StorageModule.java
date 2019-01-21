@@ -9,6 +9,7 @@ import dagger.Module;
 import dagger.Provides;
 import eu.napcode.gonoteit.app.NotesDataBase;
 import eu.napcode.gonoteit.dao.note.NoteDao;
+import eu.napcode.gonoteit.dao.user.UserDao;
 
 @Module
 public class StorageModule {
@@ -26,5 +27,11 @@ public class StorageModule {
     @Provides
     NoteDao noteDao(Context context) {
         return noteDataBase(context).noteDao();
+    }
+
+    @Singleton
+    @Provides
+    UserDao userDao(Context context) {
+        return noteDataBase(context).userDao();
     }
 }
