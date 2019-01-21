@@ -1,6 +1,5 @@
 package eu.napcode.gonoteit.model.note
 
-import android.arch.persistence.room.TypeConverter
 import eu.napcode.gonoteit.dao.note.NoteEntity
 import eu.napcode.gonoteit.type.ReadAccess
 import eu.napcode.gonoteit.type.WriteAccess
@@ -14,7 +13,6 @@ open class NoteModel (){
     var updatedAt: Long? = null
     var readAccess = ReadAccess.PRIVATE
     var writeAccess = WriteAccess.ONLY_OWNER
-
 
     constructor(noteEntity: NoteEntity): this() {
         uuid = noteEntity.uuid

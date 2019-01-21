@@ -25,6 +25,8 @@ import eu.napcode.gonoteit.rx.RxSchedulers;
 import eu.napcode.gonoteit.utils.TimestampStore;
 import io.reactivex.Observable;
 
+import static eu.napcode.gonoteit.data.user.FavoritesMapperKt.favoritesMapToString;
+
 public class NotesRemote {
 
     private final RxSchedulers rxSchedulers;
@@ -106,18 +108,8 @@ public class NotesRemote {
     }
 
     public Observable<Response<UpdateFavoritesMutation.Data>> updateFavorites(List<Long> favorites) {
-        StringBuilder favoritesStringBuilder = new StringBuilder("{\"favorite\": [");
-        for (int i = 0; i < favorites.size(); i++) {
-            favoritesStringBuilder.append(favorites.get(i));
-
-            if (i < favorites.size() - 1) {
-                favoritesStringBuilder.append(',');
-            }
-        }
-        favoritesStringBuilder.append("]}");
-
         return apolloRxHelper
-                .from(apolloClient.mutate(new UpdateFavoritesMutation(favoritesStringBuilder.toString())))
+                .from(apolloClient.mutate(new UpdateFavoritesMutation(favoritesMapToString(favorites))))
                 .subscribeOn(rxSchedulers.io())
                 .observeOn(rxSchedulers.io());
     }

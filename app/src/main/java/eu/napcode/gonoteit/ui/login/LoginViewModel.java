@@ -5,8 +5,6 @@ import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
 
-import com.apollographql.apollo.api.Response;
-
 import javax.inject.Inject;
 
 import eu.napcode.gonoteit.AuthenticateMutation;

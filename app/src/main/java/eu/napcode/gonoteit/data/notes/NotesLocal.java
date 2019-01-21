@@ -51,7 +51,7 @@ public class NotesLocal {
                 .map(allEntity -> (NoteModel) ((Note) allEntity.data()).parseNote(new ApiEntity(allEntity)))
                 .map(NoteEntity::new)
                 .filter(noteEntity -> noteEntity != null)
-                .doOnEach(it ->  noteDao.insertNote(it.getValue()))
+                .doOnEach(it -> noteDao.insertNote(it.getValue()))
                 .subscribe();
     }
 
@@ -75,7 +75,7 @@ public class NotesLocal {
         Observable.just(changelog.deleted())
                 .flatMapIterable(deleteds -> deleteds)
                 .map(deleted -> deleted.toString())
-                .subscribe(deleted ->noteDao.deleteNoteByUuid(deleted));
+                .subscribe(deleted -> noteDao.deleteNoteByUuid(deleted));
     }
 
     private Observable<NoteModel> getNoteModelsToSaveObservable(Changelog changelog) {
