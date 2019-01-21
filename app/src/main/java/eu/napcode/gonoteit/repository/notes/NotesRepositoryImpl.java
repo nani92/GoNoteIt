@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -220,10 +219,13 @@ public class NotesRepositoryImpl implements NotesRepository {
 
     @Override
     public LiveData<Resource> updateFavorites(Long id) {
-        List<Long> list = new ArrayList<>();
+        List<Long> list = notesLocal.getFavoriteIdsList();
         list.add(id);
+
         if (networkHelper.isNetworkAvailable()) {
-            notesRemote.updateFavorites(list).subscribe();
+            notesRemote
+                    .updateFavorites(list)
+                    .subscribe();
         } else {
             resource.postValue(Resource.error(errorMessages.getUpdatingNoteNotImplementedOfflineMessage()));
         }

@@ -96,7 +96,7 @@ constructor(
 
     override fun getLoggedInUser(): LiveData<UserModel?> {
 
-        return Transformations.map(userDao.userEntity) {
+        return Transformations.map(userDao.userEntityLiveData) {
             if (it == null) {
                 return@map null
             } else {

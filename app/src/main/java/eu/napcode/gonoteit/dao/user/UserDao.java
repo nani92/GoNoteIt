@@ -10,11 +10,14 @@ import android.arch.persistence.room.Query;
 public interface UserDao {
 
     @Query("SELECT * FROM " + UserEntity.TABLE_NAME + " LIMIT 1")
-    LiveData <UserEntity> getUserEntity();
+    LiveData <UserEntity> getUserEntityLiveData();
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertUser(UserEntity userEntity);
 
     @Query("DELETE FROM " + UserEntity.TABLE_NAME)
     void deleteAll();
+
+    @Query("SELECT * FROM " + UserEntity.TABLE_NAME + " LIMIT 1")
+    UserEntity getUserEntity();
 }

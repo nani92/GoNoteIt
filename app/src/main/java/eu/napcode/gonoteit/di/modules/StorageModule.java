@@ -19,6 +19,7 @@ public class StorageModule {
     NotesDataBase noteDataBase(Context context) {
         return Room
                 .databaseBuilder(context, NotesDataBase.class, NotesDataBase.Companion.getNOTES_DATA_BASE_NAME())
+                .allowMainThreadQueries()
                 .fallbackToDestructiveMigration()
                 .build();
     }

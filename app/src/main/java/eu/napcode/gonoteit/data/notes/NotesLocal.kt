@@ -30,7 +30,7 @@ constructor(private val noteDao: NoteDaoManipulator, private val userDao: UserDa
                 .build()
 
     fun getFavoriteNotes(): LiveData<PagedList<NoteModel>> {
-        return Transformations.switchMap(userDao.userEntity) {
+        return Transformations.switchMap(userDao.userEntityLiveData) {
             var userModel = UserModel(it)
 
             LivePagedListBuilder(noteDao.getFavoriteNoteEntities(userModel.favorites)
@@ -97,6 +97,10 @@ constructor(private val noteDao: NoteDaoManipulator, private val userDao: UserDa
         return Observable.just<List<GetChangelogMutation.Created>>(changelog.created()!!)
                 .flatMapIterable<GetChangelogMutation.Created> { createds -> createds }
                 .map { created -> (created.data() as Note).parseNote(ApiEntity(created)) as NoteModel }
+    }
+
+    fun getFavoriteIdsList() : List<Long> {
+        return UserModel(userDao.userEntity).favorites
     }
 
     companion object {
