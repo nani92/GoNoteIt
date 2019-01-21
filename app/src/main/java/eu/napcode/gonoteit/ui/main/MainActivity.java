@@ -28,7 +28,6 @@ import eu.napcode.gonoteit.databinding.DrawerHeaderBinding;
 import eu.napcode.gonoteit.di.modules.viewmodel.ViewModelFactory;
 import eu.napcode.gonoteit.model.UserModel;
 import eu.napcode.gonoteit.ui.about.AboutFragment;
-import eu.napcode.gonoteit.ui.favorites.FavoritesFragment;
 import eu.napcode.gonoteit.ui.login.LoginActivity;
 import eu.napcode.gonoteit.ui.notes.NotesFragment;
 
