@@ -56,7 +56,7 @@ constructor(
                 .from(authMutation)
                 .doOnSubscribe { timestampStore.removeTimestamp() }
                 .doOnNext { processAuthResponse(it, authResource) }
-                .doOnComplete { retrieveUserData(authResource) }
+                .doOnComplete { updateUserFromRemote(authResource) }
     }
 
     private fun processAuthResponse(authMutation: Response<AuthenticateMutation.Data>, authResource: MutableLiveData<Resource<AuthenticateMutation.Data>>) {
@@ -71,14 +71,16 @@ constructor(
 
     @SuppressLint("CheckResult")
     //TODO handle error
-    private fun retrieveUserData(authResource: MutableLiveData<Resource<AuthenticateMutation.Data>>) {
+    override fun updateUserFromRemote(authResource: MutableLiveData<Resource<AuthenticateMutation.Data>>?) {
         userRemote.getUser()
                 .subscribeOn(rxSchedulers.io())
                 .observeOn(rxSchedulers.io())
                 .subscribe(
                         {
                             saveUserData(it)
-                            finishAuthProcess(authResource)
+                            if (authResource != null) {
+                                finishAuthProcess(authResource)
+                            }
                         },
                         { Timber.d("get user error") })
     }

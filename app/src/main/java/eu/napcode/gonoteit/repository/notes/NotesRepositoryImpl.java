@@ -10,13 +10,16 @@ import javax.inject.Inject;
 
 import eu.napcode.gonoteit.api.ApiEntity;
 import eu.napcode.gonoteit.api.Note;
+import eu.napcode.gonoteit.dao.user.UserDao;
 import eu.napcode.gonoteit.data.notes.NotesLocal;
 import eu.napcode.gonoteit.data.notes.NotesRemote;
 import eu.napcode.gonoteit.data.results.DeletedResult;
+import eu.napcode.gonoteit.data.user.UserRemote;
 import eu.napcode.gonoteit.model.note.NoteModel;
 import eu.napcode.gonoteit.data.results.NoteResult;
 import eu.napcode.gonoteit.data.results.NotesResult;
 import eu.napcode.gonoteit.repository.Resource;
+import eu.napcode.gonoteit.repository.user.UserRepository;
 import eu.napcode.gonoteit.utils.ErrorMessages;
 import eu.napcode.gonoteit.utils.NetworkHelper;
 
@@ -24,18 +27,20 @@ public class NotesRepositoryImpl implements NotesRepository {
 
     private final ErrorMessages errorMessages;
     private final NotesLocal notesLocal;
+    private final UserRepository userRepository;
     private NotesRemote notesRemote;
     private NetworkHelper networkHelper;
-
     MutableLiveData<Resource> resource = new MutableLiveData<>();
 
     @Inject
     public NotesRepositoryImpl(NotesRemote notesRemote, NotesLocal notesLocal,
-                               NetworkHelper networkHelper, ErrorMessages errorMessages) {
+                               NetworkHelper networkHelper, ErrorMessages errorMessages,
+                               UserRepository userRepository) {
         this.notesRemote = notesRemote;
         this.notesLocal = notesLocal;
         this.networkHelper = networkHelper;
         this.errorMessages = errorMessages;
+        this.userRepository = userRepository;
     }
 
     @Override
@@ -225,6 +230,7 @@ public class NotesRepositoryImpl implements NotesRepository {
         if (networkHelper.isNetworkAvailable()) {
             notesRemote
                     .updateFavorites(list)
+                    .doOnComplete(() -> userRepository.updateUserFromRemote(null))
                     .subscribe();
         } else {
             resource.postValue(Resource.error(errorMessages.getUpdatingNoteNotImplementedOfflineMessage()));

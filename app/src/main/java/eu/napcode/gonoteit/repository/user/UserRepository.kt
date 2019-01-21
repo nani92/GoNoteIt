@@ -15,6 +15,8 @@ interface UserRepository {
 
     fun isUserLoggedIn(): Boolean
 
+    fun updateUserFromRemote(authResource: MutableLiveData<Resource<AuthenticateMutation.Data>>?)
+
     fun getLoggedInUser(): LiveData<UserModel?>
 
     fun authenticateUser(login: String, password: String, authResponse : MutableLiveData<Resource<AuthenticateMutation.Data>>): Observable<Response<AuthenticateMutation.Data>>
