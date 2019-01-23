@@ -4,6 +4,7 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.graphics.Color;
+import android.graphics.drawable.Animatable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
@@ -134,10 +135,12 @@ public class NoteActivity extends AppCompatActivity {
         createFavoriteImageView();
 
         if (isFavorite) {
-            favoriteImageView.setImageResource(R.drawable.ic_favorite_24px);
+            favoriteImageView.setImageResource(R.drawable.fav_empty_to_full);
         } else {
-            favoriteImageView.setImageResource(R.drawable.ic_favorite_border_24px);
+            favoriteImageView.setImageResource(R.drawable.fav_full_to_empty);
         }
+
+        ((Animatable)this.favoriteImageView.getDrawable()).start();
     }
 
     private void processNote(Resource resource) {
