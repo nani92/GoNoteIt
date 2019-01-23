@@ -99,8 +99,14 @@ constructor(private val noteDao: NoteDaoManipulator, private val userDao: UserDa
                 .map { created -> (created.data() as Note).parseNote(ApiEntity(created)) as NoteModel }
     }
 
-    fun getFavoriteIdsList() : List<Long> {
+    fun getCurrentFavoriteIdsList() : List<Long> {
         return UserModel(userDao.userEntity).favorites
+    }
+
+    fun getFavoriteIdsList() : LiveData<List<Long>> {
+        return Transformations.map(userDao.userEntityLiveData) {
+            UserModel(userDao.userEntity).favorites
+        }
     }
 
     companion object {

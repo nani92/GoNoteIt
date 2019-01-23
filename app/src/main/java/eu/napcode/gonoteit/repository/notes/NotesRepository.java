@@ -23,4 +23,6 @@ public interface NotesRepository {
     LiveData<Resource> updateFavorites(Long id);
 
     NotesResult getFavoriteNotes();
+
+    LiveData<Boolean> isNoteFavorite(Long id);
 }

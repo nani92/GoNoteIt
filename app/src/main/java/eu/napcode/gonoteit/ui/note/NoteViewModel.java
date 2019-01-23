@@ -33,4 +33,8 @@ public class NoteViewModel extends ViewModel {
     public LiveData<Resource> updateFavorites(Long id) {
         return notesRepository.updateFavorites(id);
     }
+
+    public LiveData<Boolean> isNoteFavorite(Long id) {
+        return notesRepository.isNoteFavorite(id);
+    }
 }
