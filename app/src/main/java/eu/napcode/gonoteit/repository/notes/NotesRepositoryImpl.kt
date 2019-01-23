@@ -203,13 +203,10 @@ constructor(private val notesRemote: NotesRemote, private val notesLocal: NotesL
     }
 
     override fun updateFavorites(id: Long): LiveData<Resource<*>> {
-        val list = mutableListOf<Long>()
-        list.addAll(notesLocal.getCurrentFavoriteIdsList())
-        list.add(id)
 
         if (networkHelper.isNetworkAvailable) {
             notesRemote
-                    .updateFavorites(list)
+                    .updateFavorites(getUpdatedFavList(id))
                     .doOnComplete { userRepository.updateUserFromRemote(null) }
                     .subscribe()
         } else {
@@ -217,6 +214,19 @@ constructor(private val notesRemote: NotesRemote, private val notesLocal: NotesL
         }
 
         return resource
+    }
+
+    private fun getUpdatedFavList(id: Long) : List<Long> {
+        val list = mutableListOf<Long>()
+        list.addAll(notesLocal.getCurrentFavoriteIdsList())
+
+        if (list.contains(id)) {
+            list.remove(id)
+        } else {
+            list.add(id)
+        }
+
+        return list
     }
 
     override fun getFavoriteNotes(): NotesResult {

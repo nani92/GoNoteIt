@@ -87,7 +87,6 @@ public class NoteActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
-
         if (item.getItemId() == R.id.update) {
             showUpdateScreen();
         }
