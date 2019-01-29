@@ -72,11 +72,11 @@ public class LoginViewModelTest {
 
     @Test
     public void testLogin() {
-        Mockito.when(userRepository.authenticateUser(Mockito.any(), Mockito.any()))
+        Mockito.when(userRepository.authenticateUser(Mockito.any(), Mockito.any(), Mockito.any()))
                 .thenReturn(Observable.just(response));
 
         loginViewModel.login();
 
-        Mockito.verify(userRepository).authenticateUser(Mockito.any(), Mockito.any());
+        Mockito.verify(userRepository).authenticateUser(Mockito.any(), Mockito.any(), Mockito.any());
     }
 }
