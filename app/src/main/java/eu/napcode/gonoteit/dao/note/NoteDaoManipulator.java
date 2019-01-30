@@ -1,7 +1,9 @@
-package eu.napcode.gonoteit.dao;
+package eu.napcode.gonoteit.dao.note;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.paging.DataSource;
+
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -62,5 +64,9 @@ public class NoteDaoManipulator {
 
     public LiveData<NoteEntity> getNoteById(Long id) {
         return noteDao.getNoteById(id);
+    }
+
+    public DataSource.Factory<Integer, NoteEntity> getFavoriteNoteEntities(List<Long> ids) {
+        return noteDao.getFavoriteNoteEntities(ids);
     }
 }

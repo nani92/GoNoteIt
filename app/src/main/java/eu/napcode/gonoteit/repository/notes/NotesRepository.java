@@ -19,4 +19,10 @@ public interface NotesRepository {
     NoteResult getNote(Long id);
 
     LiveData<Resource> updateNote(NoteModel noteModel);
+
+    LiveData<Resource> updateFavorites(Long id);
+
+    NotesResult getFavoriteNotes();
+
+    LiveData<Boolean> isNoteFavorite(Long id);
 }

@@ -1,6 +1,6 @@
 package eu.napcode.gonoteit.ui.main
 
-import android.arch.lifecycle.MutableLiveData
+import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.ViewModel
 
 import javax.inject.Inject
@@ -11,12 +11,9 @@ import eu.napcode.gonoteit.rx.RxSchedulers
 
 class MainViewModel @Inject
 constructor(private val userRepository: UserRepository, private val rxSchedulers: RxSchedulers) : ViewModel() {
-    private val loggedInUser = MutableLiveData<UserModel>()
 
-    fun getLoggedInUser(): MutableLiveData<UserModel> {
-        loggedInUser.postValue(userRepository.getLoggedInUser())
-
-        return loggedInUser
+    fun getLoggedInUser(): LiveData<UserModel?> {
+        return userRepository.getLoggedInUser()
     }
 
     fun logoutUser() {
@@ -26,5 +23,9 @@ constructor(private val userRepository: UserRepository, private val rxSchedulers
                 .observeOn(rxSchedulers.androidMainThread())
                 .doFinally { getLoggedInUser() }
                 .subscribe()
+    }
+
+    fun isUserLoggedIn() : Boolean {
+        return userRepository.isUserLoggedIn()
     }
 }

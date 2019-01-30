@@ -20,14 +20,12 @@ import eu.napcode.gonoteit.GetNotesQuery.AllEntity;
 import eu.napcode.gonoteit.MockRxSchedulers;
 import eu.napcode.gonoteit.api.ApolloRxHelper;
 import eu.napcode.gonoteit.auth.StoreAuth;
-import eu.napcode.gonoteit.dao.NoteDao;
+import eu.napcode.gonoteit.dao.note.NoteDao;
 import eu.napcode.gonoteit.data.notes.NotesRemote;
 import eu.napcode.gonoteit.model.note.NoteModel;
-import eu.napcode.gonoteit.repository.Resource;
 import eu.napcode.gonoteit.utils.TimestampStore;
 import io.reactivex.Observable;
 import io.reactivex.observers.TestObserver;
-import io.reactivex.subscribers.TestSubscriber;
 
 @RunWith(MockitoJUnitRunner.class)
 public class NotesRepositoryRemoteImplTest {

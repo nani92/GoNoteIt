@@ -23,9 +23,14 @@ public class NotesViewModelTest {
     @Mock
     NotesRepository notesRepository;
 
+    @Mock
+    NotesResult notesResult;
+
     @Before
     public void init() {
         this.notesViewModel = new NotesViewModel(notesRepository);
+
+        Mockito.when(notesRepository.getNotes()).thenReturn(notesResult);
     }
 
     @Test

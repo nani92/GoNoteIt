@@ -1,11 +1,11 @@
-package eu.napcode.gonoteit.dao
+package eu.napcode.gonoteit.dao.note
 
 import android.arch.persistence.room.ColumnInfo
 import android.arch.persistence.room.Entity
 import android.arch.persistence.room.PrimaryKey
 import android.arch.persistence.room.TypeConverters
 import android.support.annotation.NonNull
-import eu.napcode.gonoteit.dao.NoteEntity.Companion.TABLE_NAME
+import eu.napcode.gonoteit.dao.note.NoteEntity.Companion.TABLE_NAME
 
 import eu.napcode.gonoteit.model.note.NoteModel
 import eu.napcode.gonoteit.type.ReadAccess

@@ -15,7 +15,6 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.transition.Slide;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
@@ -29,7 +28,6 @@ import eu.napcode.gonoteit.databinding.DrawerHeaderBinding;
 import eu.napcode.gonoteit.di.modules.viewmodel.ViewModelFactory;
 import eu.napcode.gonoteit.model.UserModel;
 import eu.napcode.gonoteit.ui.about.AboutFragment;
-import eu.napcode.gonoteit.ui.favorites.FavoritesFragment;
 import eu.napcode.gonoteit.ui.login.LoginActivity;
 import eu.napcode.gonoteit.ui.notes.NotesFragment;
 
@@ -118,11 +116,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void processUser(UserModel user) {
-        displayFirstScreen();
 
-        if (user == null) {
+        if (user == null && mainViewModel.isUserLoggedIn() == false) {
             setViewsForNotLoggedInUser();
 
+            return;
+        }
+
+        if (user == null) {
             return;
         }
 
@@ -164,7 +165,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void displayFirstScreen() {
-        fragmentToSet = new NotesFragment();
+        fragmentToSet = NotesFragment.Companion.newInstance(false);
         displayFragment();
         this.binding.navigationView.getMenu().getItem(0).setChecked(true);
     }
@@ -199,11 +200,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         switch (item.getItemId()) {
             case R.id.notes:
-                fragmentToSet = new NotesFragment();
+                fragmentToSet = NotesFragment.Companion.newInstance(false);
 
                 return true;
             case R.id.fav_notes:
-                fragmentToSet = new FavoritesFragment();
+                fragmentToSet = NotesFragment.Companion.newInstance(true);
 
                 return true;
             case R.id.about:
@@ -223,7 +224,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         AlertDialog dialog = new AlertDialog.Builder(this)
                 .setTitle(R.string.logout)
                 .setMessage(R.string.logout_message)
-                .setPositiveButton(R.string.logout, (dialog1, which) -> mainViewModel.logoutUser())
+                .setPositiveButton(R.string.logout, (dialog1, which) -> {
+                    mainViewModel.logoutUser();
+                    displayFirstScreen();
+                })
                 .setNegativeButton(android.R.string.cancel, (dialog12, which) -> {
                 })
                 .create();

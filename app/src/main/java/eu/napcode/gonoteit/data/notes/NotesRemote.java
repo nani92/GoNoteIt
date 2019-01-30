@@ -14,6 +14,7 @@ import eu.napcode.gonoteit.DeleteNoteMutation;
 import eu.napcode.gonoteit.GetChangelogMutation;
 import eu.napcode.gonoteit.GetNoteByIdQuery;
 import eu.napcode.gonoteit.GetNotesQuery;
+import eu.napcode.gonoteit.UpdateFavoritesMutation;
 import eu.napcode.gonoteit.UpdateNoteMutation;
 import eu.napcode.gonoteit.api.ApiEntity;
 import eu.napcode.gonoteit.api.ApolloRxHelper;
@@ -23,6 +24,8 @@ import eu.napcode.gonoteit.model.note.NoteModel;
 import eu.napcode.gonoteit.rx.RxSchedulers;
 import eu.napcode.gonoteit.utils.TimestampStore;
 import io.reactivex.Observable;
+
+import static eu.napcode.gonoteit.data.user.FavoritesMapperKt.favoritesMapToString;
 
 public class NotesRemote {
 
@@ -102,5 +105,12 @@ public class NotesRemote {
 
     public void saveTimestamp(Long timestamp) {
         timestampStore.saveTimestamp(timestamp);
+    }
+
+    public Observable<Response<UpdateFavoritesMutation.Data>> updateFavorites(List<Long> favorites) {
+        return apolloRxHelper
+                .from(apolloClient.mutate(new UpdateFavoritesMutation(favoritesMapToString(favorites))))
+                .subscribeOn(rxSchedulers.io())
+                .observeOn(rxSchedulers.io());
     }
 }

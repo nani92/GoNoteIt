@@ -22,6 +22,7 @@ import eu.napcode.gonoteit.GetNoteByIdQuery;
 import eu.napcode.gonoteit.data.notes.NotesLocal;
 import eu.napcode.gonoteit.data.notes.NotesRemote;
 import eu.napcode.gonoteit.model.note.NoteModel;
+import eu.napcode.gonoteit.repository.user.UserRepository;
 import eu.napcode.gonoteit.utils.ErrorMessages;
 import eu.napcode.gonoteit.utils.NetworkHelper;
 import io.reactivex.Observable;
@@ -52,9 +53,12 @@ public class NotesRepositoryTest {
     @Mock
     Response<GetChangelogMutation.Data> changelogResponse;
 
+    @Mock
+    UserRepository userRepository;
+
     @Before
     public void init() {
-        this.notesRepository = new NotesRepositoryImpl(notesRemote, notesLocal, networkHelper, errorMessages);
+        this.notesRepository = new NotesRepositoryImpl(notesRemote, notesLocal, networkHelper, errorMessages, userRepository);
     }
 
     @Test

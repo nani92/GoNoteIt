@@ -1,0 +1,8 @@
+mutation UpdateFavoritesMutation($data: String!) {
+ updateUser(fields: ["favorite"], data: $data) {
+    ok,
+    user {
+        data
+    }
+ }
+}

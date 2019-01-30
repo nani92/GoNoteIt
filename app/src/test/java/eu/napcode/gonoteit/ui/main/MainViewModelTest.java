@@ -7,7 +7,9 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 
+import eu.napcode.gonoteit.MockRxSchedulers;
 import eu.napcode.gonoteit.repository.user.UserRepository;
+import eu.napcode.gonoteit.rx.RxSchedulers;
 
 @RunWith(MockitoJUnitRunner.class)
 public class MainViewModelTest {
@@ -16,10 +18,11 @@ public class MainViewModelTest {
     UserRepository userRepository;
 
     private MainViewModel mainViewModel;
+    private RxSchedulers rxSchedulers = new MockRxSchedulers();
 
     @Before
     public void init() {
-        this.mainViewModel = new MainViewModel(userRepository);
+        this.mainViewModel = new MainViewModel(userRepository, rxSchedulers);
     }
 
     @Test

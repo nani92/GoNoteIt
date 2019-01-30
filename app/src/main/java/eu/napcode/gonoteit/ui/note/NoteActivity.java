@@ -3,6 +3,8 @@ package eu.napcode.gonoteit.ui.note;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
+import android.graphics.Color;
+import android.graphics.drawable.Animatable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
@@ -11,6 +13,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import javax.inject.Inject;
@@ -44,6 +48,7 @@ public class NoteActivity extends AppCompatActivity {
     private NoteViewModel viewModel;
 
     public static final String NOTE_ID_KEY = "note id";
+    private ImageView favoriteImageView;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -60,7 +65,23 @@ public class NoteActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.note_menu, menu);
 
+        createFavoriteImageView();
+        menu.getItem(0).setActionView(favoriteImageView);
+
         return true;
+    }
+
+    private void createFavoriteImageView() {
+
+        if (favoriteImageView != null) {
+            return;
+        }
+
+        favoriteImageView = new ImageView(this);
+        favoriteImageView.setImageResource(R.drawable.ic_favorite_24px);
+        favoriteImageView.setColorFilter(Color.argb(255, 255, 255, 255));
+        favoriteImageView.setOnClickListener(v ->
+                viewModel.updateFavorites(getIntent().getLongExtra(NOTE_ID_KEY, 0)));
     }
 
     @Override
@@ -68,6 +89,10 @@ public class NoteActivity extends AppCompatActivity {
 
         if (item.getItemId() == R.id.update) {
             showUpdateScreen();
+        }
+
+        if (item.getItemId() == R.id.favourite) {
+            viewModel.updateFavorites(getIntent().getLongExtra(NOTE_ID_KEY, 0));
         }
 
         return super.onOptionsItemSelected(item);
@@ -101,6 +126,20 @@ public class NoteActivity extends AppCompatActivity {
 
         noteResult.getNote().observe(this, this::displayNote);
         noteResult.getResource().observe(this, this::processNote);
+
+        this.viewModel.isNoteFavorite(id).observe(this, this::displayFavorite);
+    }
+
+    private void displayFavorite(Boolean isFavorite) {
+        createFavoriteImageView();
+
+        if (isFavorite) {
+            favoriteImageView.setImageResource(R.drawable.fav_empty_to_full);
+        } else {
+            favoriteImageView.setImageResource(R.drawable.fav_full_to_empty);
+        }
+
+        ((Animatable)this.favoriteImageView.getDrawable()).start();
     }
 
     private void processNote(Resource resource) {
