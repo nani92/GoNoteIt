@@ -25,7 +25,10 @@ fun favoritesMapToList(favorites : String?) : List<Long> {
     var favoritesStringList = favValues.split(',')
 
     val favoritesList = mutableListOf<Long>()
-    favoritesStringList.forEach { favoritesList.add(it.toLong())}
+
+    if (favValues.isNotEmpty()) {
+        favoritesStringList.forEach { favoritesList.add(it.toLong()) }
+    }
 
     return favoritesList
 }
