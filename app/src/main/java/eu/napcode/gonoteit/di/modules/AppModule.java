@@ -11,7 +11,6 @@ import dagger.Module;
 import dagger.Provides;
 import eu.napcode.gonoteit.api.ApolloRxHelper;
 import eu.napcode.gonoteit.api.NoteAdapter;
-import eu.napcode.gonoteit.api.UUIDAdapter;
 import eu.napcode.gonoteit.app.GoNoteItApp;
 import eu.napcode.gonoteit.auth.StoreAuth;
 import eu.napcode.gonoteit.utils.NetworkHelper;
@@ -22,7 +21,6 @@ import okhttp3.logging.HttpLoggingInterceptor;
 import static android.content.Context.MODE_PRIVATE;
 import static eu.napcode.gonoteit.api.ApiConsts.API_URL;
 import static eu.napcode.gonoteit.type.CustomType.GENERICSCALAR;
-import static eu.napcode.gonoteit.type.CustomType.UUID;
 import static okhttp3.logging.HttpLoggingInterceptor.Level.BODY;
 
 @Module
@@ -55,7 +53,6 @@ public class AppModule {
                 .serverUrl(API_URL)
                 .okHttpClient(okHttpClient)
                 .addCustomTypeAdapter(GENERICSCALAR, new NoteAdapter())
-                .addCustomTypeAdapter(UUID, new UUIDAdapter())
                 .build();
     }
 

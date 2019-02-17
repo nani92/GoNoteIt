@@ -1,8 +1,7 @@
 package eu.napcode.gonoteit.model.note
 
 import eu.napcode.gonoteit.dao.note.NoteEntity
-import eu.napcode.gonoteit.type.ReadAccess
-import eu.napcode.gonoteit.type.WriteAccess
+import eu.napcode.gonoteit.type.Access
 
 open class NoteModel (){
     var uuid: String? = null
@@ -11,8 +10,8 @@ open class NoteModel (){
     var id: Long? = null
     var imageBase64: String? = null
     var updatedAt: Long? = null
-    var readAccess = ReadAccess.PRIVATE
-    var writeAccess = WriteAccess.ONLY_OWNER
+    var readAccess = Access.INTERNAL
+    var writeAccess = Access.INTERNAL
 
     constructor(noteEntity: NoteEntity): this() {
         uuid = noteEntity.uuid

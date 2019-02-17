@@ -41,8 +41,7 @@ import eu.napcode.gonoteit.di.modules.viewmodel.ViewModelFactory;
 import eu.napcode.gonoteit.model.note.NoteModel;
 import eu.napcode.gonoteit.repository.Resource.Status;
 import eu.napcode.gonoteit.repository.Resource;
-import eu.napcode.gonoteit.type.ReadAccess;
-import eu.napcode.gonoteit.type.WriteAccess;
+import eu.napcode.gonoteit.type.Access;
 import eu.napcode.gonoteit.utils.GlideBase64Loader;
 import eu.napcode.gonoteit.utils.ImageUtils;
 import eu.napcode.gonoteit.utils.RevealActivityHelper;
@@ -75,8 +74,8 @@ public class CreateActivity extends AppCompatActivity implements PermissionsDial
     private static int PERMISSIONS_REQUEST_EXTERNAL_STORAGE = 303;
     private static String IMAGE_STATE_KEY = "image";
 
-    private ReadAccess readPermissions = ReadAccess.PRIVATE;
-    private WriteAccess writePermissions = WriteAccess.ONLY_OWNER;
+    private Access readPermissions = Access.INTERNAL;
+    private Access writePermissions = Access.INTERNAL;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -396,12 +395,12 @@ public class CreateActivity extends AppCompatActivity implements PermissionsDial
     }
 
     @Override
-    public void onChangedReadPerms(@NotNull ReadAccess readAccess) {
+    public void onChangedReadPerms(@NotNull Access readAccess) {
         this.readPermissions = readAccess;
     }
 
     @Override
-    public void onChangedWritePerms(@NotNull WriteAccess writeAccess) {
+    public void onChangedWritePerms(@NotNull Access writeAccess) {
         this.writePermissions = writeAccess;
     }
 }

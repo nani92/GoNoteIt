@@ -1,7 +1,6 @@
 mutation GetChangelog($timestamp: Int!) {
     changelog(timestamp: $timestamp) {
        created {
-        uuid,
         id,
         type,
         data,
@@ -10,7 +9,6 @@ mutation GetChangelog($timestamp: Int!) {
         writeAccess
        },
        updated {
-        uuid,
         id,
         type,
         data,
