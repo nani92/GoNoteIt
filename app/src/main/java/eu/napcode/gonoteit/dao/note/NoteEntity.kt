@@ -15,9 +15,6 @@ data class NoteEntity(
 
         @PrimaryKey
         @NonNull
-        @ColumnInfo(name = COLUMN_UUID)
-        var uuid: String,
-
         @ColumnInfo(name = COLUMN_ID)
         var id: Long,
 
@@ -44,7 +41,6 @@ data class NoteEntity(
 
     constructor(noteModel: NoteModel) :
             this(
-                    uuid = noteModel.uuid!!,
                     id = noteModel.id!!,
                     updatedAt = noteModel.updatedAt!!,
                     title = noteModel.title,
@@ -58,7 +54,6 @@ data class NoteEntity(
 
         const val TABLE_NAME = "notes"
 
-        const val COLUMN_UUID = "UUID"
         const val COLUMN_ID = "ID"
         const val COLUMN_TITLE = "title"
         const val COLUMN_CONTENT = "content"

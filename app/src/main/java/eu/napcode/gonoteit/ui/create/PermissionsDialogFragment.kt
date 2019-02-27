@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.support.v4.app.DialogFragment
 import android.view.View
 import android.widget.RadioGroup
-import android.widget.TextView
 import eu.napcode.gonoteit.R
 import eu.napcode.gonoteit.type.Access
 
@@ -49,12 +48,11 @@ class PermissionsDialogFragment : DialogFragment() {
 
     private fun displayReadPerms(view: View) {
         var readRadioGroup = view.findViewById<RadioGroup>(R.id.readPermsRadioGroup)
-        readRadioGroup.setOnCheckedChangeListener { _, _ -> displayReadExplanation(view) }
 
         when (getReadPerms()) {
             Access.PUBLIC -> readRadioGroup.check(R.id.read_public_radio_button)
             Access.PRIVATE -> readRadioGroup.check(R.id.read_private_radio_button)
-            Access.INTERNAL -> readRadioGroup.check(R.id.read_via_link_radio_button)
+            Access.INTERNAL -> readRadioGroup.check(R.id.read_internal_radio_button)
         }
     }
 
@@ -62,34 +60,22 @@ class PermissionsDialogFragment : DialogFragment() {
 
     private fun displayWritePerms(view: View) {
         var writeRadioGroup = view.findViewById<RadioGroup>(R.id.writePermsRadioGroup)
-        writeRadioGroup.setOnCheckedChangeListener { _, _ -> displayWriteExplanation(view) }
 
         when (getWritePerms()) {
-            Access.PUBLIC -> writeRadioGroup.check(R.id.write_everyone_radio_button)
-            Access.PRIVATE -> writeRadioGroup.check(R.id.write_only_owner_radio_button)
-            Access.INTERNAL -> writeRadioGroup.check(R.id.write_group_radio_button)
+            Access.PUBLIC -> writeRadioGroup.check(R.id.write_public_radio_button)
+            Access.PRIVATE -> writeRadioGroup.check(R.id.write_private_radio_button)
+            Access.INTERNAL -> writeRadioGroup.check(R.id.write_internal_radio_button)
         }
     }
 
     private fun getWritePerms() = arguments!!.getSerializable(ARG_WRITE_PERMS) as Access
-
-    private fun displayReadExplanation(view: View) {
-        view.findViewById<TextView>(R.id.readPermsExplanationTextView).text =
-                        getReadPermsExplanation(context!!, getChosenReadPerm(view))
-    }
-
-    private fun displayWriteExplanation(view: View) {
-
-        view.findViewById<TextView>(R.id.writePermsExplanationTextView).text =
-                        getWritePermsExplanation(context!!, getChosenWritePerm(view))
-    }
 
     private fun getChosenReadPerm(view: View): Access {
         var readRadioGroup = view.findViewById<RadioGroup>(R.id.readPermsRadioGroup)
 
         return when (readRadioGroup.checkedRadioButtonId) {
             R.id.read_public_radio_button -> Access.PUBLIC
-            R.id.read_via_link_radio_button -> Access.INTERNAL
+            R.id.read_internal_radio_button -> Access.INTERNAL
             else -> Access.PRIVATE
         }
     }
@@ -98,8 +84,8 @@ class PermissionsDialogFragment : DialogFragment() {
         var writeRadioGroup = view.findViewById<RadioGroup>(R.id.writePermsRadioGroup)
 
         return when (writeRadioGroup.checkedRadioButtonId) {
-            R.id.write_everyone_radio_button -> Access.INTERNAL
-            R.id.write_group_radio_button -> Access.INTERNAL
+            R.id.write_public_radio_button -> Access.PUBLIC
+            R.id.write_private_radio_button -> Access.PRIVATE
             else -> Access.INTERNAL
         }
     }

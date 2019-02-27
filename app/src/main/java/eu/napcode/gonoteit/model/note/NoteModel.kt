@@ -4,7 +4,6 @@ import eu.napcode.gonoteit.dao.note.NoteEntity
 import eu.napcode.gonoteit.type.Access
 
 open class NoteModel (){
-    var uuid: String? = null
     var title: String? = null
     var content: String? = null
     var id: Long? = null
@@ -14,7 +13,6 @@ open class NoteModel (){
     var writeAccess = Access.INTERNAL
 
     constructor(noteEntity: NoteEntity): this() {
-        uuid = noteEntity.uuid
         title = noteEntity.title
         content = noteEntity.content
         id = noteEntity.id
@@ -26,7 +24,6 @@ open class NoteModel (){
 
     override fun equals(obj: Any?): Boolean {
         return obj is NoteModel &&
-                uuid == obj.uuid &&
                 id == obj.id &&
                 areStringsEqual(title, obj.title) &&
                 areStringsEqual(content, obj.content) &&

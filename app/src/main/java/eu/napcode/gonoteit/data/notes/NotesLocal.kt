@@ -78,8 +78,7 @@ constructor(private val noteDao: NoteDaoManipulator, private val userDao: UserDa
 
         Observable.just(changelog.deleted()!!)
                 .flatMapIterable { deleteds -> deleteds }
-                .map { deleted -> deleted.toString() }
-                .subscribe { deleted -> noteDao.deleteNoteByUuid(deleted) }
+                .subscribe { deleted -> noteDao.deleteNote(deleted) }
     }
 
     private fun getNoteModelsToSaveObservable(changelog: Changelog): Observable<NoteModel> {

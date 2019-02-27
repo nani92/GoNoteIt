@@ -2,7 +2,6 @@
 <android.support.constraint.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:padding="@dimen/base_margin">
@@ -28,35 +27,21 @@
             android:id="@+id/read_public_radio_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/perms_read_public"/>
+            android:text="@string/perms_public"/>
 
         <RadioButton
             android:id="@+id/read_private_radio_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/perms_read_private"/>
+            android:text="@string/perms_private"/>
 
         <RadioButton
-            android:id="@+id/read_via_link_radio_button"
+            android:id="@+id/read_internal_radio_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/perms_read_via_link"/>
+            android:text="@string/perms_internal"/>
 
-        <RadioButton
-            android:id="@+id/read_group_radio_button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/perms_read_group"/>
     </RadioGroup>
-
-    <TextView
-        android:id="@+id/readPermsExplanationTextView"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/readPermsRadioGroup"
-        tools:text="@tools:sample/lorem"/>
 
     <TextView
         android:id="@+id/writePermsTextView"
@@ -65,7 +50,7 @@
         android:layout_marginTop="@dimen/base_margin"
         android:text="@string/perms_write"
         android:textSize="@dimen/base_text_size"
-        app:layout_constraintTop_toBottomOf="@id/readPermsExplanationTextView"/>
+        app:layout_constraintTop_toBottomOf="@id/readPermsRadioGroup"/>
 
     <RadioGroup
         android:id="@+id/writePermsRadioGroup"
@@ -76,32 +61,23 @@
         app:layout_constraintTop_toTopOf="@id/writePermsTextView">
 
         <RadioButton
-            android:id="@+id/write_everyone_radio_button"
+            android:id="@+id/write_public_radio_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/perms_write_everyone"/>
+            android:text="@string/perms_public"/>
 
         <RadioButton
-            android:id="@+id/write_only_owner_radio_button"
+            android:id="@+id/write_private_radio_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/perms_write_owner"/>
+            android:text="@string/perms_private"/>
 
         <RadioButton
-            android:id="@+id/write_group_radio_button"
+            android:id="@+id/write_internal_radio_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/perms_write_group"/>
+            android:text="@string/perms_internal"/>
     </RadioGroup>
-
-    <TextView
-        android:id="@+id/writePermsExplanationTextView"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/writePermsRadioGroup"
-        tools:text="@tools:sample/lorem"/>
 
     <android.support.constraint.Barrier
         android:id="@+id/labelBarrier"

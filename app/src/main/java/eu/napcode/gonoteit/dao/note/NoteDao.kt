@@ -22,9 +22,6 @@ interface NoteDao {
     @Query("DELETE FROM " + NoteEntity.TABLE_NAME + " WHERE " + NoteEntity.COLUMN_ID + " = :id")
     fun deleteNote(id: Long?)
 
-    @Query("DELETE FROM " + NoteEntity.TABLE_NAME + " WHERE " + NoteEntity.COLUMN_UUID + " = :id")
-    fun deleteNoteByUuid(id: String)
-
     @Query("SELECT * FROM " + NoteEntity.TABLE_NAME + " WHERE " + NoteEntity.COLUMN_ID + " = :id")
     fun getNoteById(id: Long?): LiveData<NoteEntity>
 
