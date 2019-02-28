@@ -105,5 +105,6 @@
 
     <string name="favorite">Favorite</string>
     <string name="hint_host">Host Address</string>
+    <string name="content_description_add_date">Add date</string>
 
 </resources>

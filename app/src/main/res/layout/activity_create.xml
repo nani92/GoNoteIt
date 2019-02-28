@@ -101,7 +101,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintLeft_toRightOf="@id/addImageButton"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/addImageButton"
+                app:layout_constraintStart_toEndOf="@+id/addDateButton"
                 app:layout_constraintTop_toBottomOf="@id/contentBarrier"
                 app:layout_constraintVertical_bias="1"/>
 
@@ -127,6 +127,19 @@
                 android:tint="@android:color/white"
                 app:layout_constraintBottom_toBottomOf="@id/createNoteButton"
                 app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="@id/createNoteButton"/>
+
+            <ImageButton
+                android:id="@+id/addDateButton"
+                style="@style/Base.Widget.AppCompat.Button.Colored"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/content_description_add_date"
+                android:padding="0dp"
+                android:src="@drawable/ic_calendar_2"
+                android:tint="@android:color/white"
+                app:layout_constraintBottom_toBottomOf="@id/createNoteButton"
+                app:layout_constraintLeft_toRightOf="@id/addImageButton"
                 app:layout_constraintTop_toTopOf="@id/createNoteButton"/>
 
             <android.support.constraint.Barrier
