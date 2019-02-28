@@ -22,6 +22,7 @@ public class GoNoteItApp extends Application implements HasActivityInjector, Has
     @Inject
     DispatchingAndroidInjector<Fragment> dispatchingAndroidFragmentInjector;
 
+
     @Override
     public void onCreate() {
         super.onCreate();

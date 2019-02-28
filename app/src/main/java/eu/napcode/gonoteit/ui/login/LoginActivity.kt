@@ -36,6 +36,7 @@ class LoginActivity : AppCompatActivity() {
         override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
             viewModel!!.setLogin(loginEditText.text.toString())
             viewModel!!.setPassword(passwordEditText.text.toString())
+            viewModel!!.setHost(hostEditText.text.toString())
         }
     }
 
@@ -51,6 +52,7 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun setupInputFields() {
+        hostEditText.addTextChangedListener(inputWatcher)
         passwordEditText.addTextChangedListener(inputWatcher)
         loginEditText.addTextChangedListener(inputWatcher)
 

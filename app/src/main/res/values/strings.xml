@@ -104,5 +104,6 @@
     <string name="perms_write_explanation_group">Everyone within group</string>
 
     <string name="favorite">Favorite</string>
+    <string name="hint_host">Host Address</string>
 
 </resources>

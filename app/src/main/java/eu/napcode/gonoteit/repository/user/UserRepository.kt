@@ -19,7 +19,7 @@ interface UserRepository {
 
     fun getLoggedInUser(): LiveData<UserModel?>
 
-    fun authenticateUser(login: String, password: String, authResponse : MutableLiveData<Resource<AuthenticateMutation.Data>>): Observable<Response<AuthenticateMutation.Data>>
+    fun authenticateUser(host: String, login: String, password: String, authResponse : MutableLiveData<Resource<AuthenticateMutation.Data>>): Observable<Response<AuthenticateMutation.Data>>
 
     fun logoutUser(): Completable
 }
