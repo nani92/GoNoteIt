@@ -34,7 +34,6 @@ import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 import static eu.napcode.gonoteit.repository.Resource.Status.ERROR;
 import static eu.napcode.gonoteit.repository.Resource.Status.LOADING;
-import static eu.napcode.gonoteit.ui.create.CreateActivity.EDIT_NOTE_ID_KEY;
 
 public class NoteActivity extends AppCompatActivity {
 
@@ -110,7 +109,7 @@ public class NoteActivity extends AppCompatActivity {
 
     private Bundle getBundleForUpdate() {
         Bundle bundle = new Bundle();
-        bundle.putLong(EDIT_NOTE_ID_KEY, getIntent().getLongExtra(NOTE_ID_KEY, 0));
+        bundle.putLong(CreateActivity.Companion.getEDIT_NOTE_ID_KEY(), getIntent().getLongExtra(NOTE_ID_KEY, 0));
 
         return bundle;
     }
