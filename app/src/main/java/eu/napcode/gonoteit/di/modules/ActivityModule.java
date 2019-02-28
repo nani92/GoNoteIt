@@ -6,6 +6,7 @@ import eu.napcode.gonoteit.ui.create.CreateActivity;
 import eu.napcode.gonoteit.ui.login.LoginActivity;
 import eu.napcode.gonoteit.ui.main.MainActivity;
 import eu.napcode.gonoteit.ui.note.NoteActivity;
+import eu.napcode.gonoteit.ui.splash.SplashActivity;
 
 @Module
 public interface ActivityModule {
@@ -21,4 +22,7 @@ public interface ActivityModule {
 
     @ContributesAndroidInjector
     NoteActivity bindNoteActivity();
+
+    @ContributesAndroidInjector
+    SplashActivity bindSplashActivity();
 }

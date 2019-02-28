@@ -1,32 +1,17 @@
 package eu.napcode.gonoteit.utils
 
 import android.arch.persistence.room.TypeConverter
-import eu.napcode.gonoteit.type.ReadAccess
-import eu.napcode.gonoteit.type.WriteAccess
+import eu.napcode.gonoteit.type.Access
 
-class ReadAccessConverter {
+class AccessConverter {
 
     @TypeConverter
-    fun toReadPerms(ordinal: Int): ReadAccess {
-        return ReadAccess.values()[ordinal]
+    fun toReadPerms(ordinal: Int): Access {
+        return Access.values()[ordinal]
     }
 
     @TypeConverter
-    fun toOrdinal(readAccess: ReadAccess): Int? {
+    fun toOrdinal(readAccess: Access): Int? {
         return readAccess.ordinal
     }
 }
-
-class WriteAccessConverter {
-
-    @TypeConverter
-    fun toWritePerms(ordinal: Int): WriteAccess {
-        return WriteAccess.values()[ordinal]
-    }
-
-    @TypeConverter
-    fun toOrdinal(writePerms: WriteAccess): Int? {
-        return writePerms.ordinal
-    }
-}
-

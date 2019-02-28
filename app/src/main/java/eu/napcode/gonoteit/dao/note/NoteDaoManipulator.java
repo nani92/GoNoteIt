@@ -52,16 +52,6 @@ public class NoteDaoManipulator {
         }
     }
 
-    public void deleteNoteByUuid(String id) {
-
-        try {
-            noteDao.deleteNoteByUuid(id);
-            Timber.d("remove note by uuid completed %s", id);
-        } catch (Exception e) {
-            Timber.d("remove note by uuid exception %s", e.getLocalizedMessage());
-        }
-    }
-
     public LiveData<NoteEntity> getNoteById(Long id) {
         return noteDao.getNoteById(id);
     }

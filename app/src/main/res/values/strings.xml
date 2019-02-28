@@ -83,9 +83,10 @@
     <string name="permissions">permissions</string>
     <string name="perms_read">Read:</string>
     <string name="perms_write">Write:</string>
-    <string name="perms_read_public">Public</string>
-    <string name="perms_read_private">Private</string>
+    <string name="perms_public">Public</string>
+    <string name="perms_private">Private</string>
     <string name="perms_read_via_link">Via Link</string>
+    <string name="perms_internal">Internal</string>
     <string name="perms_read_group">Group</string>
     <string name="perms_write_owner">Only Owner</string>
     <string name="perms_write_everyone">Everyone</string>
@@ -101,6 +102,8 @@
     <string name="perms_write_explanation_owner">Only owner</string>
     <string name="perms_write_explanation_everyone">Everyone</string>
     <string name="perms_write_explanation_group">Everyone within group</string>
+
     <string name="favorite">Favorite</string>
+    <string name="hint_host">Host Address</string>
 
 </resources>

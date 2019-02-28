@@ -8,13 +8,12 @@ import eu.napcode.gonoteit.dao.note.NoteDao
 import eu.napcode.gonoteit.dao.note.NoteEntity
 import eu.napcode.gonoteit.dao.user.UserDao
 import eu.napcode.gonoteit.dao.user.UserEntity
-import eu.napcode.gonoteit.utils.ReadAccessConverter
-import eu.napcode.gonoteit.utils.WriteAccessConverter
+import eu.napcode.gonoteit.utils.AccessConverter
 
 @Database(
         entities = arrayOf(NoteEntity::class, UserEntity::class),
         version = 1)
-@TypeConverters(ReadAccessConverter::class, WriteAccessConverter::class)
+@TypeConverters(AccessConverter::class)
 abstract class NotesDataBase : RoomDatabase() {
 
     abstract fun noteDao(): NoteDao

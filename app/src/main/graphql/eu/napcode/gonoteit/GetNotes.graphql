@@ -3,7 +3,6 @@ query GetNotesQuery {
        type,
        data,
        id,
-       uuid,
        updatedAt,
        readAccess,
        writeAccess
@@ -16,7 +15,6 @@ query GetNoteByIdQuery($id: Int!) {
         type,
         data,
         id,
-        uuid,
         updatedAt,
         readAccess,
         writeAccess

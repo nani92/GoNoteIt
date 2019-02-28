@@ -9,7 +9,6 @@ import com.apollographql.apollo.api.Mutation;
 import com.apollographql.apollo.api.Operation;
 import com.apollographql.apollo.api.Response;
 
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -20,8 +19,6 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 
-import java.util.concurrent.TimeUnit;
-
 import eu.napcode.gonoteit.AuthenticateMutation;
 import eu.napcode.gonoteit.MockRxSchedulers;
 import eu.napcode.gonoteit.api.ApolloRxHelper;
@@ -31,11 +28,8 @@ import eu.napcode.gonoteit.data.notes.NotesLocal;
 import eu.napcode.gonoteit.data.user.UserRemote;
 import eu.napcode.gonoteit.repository.Resource;
 import eu.napcode.gonoteit.rx.RxSchedulers;
-import eu.napcode.gonoteit.ui.login.UserValidator;
 import eu.napcode.gonoteit.utils.TimestampStore;
 import io.reactivex.Observable;
-import io.reactivex.observers.TestObserver;
-import io.reactivex.subscribers.TestSubscriber;
 
 @RunWith(MockitoJUnitRunner.Silent.class)
 public class UserRepositoryTest {

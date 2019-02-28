@@ -35,7 +35,6 @@ public class Note {
         public boolean shouldSkipField(FieldAttributes f) {
 
             return (f.getDeclaringClass() == NoteModel.class && f.getName().equals("id")) ||
-                    (f.getDeclaringClass() == NoteModel.class && f.getName().equals("uuid")) ||
                     (f.getDeclaringClass() == NoteModel.class && f.getName().equals("readAccess")) ||
                     (f.getDeclaringClass() == NoteModel.class && f.getName().equals("writeAccess"));
         }
@@ -68,7 +67,6 @@ public class Note {
     private SimpleNoteModel getNoteModel() {
         Gson gson = new Gson();
         SimpleNoteModel noteModel = gson.fromJson(noteDataString, SimpleNoteModel.class);
-        noteModel.setUuid(apiEntity.uuid);
         noteModel.setId(apiEntity.id);
         noteModel.setUpdatedAt(apiEntity.updatedAt);
         noteModel.setReadAccess(apiEntity.readAccess);
