@@ -96,8 +96,12 @@ public class CreateActivity extends AppCompatActivity implements PermissionsDial
             displaySavedImage(savedInstanceState);
         }
 
-        if (isInEditMode()) {
+        if (isInEditMode() && savedInstanceState == null) {
             getNoteToEdit();
+        }
+
+        if (isInEditMode()) {
+            binding.createNoteButton.setText(R.string.update_note);
         }
     }
 
