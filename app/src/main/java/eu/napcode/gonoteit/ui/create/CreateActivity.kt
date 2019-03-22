@@ -48,8 +48,9 @@ import eu.napcode.gonoteit.repository.Resource.Status.ERROR
 import eu.napcode.gonoteit.utils.RevealActivityHelper.REVEAL_X_KEY
 import eu.napcode.gonoteit.utils.RevealActivityHelper.REVEAL_Y_KEY
 import kotlinx.android.synthetic.main.activity_create.*
+import java.util.*
 
-class CreateActivity : AppCompatActivity(), PermissionsDialogFragment.PermissionsDialogListener {
+class CreateActivity : AppCompatActivity(), PermissionsDialogFragment.PermissionsDialogListener, DateTimeSetListener {
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
@@ -84,21 +85,7 @@ class CreateActivity : AppCompatActivity(), PermissionsDialogFragment.Permission
             return noteModel
         }
 
-    private val getImageCallback = object : DefaultCallback() {
-
-        override fun onImagePickerError(e: Exception?, source: EasyImage.ImageSource?, type: Int) {
-            Snackbar.make(constraintLayout, R.string.error_with_capture_image, Snackbar.LENGTH_LONG).show()
-        }
-
-        override fun onImagesPicked(imagesFiles: List<File>, source: EasyImage.ImageSource, type: Int) {
-
-            if (imagesFiles != null && imagesFiles.size > 0) {
-                displayImageFile(imagesFiles[0])
-            } else {
-                Snackbar.make(constraintLayout, R.string.error_image_not_found, Snackbar.LENGTH_LONG).show()
-            }
-        }
-    }
+    private lateinit var dateTimePickHelper : DateTimePickHelper
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -106,6 +93,7 @@ class CreateActivity : AppCompatActivity(), PermissionsDialogFragment.Permission
         setContentView(R.layout.activity_create)
 
         AndroidInjection.inject(this)
+        dateTimePickHelper = DateTimePickHelper(this, this)
 
         this.viewModel = ViewModelProviders
                 .of(this, this.viewModelFactory)
@@ -172,6 +160,10 @@ class CreateActivity : AppCompatActivity(), PermissionsDialogFragment.Permission
 
         displayPermsExplanation()
         permsExplanationTextView.setOnClickListener { view -> showPermDialog() }
+
+        addDateButton.setOnClickListener {
+            dateTimePickHelper.startPicking()
+        }
     }
 
     private fun displayPermsExplanation() {
@@ -360,6 +352,25 @@ class CreateActivity : AppCompatActivity(), PermissionsDialogFragment.Permission
 
     override fun onChangedWritePerms(writeAccess: Access) {
         this.writePermissions = writeAccess
+    }
+
+    override fun onSetDateTime(calendar: Calendar) {
+    }
+
+    private val getImageCallback = object : DefaultCallback() {
+
+        override fun onImagePickerError(e: Exception?, source: EasyImage.ImageSource?, type: Int) {
+            Snackbar.make(constraintLayout, R.string.error_with_capture_image, Snackbar.LENGTH_LONG).show()
+        }
+
+        override fun onImagesPicked(imagesFiles: List<File>, source: EasyImage.ImageSource, type: Int) {
+
+            if (imagesFiles != null && imagesFiles.size > 0) {
+                displayImageFile(imagesFiles[0])
+            } else {
+                Snackbar.make(constraintLayout, R.string.error_image_not_found, Snackbar.LENGTH_LONG).show()
+            }
+        }
     }
 
     companion object {
