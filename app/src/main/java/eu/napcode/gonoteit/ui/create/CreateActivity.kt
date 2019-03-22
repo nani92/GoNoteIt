@@ -43,11 +43,15 @@ import pl.aprilapps.easyphotopicker.DefaultCallback
 import pl.aprilapps.easyphotopicker.EasyImage
 
 import android.graphics.Bitmap.CompressFormat.JPEG
+import android.support.constraint.ConstraintSet
+import android.support.transition.TransitionManager
 import android.view.View.VISIBLE
 import eu.napcode.gonoteit.repository.Resource.Status.ERROR
 import eu.napcode.gonoteit.utils.RevealActivityHelper.REVEAL_X_KEY
 import eu.napcode.gonoteit.utils.RevealActivityHelper.REVEAL_Y_KEY
 import kotlinx.android.synthetic.main.activity_create.*
+import kotlinx.android.synthetic.main.create_note_attachment.*
+import java.text.SimpleDateFormat
 import java.util.*
 
 class CreateActivity : AppCompatActivity(), PermissionsDialogFragment.PermissionsDialogListener, DateTimeSetListener {
@@ -85,7 +89,7 @@ class CreateActivity : AppCompatActivity(), PermissionsDialogFragment.Permission
             return noteModel
         }
 
-    private lateinit var dateTimePickHelper : DateTimePickHelper
+    private lateinit var dateTimePickHelper: DateTimePickHelper
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -355,6 +359,17 @@ class CreateActivity : AppCompatActivity(), PermissionsDialogFragment.Permission
     }
 
     override fun onSetDateTime(calendar: Calendar) {
+        TransitionManager.beginDelayedTransition(constraintLayout)
+
+        var constrainSet = ConstraintSet()
+        constrainSet.clone(constraintLayout)
+        var destinationConstraintSet = ConstraintSet()
+        destinationConstraintSet.clone(this, R.layout.activity_create_with_date)
+
+        var dateFormat = SimpleDateFormat("dd-MM-yyyy HH:mm", Locale.getDefault())
+        dateTextView.text = dateFormat.format(calendar.time)
+
+        destinationConstraintSet.applyTo(constraintLayout)
     }
 
     private val getImageCallback = object : DefaultCallback() {
@@ -365,7 +380,7 @@ class CreateActivity : AppCompatActivity(), PermissionsDialogFragment.Permission
 
         override fun onImagesPicked(imagesFiles: List<File>, source: EasyImage.ImageSource, type: Int) {
 
-            if (imagesFiles != null && imagesFiles.size > 0) {
+            if (imagesFiles != null && imagesFiles.isNotEmpty()) {
                 displayImageFile(imagesFiles[0])
             } else {
                 Snackbar.make(constraintLayout, R.string.error_image_not_found, Snackbar.LENGTH_LONG).show()

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/base_margin">
+
+        <ImageView
+            android:id="@+id/attachmentImageView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/content_description_image_view_for_attachment"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:src="@drawable/gonoteit_logo"/>
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/removeImageButton"
+            android:layout_width="@dimen/fab_size"
+            android:layout_height="@dimen/fab_size"
+            android:layout_marginTop="@dimen/small_margin"
+            android:layout_marginEnd="@dimen/small_margin"
+            android:contentDescription="@string/content_description_delete_image"
+            android:src="@drawable/ic_delete_black_24dp"
+            android:tint="@android:color/white"
+            app:layout_constraintRight_toRightOf="@id/attachmentImageView"
+            app:layout_constraintTop_toTopOf="@id/attachmentImageView"/>
+    </android.support.constraint.ConstraintLayout>
+
+</android.support.v7.widget.CardView>

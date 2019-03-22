@@ -50,45 +50,29 @@
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/titleEditText"/>
 
-            <android.support.v7.widget.CardView
+            <include
                 android:id="@+id/attachmentCardView"
+                layout="@layout/create_note_attachment"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:visibility="gone"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/contentEditText"
-                tools:visibility="visible">
+                app:layout_constraintTop_toBottomOf="@id/contentEditText"/>
 
-                <android.support.constraint.ConstraintLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="@dimen/base_margin">
-
-                    <ImageView
-                        android:id="@+id/attachmentImageView"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:contentDescription="@string/content_description_image_view_for_attachment"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        tools:src="@drawable/gonoteit_logo"/>
-
-                    <android.support.design.widget.FloatingActionButton
-                        android:id="@+id/removeImageButton"
-                        android:layout_width="@dimen/fab_size"
-                        android:layout_height="@dimen/fab_size"
-                        android:layout_marginTop="@dimen/small_margin"
-                        android:layout_marginEnd="@dimen/small_margin"
-                        android:contentDescription="@string/content_description_delete_image"
-                        android:src="@drawable/ic_delete_black_24dp"
-                        android:tint="@android:color/white"
-                        app:layout_constraintRight_toRightOf="@id/attachmentImageView"
-                        app:layout_constraintTop_toTopOf="@id/attachmentImageView"/>
-                </android.support.constraint.ConstraintLayout>
-
-            </android.support.v7.widget.CardView>
+            <TextView
+                android:id="@+id/dateTextView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:padding="@dimen/small_margin"
+                android:textSize="@dimen/base_text_size"
+                android:visibility="gone"
+                app:layout_constraintLeft_toRightOf="@id/addDateButton"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/contentBarrier"
+                android:layout_margin="@dimen/small_margin"
+                android:background="@drawable/date_background"/>
 
             <Button
                 android:id="@+id/createNoteButton"
@@ -99,7 +83,7 @@
                 android:layout_marginEnd="8dp"
                 android:text="@string/create_note"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintLeft_toRightOf="@id/addImageButton"
+                app:layout_constraintLeft_toRightOf="@id/addDateButton"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/addDateButton"
                 app:layout_constraintTop_toBottomOf="@id/contentBarrier"
