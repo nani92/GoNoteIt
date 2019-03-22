@@ -190,11 +190,7 @@ class CreateActivity : AppCompatActivity(), PermissionsDialogFragment.Permission
     }
 
     private fun hasPermissions(): Boolean {
-
-        return if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-            false
-        } else true
-
+        return ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
     }
 
     private fun askForPermissions() {

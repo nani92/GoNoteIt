@@ -21,10 +21,7 @@ import javax.inject.Inject
 
 import dagger.android.support.AndroidSupportInjection
 import eu.napcode.gonoteit.R
-import eu.napcode.gonoteit.data.results.DeletedResult
-import eu.napcode.gonoteit.databinding.FragmentNotesBinding
 import eu.napcode.gonoteit.di.modules.viewmodel.ViewModelFactory
-import eu.napcode.gonoteit.data.results.NotesResult
 import eu.napcode.gonoteit.model.note.NoteModel
 import eu.napcode.gonoteit.repository.Resource
 import eu.napcode.gonoteit.ui.create.CreateActivity
@@ -33,7 +30,7 @@ import eu.napcode.gonoteit.ui.note.NoteActivity
 import android.content.res.Configuration.ORIENTATION_LANDSCAPE
 import eu.napcode.gonoteit.repository.Resource.Status.ERROR
 import eu.napcode.gonoteit.ui.main.MainActivityProgressBarManager.manageProgressBarDisplaying
-import eu.napcode.gonoteit.ui.note.NoteActivity.NOTE_ID_KEY
+import eu.napcode.gonoteit.ui.note.NoteActivity.Companion.NOTE_ID_KEY
 import eu.napcode.gonoteit.utils.RevealActivityHelper.REVEAL_X_KEY
 import eu.napcode.gonoteit.utils.RevealActivityHelper.REVEAL_Y_KEY
 import kotlinx.android.synthetic.main.fragment_notes.*
