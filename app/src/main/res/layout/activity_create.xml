@@ -72,7 +72,8 @@
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/contentBarrier"
                 android:layout_margin="@dimen/small_margin"
-                android:background="@drawable/date_background"/>
+                android:background="@drawable/date_background"
+                android:drawableEnd="@drawable/ic_delete_black_24dp"/>
 
             <Button
                 android:id="@+id/createNoteButton"
