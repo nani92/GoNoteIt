@@ -311,7 +311,7 @@ class CreateActivity : AppCompatActivity(), PermissionsDialogFragment.Permission
         noteModel.imageBase64 = ImageUtils.encodeBitmapToBase64(imageDrawable.bitmap, JPEG, 100)
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
         EasyImage.handleActivityResult(requestCode, resultCode, data, this, getImageCallback)
