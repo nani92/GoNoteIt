@@ -6,7 +6,8 @@ mutation GetChangelog($timestamp: Int!) {
         data,
         updatedAt,
         readAccess,
-        writeAccess
+        writeAccess,
+        date
        },
        updated {
         id,
@@ -14,7 +15,8 @@ mutation GetChangelog($timestamp: Int!) {
         data,
         updatedAt
         readAccess,
-        writeAccess
+        writeAccess,
+        date
        },
        deleted,
        timestamp

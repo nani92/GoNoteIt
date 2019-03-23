@@ -36,7 +36,8 @@ public class Note {
 
             return (f.getDeclaringClass() == NoteModel.class && f.getName().equals("id")) ||
                     (f.getDeclaringClass() == NoteModel.class && f.getName().equals("readAccess")) ||
-                    (f.getDeclaringClass() == NoteModel.class && f.getName().equals("writeAccess"));
+                    (f.getDeclaringClass() == NoteModel.class && f.getName().equals("writeAccess")) ||
+                    (f.getDeclaringClass() == NoteModel.class && f.getName().equals("date"));
         }
 
     }
@@ -71,6 +72,7 @@ public class Note {
         noteModel.setUpdatedAt(apiEntity.updatedAt);
         noteModel.setReadAccess(apiEntity.readAccess);
         noteModel.setWriteAccess(apiEntity.writeAccess);
+        noteModel.setDate(apiEntity.date);
 
         return noteModel;
     }

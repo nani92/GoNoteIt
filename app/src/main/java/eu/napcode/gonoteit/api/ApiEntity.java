@@ -12,12 +12,14 @@ public class ApiEntity {
     Type type;
     Access readAccess;
     Access writeAccess;
+    Long date;
 
     private static final String ID_METHOD = "id";
     private static final String TYPE_METHOD = "type";
     private static final String UPDATED_AT = "updatedAt";
     private static final String READ_PERMS_METHOD = "readAccess";
     private static final String WRITE_PERMS_METHOD = "writeAccess";
+    private static final String DATE_METHOD = "date";
 
     public ApiEntity(Object o) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
         id = (Long) o.getClass().getMethod(ID_METHOD).invoke(o);
@@ -25,6 +27,7 @@ public class ApiEntity {
         type = (Type) o.getClass().getMethod(TYPE_METHOD).invoke(o);
         readAccess = (Access) o.getClass().getMethod(READ_PERMS_METHOD).invoke(o);
         writeAccess = (Access) o.getClass().getMethod(WRITE_PERMS_METHOD).invoke(o);
+        date = (Long) o.getClass().getMethod(DATE_METHOD).invoke(o);
     }
 
     public Long getId() {
@@ -45,5 +48,9 @@ public class ApiEntity {
 
     public Access getWriteAccess() {
         return writeAccess;
+    }
+
+    public Long getDate() {
+        return date;
     }
 }

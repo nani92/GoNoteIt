@@ -11,6 +11,8 @@ open class NoteModel (){
     var updatedAt: Long? = null
     var readAccess = Access.INTERNAL
     var writeAccess = Access.INTERNAL
+    var date: Long? = null
+    var hasAttachment = false
 
     constructor(noteEntity: NoteEntity): this() {
         title = noteEntity.title
@@ -20,6 +22,8 @@ open class NoteModel (){
         updatedAt = noteEntity.updatedAt
         readAccess = noteEntity.readAccess
         writeAccess = noteEntity.writeAccess
+        date = noteEntity.date
+        hasAttachment = noteEntity.hasAttachment
     }
 
     override fun equals(obj: Any?): Boolean {
@@ -27,7 +31,8 @@ open class NoteModel (){
                 id == obj.id &&
                 areStringsEqual(title, obj.title) &&
                 areStringsEqual(content, obj.content) &&
-                areStringsEqual(imageBase64, obj.imageBase64)
+                areStringsEqual(imageBase64, obj.imageBase64) &&
+                date == obj.date && hasAttachment == obj.hasAttachment
     }
 
     private fun areStringsEqual(s: String?, s2: String?): Boolean {

@@ -69,6 +69,9 @@ class CreateActivity : AppCompatActivity(), PermissionsDialogFragment.Permission
     private var readPermissions = Access.INTERNAL
     private var writePermissions = Access.INTERNAL
 
+    private var dateFormat =
+            SimpleDateFormat("dd-MM-yyyy HH:mm", Locale.getDefault())
+
     private val isInEditMode: Boolean
         get() = intent.hasExtra(EDIT_NOTE_ID_KEY)
 
@@ -81,8 +84,10 @@ class CreateActivity : AppCompatActivity(), PermissionsDialogFragment.Permission
             noteModel.title = titleEditText.text.toString()
             noteModel.content = contentEditText.text.toString()
             setImageForNote(noteModel)
+            setDateForNote(noteModel)
             noteModel.readAccess = readPermissions
             noteModel.writeAccess = writePermissions
+
 
             if (isInEditMode) {
                 noteModel.id = noteToEditId
@@ -304,11 +309,24 @@ class CreateActivity : AppCompatActivity(), PermissionsDialogFragment.Permission
     private fun setImageForNote(noteModel: NoteModel) {
 
         if (attachmentCardView.visibility == View.GONE) {
+            noteModel.hasAttachment = false
+
             return
         }
 
         val imageDrawable = attachmentImageView.drawable as BitmapDrawable
         noteModel.imageBase64 = ImageUtils.encodeBitmapToBase64(imageDrawable.bitmap, JPEG, 100)
+        noteModel.hasAttachment = true
+    }
+
+    private fun setDateForNote(noteModel: NoteModel) {
+
+        if (dateTextView.visibility == View.GONE) {
+            return
+        }
+
+        val date = dateFormat.parse(dateTextView.text.toString()!!)
+        noteModel.date = date.time / 1000
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -372,7 +390,6 @@ class CreateActivity : AppCompatActivity(), PermissionsDialogFragment.Permission
         var destinationConstraintSet = ConstraintSet()
         destinationConstraintSet.clone(this, R.layout.activity_create_with_date)
 
-        var dateFormat = SimpleDateFormat("dd-MM-yyyy HH:mm", Locale.getDefault())
         dateTextView.text = dateFormat.format(calendar.time)
 
         destinationConstraintSet.applyTo(constraintLayout)

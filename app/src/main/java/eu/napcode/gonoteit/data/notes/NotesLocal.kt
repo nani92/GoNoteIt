@@ -55,7 +55,7 @@ constructor(private val noteDao: NoteDaoManipulator, private val userDao: UserDa
                 .map { allEntity -> (allEntity.data() as Note).parseNote(ApiEntity(allEntity)) as NoteModel }
                 .map { NoteEntity(it) }
                 .filter { noteEntity -> noteEntity != null }
-                .doOnEach { it -> noteDao.insertNote(it.value) }
+                .doOnEach { noteDao.insertNote(it.value) }
                 .subscribe()
     }
 

@@ -3,6 +3,7 @@ package eu.napcode.gonoteit.data.notes;
 import android.annotation.SuppressLint;
 
 import com.apollographql.apollo.ApolloClient;
+import com.apollographql.apollo.api.Input;
 import com.apollographql.apollo.api.Response;
 
 import java.util.List;
@@ -63,7 +64,7 @@ public class NotesRemote {
         Note note = new Note(noteModel);
 
         return apolloRxHelper
-                .from(apolloClient.mutate(new CreateNoteMutation(note.getNoteDataString(), noteModel.getReadAccess(), noteModel.getWriteAccess())))
+                .from(apolloClient.mutate(new CreateNoteMutation(note.getNoteDataString(), noteModel.getReadAccess(), noteModel.getWriteAccess(), Input.fromNullable(noteModel.getDate()))))
                 .subscribeOn(rxSchedulers.io())
                 .observeOn(rxSchedulers.io());
     }
@@ -87,7 +88,7 @@ public class NotesRemote {
         Note note = new Note(noteModel);
 
         return apolloRxHelper
-                .from(apolloClient.mutate(new UpdateNoteMutation(noteModel.getId(), note.getNoteDataString(), noteModel.getReadAccess(), noteModel.getWriteAccess())))
+                .from(apolloClient.mutate(new UpdateNoteMutation(noteModel.getId(), note.getNoteDataString(), noteModel.getReadAccess(), noteModel.getWriteAccess(), Input.fromNullable(noteModel.getDate()))))
                 .subscribeOn(rxSchedulers.io())
                 .observeOn(rxSchedulers.io());
     }

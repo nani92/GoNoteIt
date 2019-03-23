@@ -82,7 +82,7 @@ constructor(private val notesRemote: NotesRemote, private val notesLocal: NotesL
     @SuppressLint("CheckResult")
     private fun getNotesFromRemote() {
         notesRemote.notes
-                .doOnSubscribe { it -> resource.postValue(Resource.loading<Any>(null)) }
+                .doOnSubscribe { resource.postValue(Resource.loading<Any>(null)) }
                 .subscribe(
                         { data ->
                             resource.postValue(Resource.success<Any>(null))
@@ -106,12 +106,12 @@ constructor(private val notesRemote: NotesRemote, private val notesLocal: NotesL
     @SuppressLint("CheckResult")
     private fun createNoteOnRemote(noteModel: NoteModel) {
         notesRemote.createNote(noteModel)
-                .doOnSubscribe { it -> resource.postValue(Resource.loading<Any>(null)) }
+                .doOnSubscribe { resource.postValue(Resource.loading<Any>(null)) }
                 .filter { response -> response.data() != null }
                 .filter { response -> response.data()!!.createEntity() != null }
                 .filter { response -> response.data()!!.createEntity()!!.ok()!! }
                 .singleOrError()
-                .doOnSuccess { it -> getNotesChangelog() }
+                .doOnSuccess { getNotesChangelog() }
                 .map<CreateNoteMutation.Entity> { dataResponse -> dataResponse.data()!!.createEntity()!!.entity() }
                 .map { entity -> (entity.data() as Note).parseNote(ApiEntity(entity)) as NoteModel }
                 .doOnSuccess { notesLocal.saveEntity(it) }

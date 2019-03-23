@@ -1,5 +1,5 @@
-mutation createNote($data: String!, $readAccess: Access!, $writeAccess: Access!) {
- createEntity(type: NOTE, data: $data, readAccess: $readAccess, writeAccess: $writeAccess) {
+mutation createNote($data: String!, $readAccess: Access!, $writeAccess: Access!, $date: Int) {
+ createEntity(type: NOTE, data: $data, readAccess: $readAccess, writeAccess: $writeAccess, date: $date) {
   ok,
   entity {
           id,
@@ -7,13 +7,14 @@ mutation createNote($data: String!, $readAccess: Access!, $writeAccess: Access!)
           type,
           updatedAt,
           readAccess,
-          writeAccess
+          writeAccess,
+          date
       }
  }
 }
 
-mutation updateNote($id: Int!, $data: String!, $readAccess: Access!, $writeAccess: Access!) {
- updateEntity(id: $id, data: $data, readAccess: $readAccess, writeAccess: $writeAccess) {
+mutation updateNote($id: Int!, $data: String!, $readAccess: Access!, $writeAccess: Access!, $date: Int) {
+ updateEntity(id: $id, data: $data, readAccess: $readAccess, writeAccess: $writeAccess, date: $date) {
     ok,
     entity {
         id,
@@ -21,7 +22,8 @@ mutation updateNote($id: Int!, $data: String!, $readAccess: Access!, $writeAcces
         type,
         updatedAt,
         readAccess,
-        writeAccess
+        writeAccess,
+        date
     }
  }
 }

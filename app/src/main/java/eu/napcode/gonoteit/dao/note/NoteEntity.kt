@@ -36,7 +36,13 @@ data class NoteEntity(
 
         @TypeConverters(AccessConverter::class)
         @ColumnInfo(name = COLUMN_WRITE_PERMS)
-        var writeAccess: Access
+        var writeAccess: Access,
+
+        @ColumnInfo(name = COLUMN_DATE)
+        var date: Long?,
+
+        @ColumnInfo(name = COLUMN_ATTACHMENT_FLAG)
+        var hasAttachment : Boolean
 ) {
 
     constructor(noteModel: NoteModel) :
@@ -47,7 +53,10 @@ data class NoteEntity(
                     content = noteModel.content,
                     imageBase64 = noteModel.imageBase64,
                     readAccess= noteModel.readAccess,
-                    writeAccess= noteModel.writeAccess)
+                    writeAccess= noteModel.writeAccess,
+                    date = noteModel.date,
+                    hasAttachment = noteModel.hasAttachment
+            )
 
 
     companion object {
@@ -61,5 +70,7 @@ data class NoteEntity(
         const val COLUMN_UPDATED_AT = "updated"
         const val COLUMN_READ_PERMS = "read"
         const val COLUMN_WRITE_PERMS = "write"
+        const val COLUMN_DATE = "date"
+        const val COLUMN_ATTACHMENT_FLAG = "attachment"
     }
 }
