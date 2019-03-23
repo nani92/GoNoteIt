@@ -344,9 +344,9 @@ class CreateActivity : AppCompatActivity(), PermissionsDialogFragment.Permission
     }
 
     private fun saveBitmapToOutState(outState: Bundle) {
-        val bitmapDrawable = attachmentImageView.drawable as BitmapDrawable ?: return
+        val bitmapDrawable = attachmentImageView.drawable as BitmapDrawable? ?: return
 
-        outState.putParcelable(IMAGE_STATE_KEY, bitmapDrawable.bitmap)
+        outState.putParcelable(IMAGE_STATE_KEY, bitmapDrawable!!.bitmap)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
