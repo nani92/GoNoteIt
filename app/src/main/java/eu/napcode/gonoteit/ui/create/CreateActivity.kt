@@ -70,9 +70,6 @@ class CreateActivity : AppCompatActivity(), PermissionsDialogFragment.Permission
     private var readPermissions = Access.INTERNAL
     private var writePermissions = Access.INTERNAL
 
-    private var dateFormat =
-            SimpleDateFormat("dd-MM-yyyy HH:mm", Locale.getDefault())
-
     private val isInEditMode: Boolean
         get() = intent.hasExtra(EDIT_NOTE_ID_KEY)
 
@@ -447,3 +444,6 @@ class CreateActivity : AppCompatActivity(), PermissionsDialogFragment.Permission
         private val IMAGE_STATE_KEY = "image"
     }
 }
+
+public var dateFormat =
+        SimpleDateFormat("dd-MM-yyyy HH:mm", Locale.getDefault())

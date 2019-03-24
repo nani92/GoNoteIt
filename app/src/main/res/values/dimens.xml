@@ -17,4 +17,8 @@
     <dimen name="about_title_text_size">22sp</dimen>
     <dimen name="hint_text_size">16sp</dimen>
     <dimen name="very_small_margin">4dp</dimen>
+
+    <!--note display-->
+    <dimen name="display_note_title_text_size">22sp</dimen>
+    <dimen name="display_note_text_size">18sp</dimen>
 </resources>

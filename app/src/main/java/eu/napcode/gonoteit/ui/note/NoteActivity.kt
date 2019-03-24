@@ -32,7 +32,9 @@ import android.view.View.GONE
 import android.view.View.VISIBLE
 import eu.napcode.gonoteit.repository.Resource.Status.ERROR
 import eu.napcode.gonoteit.repository.Resource.Status.LOADING
+import eu.napcode.gonoteit.ui.create.dateFormat
 import kotlinx.android.synthetic.main.activity_note.*
+import java.util.*
 
 class NoteActivity : AppCompatActivity() {
 
@@ -156,12 +158,24 @@ class NoteActivity : AppCompatActivity() {
     private fun displayNote(noteModel: NoteModel) {
         displayTextInTextView(noteModel.title, noteTitleTextView)
         displayTextInTextView(noteModel.content, noteTextView)
+        displayTextInTextView(getDateString(noteModel.date), dateTextView)
 
         if (!TextUtils.isEmpty(noteModel.imageBase64)) {
             displayImage(noteModel)
         } else {
             imageView.visibility = GONE
         }
+    }
+
+    private fun getDateString(date: Long?) : String? {
+        if (date == null) {
+            return null
+        }
+
+        var calendar = Calendar.getInstance()
+        calendar.timeInMillis = date * 1000
+
+        return dateFormat.format(calendar.time)
     }
 
     private fun displayTextInTextView(text: String?, textView: TextView) {

@@ -17,12 +17,25 @@
             android:id="@+id/noteTitleTextView"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:textSize="@dimen/note_title_text_size"
+            android:textSize="@dimen/display_note_title_text_size"
             android:transitionName="@string/transition_note_title"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="@tools:sample/lorem"/>
+
+        <TextView
+            android:id="@+id/dateTextView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/small_margin"
+            android:layout_marginBottom="@dimen/small_margin"
+            android:drawableStart="@drawable/ic_calendar_2"
+            android:drawablePadding="@dimen/small_margin"
+            android:textSize="@dimen/display_note_text_size"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/noteTitleTextView"/>
 
         <TextView
             android:id="@+id/noteTextView"
@@ -32,8 +45,9 @@
             android:transitionName="@string/transition_note_content"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/noteTitleTextView"
-            tools:text="@tools:sample/lorem/random"/>
+            app:layout_constraintTop_toBottomOf="@id/dateTextView"
+            tools:text="@tools:sample/lorem/random"
+            android:textSize="@dimen/display_note_text_size"/>
 
         <ImageView
             android:id="@+id/imageView"
