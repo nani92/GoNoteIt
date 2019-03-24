@@ -45,6 +45,7 @@ import pl.aprilapps.easyphotopicker.EasyImage
 import android.graphics.Bitmap.CompressFormat.JPEG
 import android.support.constraint.ConstraintSet
 import android.support.transition.TransitionManager
+import android.view.View.GONE
 import android.view.View.VISIBLE
 import eu.napcode.gonoteit.repository.Resource.Status.ERROR
 import eu.napcode.gonoteit.utils.RevealActivityHelper.REVEAL_X_KEY
@@ -165,7 +166,7 @@ class CreateActivity : AppCompatActivity(), PermissionsDialogFragment.Permission
         addImageButton.setOnClickListener { v -> getImageFromGallery() }
 
         removeImageButton.setOnClickListener { v ->
-            attachmentCardView.visibility = View.GONE
+            attachmentCardView.visibility = GONE
             attachmentImageView.setImageDrawable(null)
         }
 
@@ -232,6 +233,22 @@ class CreateActivity : AppCompatActivity(), PermissionsDialogFragment.Permission
         if (TextUtils.isEmpty(noteModel.imageBase64) == false) {
             displayImage(noteModel)
         }
+
+        if (noteModel.date != null ) {
+            displayDate(noteModel.date!!)
+        }
+    }
+
+    private fun displayDate(date: Long) {
+        var calendar = Calendar.getInstance()
+        calendar.timeInMillis = date * 1000
+
+        if (dateTextView.visibility == View.VISIBLE) {
+            dateTextView.text = dateFormat.format(calendar.time)
+        } else {
+            onSetDateTime(calendar)
+        }
+
     }
 
     private fun displayImage(noteModel: NoteModel) {
@@ -292,7 +309,7 @@ class CreateActivity : AppCompatActivity(), PermissionsDialogFragment.Permission
             progressBar.visibility = VISIBLE
         } else {
             createNoteButton.isEnabled = true
-            progressBar.visibility = View.GONE
+            progressBar.visibility = GONE
         }
     }
 
@@ -308,7 +325,7 @@ class CreateActivity : AppCompatActivity(), PermissionsDialogFragment.Permission
 
     private fun setImageForNote(noteModel: NoteModel) {
 
-        if (attachmentCardView.visibility == View.GONE) {
+        if (attachmentCardView.visibility == GONE) {
             noteModel.hasAttachment = false
 
             return
@@ -321,7 +338,7 @@ class CreateActivity : AppCompatActivity(), PermissionsDialogFragment.Permission
 
     private fun setDateForNote(noteModel: NoteModel) {
 
-        if (dateTextView.visibility == View.GONE) {
+        if (dateTextView.visibility == GONE) {
             return
         }
 
@@ -382,6 +399,7 @@ class CreateActivity : AppCompatActivity(), PermissionsDialogFragment.Permission
     }
 
     override fun onSetDateTime(calendar: Calendar) {
+        progressBar.visibility = GONE
         TransitionManager.beginDelayedTransition(constraintLayout)
 
         rootConstraintSet = ConstraintSet()

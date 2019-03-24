@@ -64,16 +64,17 @@
                 android:id="@+id/dateTextView"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_margin="@dimen/small_margin"
+                android:background="@drawable/date_background"
+                android:drawableEnd="@drawable/ic_delete_black_24dp"
                 android:gravity="center"
                 android:padding="@dimen/small_margin"
                 android:textSize="@dimen/base_text_size"
                 android:visibility="gone"
+                app:layout_constraintBottom_toTopOf="@id/createNoteButton"
                 app:layout_constraintLeft_toRightOf="@id/addDateButton"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/contentBarrier"
-                android:layout_margin="@dimen/small_margin"
-                android:background="@drawable/date_background"
-                android:drawableEnd="@drawable/ic_delete_black_24dp"/>
+                app:layout_constraintTop_toBottomOf="@id/contentBarrier"/>
 
             <Button
                 android:id="@+id/createNoteButton"

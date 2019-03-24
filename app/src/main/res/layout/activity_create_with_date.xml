@@ -80,9 +80,9 @@
         android:layout_marginEnd="8dp"
         android:text="@string/create_note"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintLeft_toRightOf="@id/addDateButton"
+        app:layout_constraintLeft_toRightOf="@id/addImageButton"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/addDateButton"
+        app:layout_constraintStart_toEndOf="@+id/addImageButton"
         app:layout_constraintTop_toBottomOf="@id/addDateButton"
         app:layout_constraintVertical_bias="1"/>
 
