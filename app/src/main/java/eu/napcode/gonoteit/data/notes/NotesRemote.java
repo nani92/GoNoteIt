@@ -69,8 +69,8 @@ public class NotesRemote {
                         note.getNoteDataString(),
                         noteModel.getReadAccess(),
                         noteModel.getWriteAccess(),
-                        getDateInput(noteModel.getDate()
-                        ))))
+                        Input.fromNullable(noteModel.getDate())
+                )))
                 .subscribeOn(rxSchedulers.io())
                 .observeOn(rxSchedulers.io());
     }
