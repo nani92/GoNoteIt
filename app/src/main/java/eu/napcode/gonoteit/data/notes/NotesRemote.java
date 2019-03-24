@@ -26,6 +26,7 @@ import eu.napcode.gonoteit.rx.RxSchedulers;
 import eu.napcode.gonoteit.utils.TimestampStore;
 import io.reactivex.Observable;
 
+import static eu.napcode.gonoteit.data.notes.DateInputKt.getDateInput;
 import static eu.napcode.gonoteit.data.user.FavoritesMapperKt.favoritesMapToString;
 
 public class NotesRemote {
@@ -64,7 +65,12 @@ public class NotesRemote {
         Note note = new Note(noteModel);
 
         return apolloRxHelper
-                .from(apolloClient.mutate(new CreateNoteMutation(note.getNoteDataString(), noteModel.getReadAccess(), noteModel.getWriteAccess(), Input.fromNullable(noteModel.getDate()))))
+                .from(apolloClient.mutate(new CreateNoteMutation(
+                        note.getNoteDataString(),
+                        noteModel.getReadAccess(),
+                        noteModel.getWriteAccess(),
+                        getDateInput(noteModel.getDate()
+                        ))))
                 .subscribeOn(rxSchedulers.io())
                 .observeOn(rxSchedulers.io());
     }
@@ -88,7 +94,13 @@ public class NotesRemote {
         Note note = new Note(noteModel);
 
         return apolloRxHelper
-                .from(apolloClient.mutate(new UpdateNoteMutation(noteModel.getId(), note.getNoteDataString(), noteModel.getReadAccess(), noteModel.getWriteAccess(), Input.fromNullable(noteModel.getDate()))))
+                .from(apolloClient.mutate(new UpdateNoteMutation(
+                        noteModel.getId(),
+                        note.getNoteDataString(),
+                        noteModel.getReadAccess(),
+                        noteModel.getWriteAccess(),
+                        getDateInput(noteModel.getDate())
+                )))
                 .subscribeOn(rxSchedulers.io())
                 .observeOn(rxSchedulers.io());
     }
