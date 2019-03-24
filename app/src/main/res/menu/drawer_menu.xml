@@ -11,6 +11,10 @@
             android:id="@+id/fav_notes"
             android:title="@string/fav_notes"
             android:icon="@drawable/ic_favorite_24px"/>
+        <item
+            android:id="@+id/calendar"
+            android:title="@string/calendar"
+            android:icon="@drawable/ic_calendar_2"/>
     </group>
     <group
         android:id="@+id/menu_group_app"

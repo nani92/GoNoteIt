@@ -7,6 +7,7 @@
     <string name="about">About</string>
     <string name="notes">Notes</string>
     <string name="fav_notes">Favorite Notes</string>
+    <string name="calendar">Calendar</string>
     <string name="open_drawer">Open drawer</string>
     <string name="close_drawer">Close drawer</string>
 
