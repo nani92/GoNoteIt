@@ -63,8 +63,6 @@ class CreateActivity : AppCompatActivity(), PermissionsDialogFragment.Permission
     @Inject
     lateinit var glideBase64Loader: GlideBase64Loader
 
-    lateinit var rootConstraintSet : ConstraintSet
-
     private var viewModel: CreateViewModel? = null
 
     private var readPermissions = Access.INTERNAL
@@ -396,26 +394,14 @@ class CreateActivity : AppCompatActivity(), PermissionsDialogFragment.Permission
     }
 
     override fun onSetDateTime(calendar: Calendar) {
-        progressBar.visibility = GONE
-        TransitionManager.beginDelayedTransition(constraintLayout)
-
-        rootConstraintSet = ConstraintSet()
-        rootConstraintSet.clone(constraintLayout)
-
-        var destinationConstraintSet = ConstraintSet()
-        destinationConstraintSet.clone(this, R.layout.activity_create_with_date)
-
+        animateToDisplayDate(constraintLayout)
         dateTextView.text = dateFormat.format(calendar.time)
-
-        destinationConstraintSet.applyTo(constraintLayout)
     }
 
     private fun removeDate() {
-        TransitionManager.beginDelayedTransition(constraintLayout)
+        animateToHideDate(constraintLayout)
 
         dateTextView.text = ""
-
-        rootConstraintSet.applyTo(constraintLayout)
     }
 
     private val getImageCallback = object : DefaultCallback() {
