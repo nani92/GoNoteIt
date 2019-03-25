@@ -12,6 +12,7 @@ import dagger.Binds;
 import dagger.MapKey;
 import dagger.Module;
 import dagger.multibindings.IntoMap;
+import eu.napcode.gonoteit.ui.calendar.CalendarViewModel;
 import eu.napcode.gonoteit.ui.create.CreateViewModel;
 import eu.napcode.gonoteit.ui.login.LoginViewModel;
 import eu.napcode.gonoteit.ui.main.MainViewModel;
@@ -54,4 +55,10 @@ public interface ViewModelModule {
     @Binds
     @ViewModelKey(NoteViewModel.class)
     abstract ViewModel noteViewModel(NoteViewModel viewModel);
+
+
+    @IntoMap
+    @Binds
+    @ViewModelKey(CalendarViewModel.class)
+    abstract ViewModel calendarViewModel(CalendarViewModel viewModel);
 }

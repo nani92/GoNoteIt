@@ -26,11 +26,11 @@ public class NoteViewModel extends ViewModel {
     }
 
     @SuppressLint("CheckResult")
-    public LiveData<Resource> createNote(NoteModel noteModel) {
+    public LiveData<Resource<?>> createNote(NoteModel noteModel) {
         return notesRepository.createNote(noteModel);
     }
 
-    public LiveData<Resource> updateFavorites(Long id) {
+    public LiveData<Resource<?>> updateFavorites(Long id) {
         return notesRepository.updateFavorites(id);
     }
 

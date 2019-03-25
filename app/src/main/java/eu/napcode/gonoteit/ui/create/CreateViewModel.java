@@ -21,7 +21,7 @@ public class CreateViewModel extends ViewModel {
     }
 
     @SuppressLint("CheckResult")
-    public LiveData<Resource> createNote(NoteModel noteModel) {
+    public LiveData<Resource<?>> createNote(NoteModel noteModel) {
 
         if (noteModel.getId() != null) {
             return notesRepository.updateNote(noteModel);

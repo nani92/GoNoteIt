@@ -18,7 +18,6 @@ public interface RepositoryModule {
     @Binds
     UserRepository userRepository(UserRepositoryImpl userRepository);
 
-
     @Binds
     CalendarRepository calendarRepository(CalendarRepositoryImpl calendarRepository);
 }

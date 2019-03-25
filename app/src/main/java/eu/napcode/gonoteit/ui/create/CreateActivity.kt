@@ -275,7 +275,7 @@ class CreateActivity : AppCompatActivity(), PermissionsDialogFragment.Permission
         dialog.show(supportFragmentManager, "")
     }
 
-    private fun processResponseCreateNote(resource: Resource<Any>) {
+    private fun processResponseCreateNote(resource: Resource<*>) {
         updateForLoading(resource.status == Status.LOADING)
 
         if (resource.status == Status.SUCCESS) {

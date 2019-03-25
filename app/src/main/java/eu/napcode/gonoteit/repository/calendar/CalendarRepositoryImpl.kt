@@ -5,8 +5,9 @@ import eu.napcode.gonoteit.data.calendar.CalendarLocal
 import eu.napcode.gonoteit.data.calendar.CalendarResult
 import eu.napcode.gonoteit.data.notes.results.NotesResult
 import eu.napcode.gonoteit.repository.Resource
+import javax.inject.Inject
 
-class CalendarRepositoryImpl
+class CalendarRepositoryImpl @Inject
 constructor(private val calendarLocal: CalendarLocal) : CalendarRepository {
 
     internal var resource = MutableLiveData<Resource<*>>()
@@ -18,5 +19,4 @@ constructor(private val calendarLocal: CalendarLocal) : CalendarRepository {
     override fun getTomorrowEvents(): NotesResult {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
-
 }
