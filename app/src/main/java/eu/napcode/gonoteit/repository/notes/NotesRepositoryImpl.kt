@@ -13,10 +13,10 @@ import eu.napcode.gonoteit.api.ApiEntity
 import eu.napcode.gonoteit.api.Note
 import eu.napcode.gonoteit.data.notes.NotesLocal
 import eu.napcode.gonoteit.data.notes.NotesRemote
-import eu.napcode.gonoteit.data.results.DeletedResult
+import eu.napcode.gonoteit.data.notes.results.DeletedResult
 import eu.napcode.gonoteit.model.note.NoteModel
-import eu.napcode.gonoteit.data.results.NoteResult
-import eu.napcode.gonoteit.data.results.NotesResult
+import eu.napcode.gonoteit.data.notes.results.NoteResult
+import eu.napcode.gonoteit.data.notes.results.NotesResult
 import eu.napcode.gonoteit.repository.Resource
 import eu.napcode.gonoteit.repository.user.UserRepository
 import eu.napcode.gonoteit.utils.ErrorMessages

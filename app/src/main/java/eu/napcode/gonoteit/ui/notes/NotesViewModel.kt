@@ -4,18 +4,18 @@ import android.arch.lifecycle.ViewModel
 
 import javax.inject.Inject
 
-import eu.napcode.gonoteit.data.results.DeletedResult
-import eu.napcode.gonoteit.data.results.NotesResult
+import eu.napcode.gonoteit.data.notes.results.DeletedResult
+import eu.napcode.gonoteit.data.notes.results.NotesResult
 import eu.napcode.gonoteit.repository.notes.NotesRepository
 
 class NotesViewModel @Inject
 constructor(val notesRepository: NotesRepository) : ViewModel() {
 
     val notes: NotesResult
-        get() = notesRepository.notes
+        get() = notesRepository.getNotes()
 
     val favoriteNotes: NotesResult
-        get() = notesRepository.favoriteNotes
+        get() = notesRepository.getFavoriteNotes()
 
 
     fun deleteNote(id: Long?): DeletedResult {

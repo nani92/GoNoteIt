@@ -1,4 +1,4 @@
-package eu.napcode.gonoteit.data.results;
+package eu.napcode.gonoteit.data.notes.results;
 
 import android.arch.lifecycle.LiveData;
 

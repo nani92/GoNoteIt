@@ -7,13 +7,8 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 
-import java.util.Arrays;
-
-import eu.napcode.gonoteit.MockRxSchedulers;
-import eu.napcode.gonoteit.data.results.NotesResult;
-import eu.napcode.gonoteit.model.note.NoteModel;
+import eu.napcode.gonoteit.data.notes.results.NotesResult;
 import eu.napcode.gonoteit.repository.notes.NotesRepository;
-import io.reactivex.Flowable;
 
 @RunWith(MockitoJUnitRunner.class)
 public class NotesViewModelTest {

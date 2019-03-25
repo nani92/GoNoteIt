@@ -28,4 +28,10 @@ interface NoteDao {
     @Query("SELECT * FROM " + NoteEntity.TABLE_NAME + " WHERE id IN (:ids)" + " ORDER BY " + NoteEntity.COLUMN_UPDATED_AT + " DESC")
     fun getFavoriteNoteEntities(ids: List<Long>): DataSource.Factory<Int, NoteEntity>
 
+    @Query(
+            "SELECT * FROM " + NoteEntity.TABLE_NAME + " WHERE date IS NOT NULL " +
+                    "AND DATE BETWEEN :start AND :end " +
+                    "ORDER BY " + NoteEntity.COLUMN_DATE
+    )
+    fun getBetweenDates(start: Long, end: Long): LiveData<List<NoteEntity>>
 }

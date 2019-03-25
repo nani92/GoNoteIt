@@ -6,7 +6,7 @@ import android.arch.lifecycle.ViewModel;
 
 import javax.inject.Inject;
 
-import eu.napcode.gonoteit.data.results.NoteResult;
+import eu.napcode.gonoteit.data.notes.results.NoteResult;
 import eu.napcode.gonoteit.model.note.NoteModel;
 import eu.napcode.gonoteit.repository.Resource;
 import eu.napcode.gonoteit.repository.notes.NotesRepository;

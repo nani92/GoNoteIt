@@ -3,7 +3,6 @@ package eu.napcode.gonoteit.ui.note
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
-import android.databinding.DataBindingUtil
 import android.graphics.Color
 import android.graphics.drawable.Animatable
 import android.os.Bundle
@@ -13,7 +12,6 @@ import android.support.v7.app.AppCompatActivity
 import android.text.TextUtils
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 
@@ -192,6 +190,12 @@ class NoteActivity : AppCompatActivity() {
         glideBase64Loader!!.loadBase64IntoView(noteModel.imageBase64, imageView)
 
         imageView.visibility = VISIBLE
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        progressBar.visibility = GONE
     }
 
     companion object {

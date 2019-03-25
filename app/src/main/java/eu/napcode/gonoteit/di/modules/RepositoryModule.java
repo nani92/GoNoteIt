@@ -2,6 +2,8 @@ package eu.napcode.gonoteit.di.modules;
 
 import dagger.Binds;
 import dagger.Module;
+import eu.napcode.gonoteit.repository.calendar.CalendarRepository;
+import eu.napcode.gonoteit.repository.calendar.CalendarRepositoryImpl;
 import eu.napcode.gonoteit.repository.notes.NotesRepository;
 import eu.napcode.gonoteit.repository.notes.NotesRepositoryImpl;
 import eu.napcode.gonoteit.repository.user.UserRepository;
@@ -15,4 +17,8 @@ public interface RepositoryModule {
 
     @Binds
     UserRepository userRepository(UserRepositoryImpl userRepository);
+
+
+    @Binds
+    CalendarRepository calendarRepository(CalendarRepositoryImpl calendarRepository);
 }
