@@ -43,16 +43,14 @@ import pl.aprilapps.easyphotopicker.DefaultCallback
 import pl.aprilapps.easyphotopicker.EasyImage
 
 import android.graphics.Bitmap.CompressFormat.JPEG
-import android.support.constraint.ConstraintSet
-import android.support.transition.TransitionManager
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import eu.napcode.gonoteit.repository.Resource.Status.ERROR
 import eu.napcode.gonoteit.utils.RevealActivityHelper.REVEAL_X_KEY
 import eu.napcode.gonoteit.utils.RevealActivityHelper.REVEAL_Y_KEY
+import eu.napcode.gonoteit.utils.dateFormatWithTime
 import kotlinx.android.synthetic.main.activity_create.*
 import kotlinx.android.synthetic.main.create_note_attachment.*
-import java.text.SimpleDateFormat
 import java.util.*
 
 class CreateActivity : AppCompatActivity(), PermissionsDialogFragment.PermissionsDialogListener, DateTimeSetListener {
@@ -239,7 +237,7 @@ class CreateActivity : AppCompatActivity(), PermissionsDialogFragment.Permission
         calendar.timeInMillis = date * 1000
 
         if (dateTextView.visibility == View.VISIBLE) {
-            dateTextView.text = dateFormat.format(calendar.time)
+            dateTextView.text = dateFormatWithTime.format(calendar.time)
         } else {
             onSetDateTime(calendar)
         }
@@ -337,7 +335,7 @@ class CreateActivity : AppCompatActivity(), PermissionsDialogFragment.Permission
             return
         }
 
-        val date = dateFormat.parse(dateTextView.text.toString()!!)
+        val date = dateFormatWithTime.parse(dateTextView.text.toString()!!)
         noteModel.date = date.time / 1000
     }
 
@@ -395,7 +393,7 @@ class CreateActivity : AppCompatActivity(), PermissionsDialogFragment.Permission
 
     override fun onSetDateTime(calendar: Calendar) {
         animateToDisplayDate(constraintLayout)
-        dateTextView.text = dateFormat.format(calendar.time)
+        dateTextView.text = dateFormatWithTime.format(calendar.time)
     }
 
     private fun removeDate() {
@@ -430,6 +428,3 @@ class CreateActivity : AppCompatActivity(), PermissionsDialogFragment.Permission
         private val IMAGE_STATE_KEY = "image"
     }
 }
-
-public var dateFormat =
-        SimpleDateFormat("dd-MM-yyyy HH:mm", Locale.getDefault())

@@ -30,7 +30,7 @@ import android.view.View.GONE
 import android.view.View.VISIBLE
 import eu.napcode.gonoteit.repository.Resource.Status.ERROR
 import eu.napcode.gonoteit.repository.Resource.Status.LOADING
-import eu.napcode.gonoteit.ui.create.dateFormat
+import eu.napcode.gonoteit.utils.dateFormatWithTime
 import kotlinx.android.synthetic.main.activity_note.*
 import java.util.*
 
@@ -173,7 +173,7 @@ class NoteActivity : AppCompatActivity() {
         var calendar = Calendar.getInstance()
         calendar.timeInMillis = date * 1000
 
-        return dateFormat.format(calendar.time)
+        return dateFormatWithTime.format(calendar.time)
     }
 
     private fun displayTextInTextView(text: String?, textView: TextView) {
