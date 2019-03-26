@@ -58,7 +58,7 @@ class CalendarAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             val note = calendarElements[position].note!!
             itemView.eventTitleTextView.text = note.title
             var calendar = Calendar.getInstance()
-            calendar.timeInMillis = note.date!! * 1000
+            calendar.timeInMillis = note.date!!
             itemView.eventHourTextView.text = timeFormat.format(calendar.time)
         }
     }

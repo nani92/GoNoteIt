@@ -24,8 +24,8 @@ constructor(private val noteDao: NoteDao) {
 
         return Transformations.map(
                 noteDao.getBetweenDates(
-                        startCalendar.timeInMillis / 1000,
-                        endCalendar.timeInMillis / 1000)
+                        startCalendar.timeInMillis,
+                        endCalendar.timeInMillis)
         ) {
             val models = mutableListOf<NoteModel>()
 

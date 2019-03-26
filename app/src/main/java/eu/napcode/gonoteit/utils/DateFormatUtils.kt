@@ -12,3 +12,21 @@ public var dateFormat =
 
 public var timeFormat =
         SimpleDateFormat("HH:mm", Locale.getDefault())
+
+public fun getTimestampLong(timestamp: Long?) : Long? {
+
+    if (timestamp == null) {
+        return null
+    }
+
+    return timestamp * 1000
+}
+
+public fun getTimestampShort(timestamp: Long?) : Long? {
+
+    if (timestamp == null) {
+        return null
+    }
+
+    return timestamp / 1000
+}

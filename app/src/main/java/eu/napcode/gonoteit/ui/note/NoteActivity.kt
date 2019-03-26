@@ -171,7 +171,7 @@ class NoteActivity : AppCompatActivity() {
         }
 
         var calendar = Calendar.getInstance()
-        calendar.timeInMillis = date * 1000
+        calendar.timeInMillis = date
 
         return dateFormatWithTime.format(calendar.time)
     }

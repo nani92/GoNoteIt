@@ -28,6 +28,7 @@ import io.reactivex.Observable;
 
 import static eu.napcode.gonoteit.data.notes.DateInputKt.getDateInput;
 import static eu.napcode.gonoteit.data.user.FavoritesMapperKt.favoritesMapToString;
+import static eu.napcode.gonoteit.utils.DateFormatUtilsKt.getTimestampShort;
 
 public class NotesRemote {
 
@@ -69,7 +70,7 @@ public class NotesRemote {
                         note.getNoteDataString(),
                         noteModel.getReadAccess(),
                         noteModel.getWriteAccess(),
-                        Input.fromNullable(noteModel.getDate())
+                        Input.fromNullable(getTimestampShort(noteModel.getDate()))
                 )))
                 .subscribeOn(rxSchedulers.io())
                 .observeOn(rxSchedulers.io());
@@ -99,7 +100,7 @@ public class NotesRemote {
                         note.getNoteDataString(),
                         noteModel.getReadAccess(),
                         noteModel.getWriteAccess(),
-                        getDateInput(noteModel.getDate())
+                        getDateInput(getTimestampShort(noteModel.getDate()))
                 )))
                 .subscribeOn(rxSchedulers.io())
                 .observeOn(rxSchedulers.io());

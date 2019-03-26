@@ -9,6 +9,7 @@ import eu.napcode.gonoteit.model.note.NoteModel;
 import eu.napcode.gonoteit.model.note.SimpleNoteModel;
 import static eu.napcode.gonoteit.type.Type.NONE;
 import static eu.napcode.gonoteit.type.Type.NOTE;
+import static eu.napcode.gonoteit.utils.DateFormatUtilsKt.getTimestampLong;
 
 public class Note {
 
@@ -72,7 +73,7 @@ public class Note {
         noteModel.setUpdatedAt(apiEntity.updatedAt);
         noteModel.setReadAccess(apiEntity.readAccess);
         noteModel.setWriteAccess(apiEntity.writeAccess);
-        noteModel.setDate(apiEntity.date);
+        noteModel.setDate(getTimestampLong(apiEntity.date));
 
         return noteModel;
     }

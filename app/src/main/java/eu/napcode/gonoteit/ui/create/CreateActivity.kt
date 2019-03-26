@@ -234,7 +234,7 @@ class CreateActivity : AppCompatActivity(), PermissionsDialogFragment.Permission
 
     private fun displayDate(date: Long) {
         var calendar = Calendar.getInstance()
-        calendar.timeInMillis = date * 1000
+        calendar.timeInMillis = date
 
         if (dateTextView.visibility == View.VISIBLE) {
             dateTextView.text = dateFormatWithTime.format(calendar.time)
@@ -336,7 +336,7 @@ class CreateActivity : AppCompatActivity(), PermissionsDialogFragment.Permission
         }
 
         val date = dateFormatWithTime.parse(dateTextView.text.toString()!!)
-        noteModel.date = date.time / 1000
+        noteModel.date = date.time
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
