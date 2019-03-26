@@ -8,3 +8,7 @@ public var dateFormatWithTime =
 
 public var dateFormat =
         SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
+
+
+public var timeFormat =
+        SimpleDateFormat("HH:mm", Locale.getDefault())

@@ -7,8 +7,10 @@ import android.view.View
 import android.view.ViewGroup
 import eu.napcode.gonoteit.R
 import eu.napcode.gonoteit.utils.dateFormat
+import eu.napcode.gonoteit.utils.timeFormat
 import kotlinx.android.synthetic.main.item_calendar_event.view.*
 import kotlinx.android.synthetic.main.item_date.view.*
+import java.util.*
 
 class CalendarAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
@@ -53,7 +55,11 @@ class CalendarAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     inner class EventViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bind(position: Int) {
-            itemView.eventNameTextView.text = calendarElements[position].note!!.title
+            val note = calendarElements[position].note!!
+            itemView.eventTitleTextView.text = note.title
+            var calendar = Calendar.getInstance()
+            calendar.timeInMillis = note.date!! * 1000
+            itemView.eventHourTextView.text = timeFormat.format(calendar.time)
         }
     }
 
