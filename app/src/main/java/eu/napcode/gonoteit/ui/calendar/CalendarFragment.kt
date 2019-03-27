@@ -22,6 +22,7 @@ import eu.napcode.gonoteit.R
 import eu.napcode.gonoteit.di.modules.viewmodel.ViewModelFactory
 import eu.napcode.gonoteit.model.note.NoteModel
 import eu.napcode.gonoteit.ui.notes.NotesFragment
+import eu.napcode.gonoteit.utils.isSameDate
 import kotlinx.android.synthetic.main.fragment_calendar.*
 import java.util.*
 
@@ -57,21 +58,43 @@ class CalendarFragment : Fragment() {
     }
 
     private fun subscribeToEvents() {
-        var calendarResult = this.viewModel!!.getTodayEvents()
+        var calendarResult = this.viewModel!!.getWeekEvents()
 
         calendarResult.notes.observe(this, Observer<List<NoteModel>> {
-            val calendarElements = mutableListOf<CalendarAdapterElement>()
-            var calendar = Calendar.getInstance()
-            calendar.time = Date()
-            calendarElements.add(CalendarAdapterElement(true, null, calendar))
+            calendarAdapter!!.calendarElements = getCalendarElementsFromResult(it!!)
+        })
+    }
 
-            it!!.forEach { noteModel ->
-                calendarElements.add(CalendarAdapterElement(false, noteModel, null))
+    private fun getCalendarElementsFromResult(notes: List<NoteModel>) : List<CalendarAdapterElement> {
+        val calendarElements = mutableListOf<CalendarAdapterElement>()
+
+        notes.forEach { noteModel ->
+            if (hasDate(calendarElements, noteModel.date!!) == false) {
+                val calendar = Calendar.getInstance()
+                calendar.timeInMillis = noteModel.date!!
+                calendarElements.add(CalendarAdapterElement(true, null, calendar))
             }
 
-            calendarAdapter!!.calendarElements = calendarElements
-        })
-        //calendarResult.resource.observe(this, Observer<Resource<*>> { this.processResource(it!!) })
+            calendarElements.add(CalendarAdapterElement(false, noteModel, null))
+        }
+
+        return calendarElements
+    }
+
+    private fun hasDate(list: List<CalendarAdapterElement>, dateTimestamp: Long) : Boolean {
+        val date = Calendar.getInstance()
+        date.timeInMillis = dateTimestamp
+
+        val filter = list.filter {
+
+            if (!it.isDate) {
+                return@filter false
+            }
+
+            isSameDate(date, it.date!!)
+        }
+
+        return filter.isNotEmpty()
     }
 
     private fun setupRecyclerView() {

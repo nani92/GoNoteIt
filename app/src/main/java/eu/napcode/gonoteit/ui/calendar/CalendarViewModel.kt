@@ -11,4 +11,8 @@ constructor(private val calendarRepository: CalendarRepository) : ViewModel() {
     fun getTodayEvents(): CalendarResult {
         return calendarRepository.getTodayEvents()
     }
+
+    fun getWeekEvents(): CalendarResult {
+        return calendarRepository.getWeekEvents()
+    }
 }

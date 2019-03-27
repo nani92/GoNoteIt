@@ -30,3 +30,8 @@ public fun getTimestampShort(timestamp: Long?) : Long? {
 
     return timestamp / 1000
 }
+
+public fun isSameDate(cal: Calendar, cal2: Calendar) : Boolean {
+    return cal.get(Calendar.DAY_OF_YEAR) == cal2.get(Calendar.DAY_OF_YEAR) &&
+            cal.get(Calendar.YEAR) == cal2.get(Calendar.YEAR);
+}

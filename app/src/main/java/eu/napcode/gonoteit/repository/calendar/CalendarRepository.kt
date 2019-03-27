@@ -7,4 +7,6 @@ interface CalendarRepository {
     fun getTodayEvents(): CalendarResult
 
     fun getTomorrowEvents(): NotesResult
+
+    fun getWeekEvents() : CalendarResult
 }

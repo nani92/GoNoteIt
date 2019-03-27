@@ -19,4 +19,8 @@ constructor(private val calendarLocal: CalendarLocal) : CalendarRepository {
     override fun getTomorrowEvents(): NotesResult {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
+
+    override fun getWeekEvents(): CalendarResult {
+        return CalendarResult(calendarLocal.getCurrentWeek(), resource)
+    }
 }
