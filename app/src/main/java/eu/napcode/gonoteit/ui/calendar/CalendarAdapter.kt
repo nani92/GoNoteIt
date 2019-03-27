@@ -1,5 +1,6 @@
 package eu.napcode.gonoteit.ui.calendar
 
+import android.content.Context
 import android.support.annotation.LayoutRes
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -7,12 +8,13 @@ import android.view.View
 import android.view.ViewGroup
 import eu.napcode.gonoteit.R
 import eu.napcode.gonoteit.utils.dateFormat
+import eu.napcode.gonoteit.utils.isSameDate
 import eu.napcode.gonoteit.utils.timeFormat
 import kotlinx.android.synthetic.main.item_calendar_event.view.*
 import kotlinx.android.synthetic.main.item_date.view.*
 import java.util.*
 
-class CalendarAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class CalendarAdapter(var context: Context) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     var calendarElements: List<CalendarAdapterElement> = listOf()
         set(value) {
@@ -49,7 +51,16 @@ class CalendarAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     inner class DateViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bind(position: Int) {
             val date = dateFormat.format(calendarElements[position].date!!.time)
-            itemView.headerTextView.text = date
+            val today = Calendar.getInstance()
+            today.time = Date()
+
+            if(isSameDate(calendarElements[position].date!!, today)) {
+                val todayString = context.getString(R.string.today)
+                val displayText = "$todayString  $date"
+                itemView.headerTextView.text = displayText
+            } else {
+                itemView.headerTextView.text = date
+            }
         }
     }
 

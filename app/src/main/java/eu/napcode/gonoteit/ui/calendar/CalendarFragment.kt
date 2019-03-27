@@ -100,7 +100,7 @@ class CalendarFragment : Fragment() {
     private fun setupRecyclerView() {
         calendarRecyclerView.layoutManager = LinearLayoutManager(context)
 
-        this.calendarAdapter = CalendarAdapter()
+        this.calendarAdapter = CalendarAdapter(this.context!!)
         calendarRecyclerView.adapter = calendarAdapter
 
         calendarRecyclerView.layoutAnimation = AnimationUtils.loadLayoutAnimation(context, R.anim.recycler_view_animation)

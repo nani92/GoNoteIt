@@ -108,4 +108,6 @@
     <string name="hint_host">Host Address</string>
     <string name="content_description_add_date">Add date</string>
 
+    <string name="today">TODAY</string>
+
 </resources>
