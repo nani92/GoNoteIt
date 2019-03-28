@@ -5,10 +5,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingTop="@dimen/base_margin"
     android:paddingLeft="@dimen/base_margin"
+    android:paddingTop="@dimen/small_margin"
     android:paddingRight="@dimen/base_margin"
     android:paddingBottom="@dimen/small_margin">
+
+    <View
+        android:id="@+id/divider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/colorPrimary"
+        app:layout_constraintTop_toTopOf="parent"/>
 
     <TextView
         android:id="@+id/eventTitleTextView"
@@ -18,30 +25,40 @@
         android:maxLines="@integer/list_note_title_max_lines"
         android:textSize="@dimen/note_title_text_size"
         android:transitionName="@string/transition_note_title"
+        app:layout_constraintBottom_toBottomOf="@id/eventHourTextView"
         app:layout_constraintHorizontal_bias="0.48"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toLeftOf="@id/eventHourTextView"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toTopOf="@id/eventHourTextView"
         tools:text="@tools:sample/lorem"/>
 
     <TextView
         android:id="@+id/eventHourTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/base_margin"
         android:drawableStart="@drawable/ic_wall_clock"
         android:drawableLeft="@drawable/ic_wall_clock"
         android:drawablePadding="@dimen/small_margin"
         android:textSize="@dimen/note_title_text_size"
         app:layout_constraintLeft_toRightOf="@id/eventTitleTextView"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/divider"
         tools:text="@tools:sample/lorem"/>
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginTop="@dimen/small_margin"
-        android:background="@color/colorPrimary"
-        app:layout_constraintTop_toBottomOf="@id/eventTitleTextView"/>
+    <TextView
+        android:id="@+id/noEvents"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:drawableBottom="@drawable/ic_favorite_24px"
+        android:drawablePadding="@dimen/small_margin"
+        android:gravity="center"
+        android:text="@string/no_events_today"
+        android:textSize="@dimen/note_title_text_size"
+        android:visibility="gone"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:visibility="visible"/>
 
 </android.support.constraint.ConstraintLayout>

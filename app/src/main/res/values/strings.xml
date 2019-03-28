@@ -109,5 +109,6 @@
     <string name="content_description_add_date">Add date</string>
 
     <string name="today">TODAY</string>
+    <string name="no_events_today">There is no events for today. \n Have a great day!</string>
 
 </resources>

@@ -1,10 +1,16 @@
 package eu.napcode.gonoteit.ui.calendar
 
 import android.content.Context
+import android.graphics.drawable.ColorDrawable
+import android.graphics.drawable.Drawable
 import android.support.annotation.LayoutRes
+import android.support.v4.content.ContextCompat
 import android.support.v7.widget.RecyclerView
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import android.view.ViewGroup
 import eu.napcode.gonoteit.R
 import eu.napcode.gonoteit.utils.dateFormat
@@ -58,6 +64,8 @@ class CalendarAdapter(var context: Context) : RecyclerView.Adapter<RecyclerView.
                 val todayString = context.getString(R.string.today)
                 val displayText = "$todayString  $date"
                 itemView.headerTextView.text = displayText
+
+                itemView.headerTextView.background = ColorDrawable(ContextCompat.getColor(context, R.color.colorAccent))
             } else {
                 itemView.headerTextView.text = date
             }
@@ -66,11 +74,40 @@ class CalendarAdapter(var context: Context) : RecyclerView.Adapter<RecyclerView.
 
     inner class EventViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bind(position: Int) {
+
+            if (calendarElements[position].note == null) {
+                itemView.eventTitleTextView.visibility = GONE
+                itemView.eventHourTextView.visibility = GONE
+                itemView.divider.visibility = GONE
+                itemView.noEvents.visibility = VISIBLE
+
+                return
+            }
+
+            if (calendarElements[position - 1].isDate) {
+                itemView.divider.visibility = GONE
+            } else {
+                itemView.divider.visibility = VISIBLE
+            }
+
             val note = calendarElements[position].note!!
+            itemView.eventTitleTextView.visibility = VISIBLE
+            itemView.eventHourTextView.visibility = VISIBLE
+            itemView.noEvents.visibility = GONE
+
             itemView.eventTitleTextView.text = note.title
             var calendar = Calendar.getInstance()
             calendar.timeInMillis = note.date!!
             itemView.eventHourTextView.text = timeFormat.format(calendar.time)
+            itemView.eventHourTextView.setPadding(0, 0, 0, 0)
+            itemView.eventTitleTextView.setPadding(0, 0, 0, 0)
+
+            if (position == calendarElements.size - 1
+                    || calendarElements[position + 1].isDate) {
+                val padding = context.resources.getDimension(R.dimen.base_margin)
+                itemView.eventHourTextView.setPadding(0, 0, 0, padding.toInt())
+                itemView.eventTitleTextView.setPadding(0, 0, 0, padding.toInt())
+            }
         }
     }
 

@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="today">DZISIAJ</string>
+    <string name="no_events_today">Brak wydarzeń na dziś.\n Miłego dnia!</string>
+</resources>

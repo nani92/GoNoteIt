@@ -68,6 +68,8 @@ class CalendarFragment : Fragment() {
     private fun getCalendarElementsFromResult(notes: List<NoteModel>) : List<CalendarAdapterElement> {
         val calendarElements = mutableListOf<CalendarAdapterElement>()
 
+        addTodayDateIfShould(calendarElements, notes)
+
         notes.forEach { noteModel ->
             if (hasDate(calendarElements, noteModel.date!!) == false) {
                 val calendar = Calendar.getInstance()
@@ -79,6 +81,21 @@ class CalendarFragment : Fragment() {
         }
 
         return calendarElements
+    }
+
+    private fun addTodayDateIfShould(list: MutableList<CalendarAdapterElement>, notes: List<NoteModel>) {
+        val firstCalendar = Calendar.getInstance()
+        firstCalendar.timeInMillis = notes[0].date!!
+
+        val todayCalendar = Calendar.getInstance()
+        todayCalendar.time = Date()
+
+        if (isSameDate(firstCalendar, todayCalendar)) {
+            return
+        }
+
+        list.add(CalendarAdapterElement(true, null, todayCalendar))
+        list.add(CalendarAdapterElement(false, null, null))
     }
 
     private fun hasDate(list: List<CalendarAdapterElement>, dateTimestamp: Long) : Boolean {
