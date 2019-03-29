@@ -20,7 +20,6 @@ import android.view.animation.AnimationUtils
 import javax.inject.Inject
 
 import dagger.android.support.AndroidSupportInjection
-import eu.napcode.gonoteit.R
 import eu.napcode.gonoteit.di.modules.viewmodel.ViewModelFactory
 import eu.napcode.gonoteit.model.note.NoteModel
 import eu.napcode.gonoteit.repository.Resource
@@ -34,6 +33,8 @@ import eu.napcode.gonoteit.ui.note.NoteActivity.Companion.NOTE_ID_KEY
 import eu.napcode.gonoteit.utils.RevealActivityHelper.REVEAL_X_KEY
 import eu.napcode.gonoteit.utils.RevealActivityHelper.REVEAL_Y_KEY
 import kotlinx.android.synthetic.main.fragment_notes.*
+import eu.napcode.gonoteit.R
+
 
 class NotesFragment : Fragment(), NotesAdapter.NoteListener {
 
@@ -107,6 +108,11 @@ class NotesFragment : Fragment(), NotesAdapter.NoteListener {
         setupRecyclerView()
 
         createFab.setOnClickListener { v -> displayCreateActivity() }
+
+        swipeRefresh.setOnRefreshListener {
+            swipeRefresh.isRefreshing = false
+            viewModel!!.refresh()
+        }
     }
 
     private fun displayCreateActivity() {

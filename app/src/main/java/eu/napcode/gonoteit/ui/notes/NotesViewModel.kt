@@ -21,4 +21,8 @@ constructor(val notesRepository: NotesRepository) : ViewModel() {
     fun deleteNote(id: Long?): DeletedResult {
         return notesRepository.deleteNote(id)
     }
+
+    fun refresh() {
+        notesRepository.getNotes()
+    }
 }
