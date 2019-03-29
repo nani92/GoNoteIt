@@ -2,14 +2,13 @@ package eu.napcode.gonoteit.ui.calendar
 
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
-import android.arch.paging.PagedList
 import android.content.Context
-import android.content.res.Configuration
+import android.content.Intent
 import android.os.Bundle
+import android.support.v4.app.ActivityOptionsCompat
 import android.support.v4.app.Fragment
-import android.support.v7.widget.GridLayoutManager
+import android.support.v4.util.Pair
 import android.support.v7.widget.LinearLayoutManager
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,12 +20,12 @@ import dagger.android.support.AndroidSupportInjection
 import eu.napcode.gonoteit.R
 import eu.napcode.gonoteit.di.modules.viewmodel.ViewModelFactory
 import eu.napcode.gonoteit.model.note.NoteModel
-import eu.napcode.gonoteit.ui.notes.NotesFragment
+import eu.napcode.gonoteit.ui.note.NoteActivity
 import eu.napcode.gonoteit.utils.isSameDate
 import kotlinx.android.synthetic.main.fragment_calendar.*
 import java.util.*
 
-class CalendarFragment : Fragment() {
+class CalendarFragment : Fragment(), CalendarAdapter.CalendarEventListener {
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
@@ -120,9 +119,20 @@ class CalendarFragment : Fragment() {
     private fun setupRecyclerView() {
         calendarRecyclerView.layoutManager = LinearLayoutManager(context)
 
-        this.calendarAdapter = CalendarAdapter(this.context!!)
+        this.calendarAdapter = CalendarAdapter(this.context!!, this)
         calendarRecyclerView.adapter = calendarAdapter
 
         calendarRecyclerView.layoutAnimation = AnimationUtils.loadLayoutAnimation(context, R.anim.recycler_view_animation)
+    }
+
+    override fun onClickNote(noteModel: NoteModel, vararg sharedElementPairs: Pair<View, String>) {
+        val intent = Intent(context, NoteActivity::class.java)
+        intent.putExtra(NoteActivity.NOTE_ID_KEY, noteModel.id)
+
+        val optionsCompat = ActivityOptionsCompat
+                .makeSceneTransitionAnimation(activity!!, *sharedElementPairs)
+        optionsCompat.toBundle()
+
+        startActivity(intent, optionsCompat.toBundle())
     }
 }

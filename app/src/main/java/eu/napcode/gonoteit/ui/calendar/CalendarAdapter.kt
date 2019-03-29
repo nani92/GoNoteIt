@@ -5,6 +5,7 @@ import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
 import android.support.annotation.LayoutRes
 import android.support.v4.content.ContextCompat
+import android.support.v4.util.Pair
 import android.support.v7.widget.RecyclerView
 import android.view.Gravity
 import android.view.LayoutInflater
@@ -13,6 +14,8 @@ import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
 import eu.napcode.gonoteit.R
+import eu.napcode.gonoteit.databinding.ItemNoteBinding
+import eu.napcode.gonoteit.model.note.NoteModel
 import eu.napcode.gonoteit.utils.dateFormat
 import eu.napcode.gonoteit.utils.isSameDate
 import eu.napcode.gonoteit.utils.timeFormat
@@ -20,7 +23,7 @@ import kotlinx.android.synthetic.main.item_calendar_event.view.*
 import kotlinx.android.synthetic.main.item_date.view.*
 import java.util.*
 
-class CalendarAdapter(var context: Context) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class CalendarAdapter(var context: Context, var listener: CalendarEventListener) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     var calendarElements: List<CalendarAdapterElement> = listOf()
         set(value) {
@@ -76,10 +79,7 @@ class CalendarAdapter(var context: Context) : RecyclerView.Adapter<RecyclerView.
         fun bind(position: Int) {
 
             if (calendarElements[position].note == null) {
-                itemView.eventTitleTextView.visibility = GONE
-                itemView.eventHourTextView.visibility = GONE
-                itemView.divider.visibility = GONE
-                itemView.noEvents.visibility = VISIBLE
+                displayNoEventsToday(itemView)
 
                 return
             }
@@ -91,24 +91,47 @@ class CalendarAdapter(var context: Context) : RecyclerView.Adapter<RecyclerView.
             }
 
             val note = calendarElements[position].note!!
-            itemView.eventTitleTextView.visibility = VISIBLE
-            itemView.eventHourTextView.visibility = VISIBLE
-            itemView.noEvents.visibility = GONE
+            displayEvent(itemView, note)
 
-            itemView.eventTitleTextView.text = note.title
-            var calendar = Calendar.getInstance()
-            calendar.timeInMillis = note.date!!
-            itemView.eventHourTextView.text = timeFormat.format(calendar.time)
-            itemView.eventHourTextView.setPadding(0, 0, 0, 0)
-            itemView.eventTitleTextView.setPadding(0, 0, 0, 0)
-
-            if (position == calendarElements.size - 1
-                    || calendarElements[position + 1].isDate) {
-                val padding = context.resources.getDimension(R.dimen.base_margin)
-                itemView.eventHourTextView.setPadding(0, 0, 0, padding.toInt())
-                itemView.eventTitleTextView.setPadding(0, 0, 0, padding.toInt())
-            }
+            displayBiggerPaddingIfLast(itemView, position)
         }
+    }
+
+    private fun displayNoEventsToday(itemView: View) {
+        itemView.eventTitleTextView.visibility = GONE
+        itemView.eventHourTextView.visibility = GONE
+        itemView.divider.visibility = GONE
+        itemView.noEvents.visibility = VISIBLE
+    }
+
+    private fun displayEvent(itemView: View, note: NoteModel) {
+        itemView.eventTitleTextView.visibility = VISIBLE
+        itemView.eventHourTextView.visibility = VISIBLE
+        itemView.noEvents.visibility = GONE
+
+        itemView.eventTitleTextView.text = note.title
+        var calendar = Calendar.getInstance()
+        calendar.timeInMillis = note.date!!
+        itemView.eventHourTextView.text = timeFormat.format(calendar.time)
+        itemView.eventHourTextView.setPadding(0, 0, 0, 0)
+        itemView.eventTitleTextView.setPadding(0, 0, 0, 0)
+
+        itemView.eventContainer.setOnClickListener {
+            listener.onClickNote(note, getSharedElementPairs(itemView))
+        }
+    }
+
+    private fun displayBiggerPaddingIfLast(itemView: View, position: Int) {
+        if (position == calendarElements.size - 1
+                || calendarElements[position + 1].isDate) {
+            val padding = context.resources.getDimension(R.dimen.base_margin)
+            itemView.eventHourTextView.setPadding(0, 0, 0, padding.toInt())
+            itemView.eventTitleTextView.setPadding(0, 0, 0, padding.toInt())
+        }
+    }
+
+    private fun getSharedElementPairs(itemView: View): Pair<View, String> {
+        return Pair(itemView.eventTitleTextView, context.getString(R.string.transition_note_title))
     }
 
     private fun ViewGroup.inflate(@LayoutRes layoutRes: Int, attachToRoot: Boolean = false): View {
@@ -118,5 +141,9 @@ class CalendarAdapter(var context: Context) : RecyclerView.Adapter<RecyclerView.
     companion object {
         const val LAYOUT_DATE = 100
         const val LAYOUT_EVENT = 101
+    }
+
+    interface CalendarEventListener {
+        fun onClickNote(noteModel: NoteModel, vararg sharedElementPairs: Pair<View, String>)
     }
 }
