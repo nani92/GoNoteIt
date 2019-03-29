@@ -48,10 +48,13 @@ class CalendarFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
         this.viewModel = ViewModelProviders
                 .of(this, this.viewModelFactory)
                 .get(CalendarViewModel::class.java)
+    }
+
+    override fun onStart() {
+        super.onStart()
 
         setupRecyclerView()
         subscribeToEvents()
