@@ -60,6 +60,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setupDrawer();
         setupUser();
 
+        if ("android.intent.action.CALENDAR".equals(getIntent().getAction())) {
+            displayCalendar();
+
+            return;
+        }
+
         if (savedInstanceState == null) {
             displayFirstScreen();
         }
@@ -169,6 +175,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         fragmentToSet = NotesFragment.Companion.newInstance(false);
         displayFragment();
         this.binding.navigationView.getMenu().getItem(0).setChecked(true);
+    }
+
+    private void displayCalendar() {
+        fragmentToSet = new CalendarFragment();
+        displayFragment();
+        this.binding.navigationView.getMenu().getItem(2).setChecked(true);
     }
 
     @Override
