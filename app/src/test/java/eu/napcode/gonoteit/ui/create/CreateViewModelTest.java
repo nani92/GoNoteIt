@@ -39,8 +39,8 @@ public class CreateViewModelTest {
     public void init() {
         createViewModel = new CreateViewModel(notesRepository);
 
-        Mockito.when(notesRepository.createNote(Mockito.any()))
-                .thenReturn(new MutableLiveData<Resource>());
+//        Mockito.when(notesRepository.createNote(Mockito.any()))
+//                .thenReturn(new MutableLiveData<Resource>());
     }
 
     @Test
