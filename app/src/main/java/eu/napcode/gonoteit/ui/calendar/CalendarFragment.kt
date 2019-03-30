@@ -21,6 +21,8 @@ import eu.napcode.gonoteit.R
 import eu.napcode.gonoteit.di.modules.viewmodel.ViewModelFactory
 import eu.napcode.gonoteit.model.note.NoteModel
 import eu.napcode.gonoteit.ui.note.NoteActivity
+import eu.napcode.gonoteit.utils.getTodayCalendar
+import eu.napcode.gonoteit.utils.getTomorrowCalendar
 import eu.napcode.gonoteit.utils.isSameDate
 import kotlinx.android.synthetic.main.fragment_calendar.*
 import java.util.*
@@ -82,6 +84,8 @@ class CalendarFragment : Fragment(), CalendarAdapter.CalendarEventListener {
             calendarElements.add(CalendarAdapterElement(false, noteModel, null))
         }
 
+        addTomorrowDateIfShould(calendarElements)
+
         return calendarElements
     }
 
@@ -89,8 +93,7 @@ class CalendarFragment : Fragment(), CalendarAdapter.CalendarEventListener {
         val firstCalendar = Calendar.getInstance()
         firstCalendar.timeInMillis = notes[0].date!!
 
-        val todayCalendar = Calendar.getInstance()
-        todayCalendar.time = Date()
+        val todayCalendar = getTodayCalendar()
 
         if (isSameDate(firstCalendar, todayCalendar)) {
             return
@@ -98,6 +101,30 @@ class CalendarFragment : Fragment(), CalendarAdapter.CalendarEventListener {
 
         list.add(CalendarAdapterElement(true, null, todayCalendar))
         list.add(CalendarAdapterElement(false, null, null))
+    }
+
+    private fun addTomorrowDateIfShould(list: MutableList<CalendarAdapterElement>) {
+
+        if (hasDate(list, getTomorrowCalendar().timeInMillis)) {
+            return
+        }
+
+        if (list[1].note == null) {
+            list.add(2, CalendarAdapterElement(true, null, getTomorrowCalendar()))
+            list.add(3, CalendarAdapterElement(false, null, null))
+
+            return
+        }
+
+        for (i in 2 until list.size ) {
+
+            if (list[i].isDate) {
+                list.add(i, CalendarAdapterElement(true, null, getTomorrowCalendar()))
+                list.add(i+1, CalendarAdapterElement(false, null, null))
+
+                return
+            }
+        }
     }
 
     private fun hasDate(list: List<CalendarAdapterElement>, dateTimestamp: Long) : Boolean {

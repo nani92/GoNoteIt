@@ -35,3 +35,26 @@ public fun isSameDate(cal: Calendar, cal2: Calendar) : Boolean {
     return cal.get(Calendar.DAY_OF_YEAR) == cal2.get(Calendar.DAY_OF_YEAR) &&
             cal.get(Calendar.YEAR) == cal2.get(Calendar.YEAR);
 }
+
+fun getTodayCalendar() : Calendar {
+    val todayCalendar = Calendar.getInstance()
+    todayCalendar.time = Date()
+
+    return todayCalendar
+}
+
+fun getTomorrowCalendar() : Calendar {
+    val tomorrowCalendar = Calendar.getInstance()
+    tomorrowCalendar.time = Date()
+    tomorrowCalendar.add(Calendar.DAY_OF_YEAR, 1)
+
+    return tomorrowCalendar
+}
+
+fun getDayAfterTomorrowCalendar() : Calendar {
+    val calendar = Calendar.getInstance()
+    calendar.time = Date()
+    calendar.add(Calendar.DAY_OF_YEAR, 2)
+
+    return calendar
+}

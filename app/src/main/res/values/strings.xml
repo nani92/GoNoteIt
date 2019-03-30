@@ -110,5 +110,7 @@
 
     <string name="today">TODAY</string>
     <string name="no_events_today">There is no events for today. \n Have a great day!</string>
+    <string name="tomorrow">TOMOROW</string>
+    <string name="no_events_tomorrow">There is no events for tomorrow.</string>
 
 </resources>

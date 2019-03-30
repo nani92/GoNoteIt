@@ -2,4 +2,6 @@
 <resources>
     <string name="today">DZISIAJ</string>
     <string name="no_events_today">Brak wydarzeń na dziś.\n Miłego dnia!</string>
+    <string name="tomorrow">JUTRO</string>
+    <string name="no_events_tomorrow">Brak wydarzeń na jutro</string>
 </resources>

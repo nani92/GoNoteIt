@@ -2,23 +2,18 @@ package eu.napcode.gonoteit.ui.calendar
 
 import android.content.Context
 import android.graphics.drawable.ColorDrawable
-import android.graphics.drawable.Drawable
 import android.support.annotation.LayoutRes
 import android.support.v4.content.ContextCompat
 import android.support.v4.util.Pair
 import android.support.v7.widget.RecyclerView
-import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
 import eu.napcode.gonoteit.R
-import eu.napcode.gonoteit.databinding.ItemNoteBinding
 import eu.napcode.gonoteit.model.note.NoteModel
-import eu.napcode.gonoteit.utils.dateFormat
-import eu.napcode.gonoteit.utils.isSameDate
-import eu.napcode.gonoteit.utils.timeFormat
+import eu.napcode.gonoteit.utils.*
 import kotlinx.android.synthetic.main.item_calendar_event.view.*
 import kotlinx.android.synthetic.main.item_date.view.*
 import java.util.*
@@ -60,26 +55,38 @@ class CalendarAdapter(var context: Context, var listener: CalendarEventListener)
     inner class DateViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bind(position: Int) {
             val date = dateFormat.format(calendarElements[position].date!!.time)
-            val today = Calendar.getInstance()
-            today.time = Date()
+            val today = getTodayCalendar()
+            val tomorrow = getTomorrowCalendar()
 
-            if(isSameDate(calendarElements[position].date!!, today)) {
-                val todayString = context.getString(R.string.today)
-                val displayText = "$todayString  $date"
-                itemView.headerTextView.text = displayText
-
-                itemView.headerTextView.background = ColorDrawable(ContextCompat.getColor(context, R.color.colorAccent))
-            } else {
-                itemView.headerTextView.text = date
+            when {
+                isSameDate(calendarElements[position].date!!, today) -> displayDateForToday(date, itemView)
+                isSameDate(calendarElements[position].date!!, tomorrow) -> displayDateForTomorrow(date, itemView)
+                else -> itemView.headerTextView.text = date
             }
         }
+    }
+
+    fun displayDateForToday(date: String, itemView: View) {
+        val todayString = context.getString(R.string.today)
+        val displayText = "$todayString  $date"
+        itemView.headerTextView.text = displayText
+
+        itemView.headerTextView.background = ColorDrawable(ContextCompat.getColor(context, R.color.colorAccent))
+    }
+
+    fun displayDateForTomorrow(date: String, itemView: View) {
+        val tomorrowString = context.getString(R.string.tomorrow)
+        val displayText = "$tomorrowString  $date"
+        itemView.headerTextView.text = displayText
+
+        itemView.headerTextView.background = ColorDrawable(ContextCompat.getColor(context, R.color.colorPrimaryDark))
     }
 
     inner class EventViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bind(position: Int) {
 
             if (calendarElements[position].note == null) {
-                displayNoEventsToday(itemView)
+                displayNoEvents(calendarElements[position-1].date!!, itemView)
 
                 return
             }
@@ -97,11 +104,30 @@ class CalendarAdapter(var context: Context, var listener: CalendarEventListener)
         }
     }
 
+    private fun displayNoEvents(calendar: Calendar, itemView: View) {
+
+        if (isSameDate(calendar, getTodayCalendar())) {
+            displayNoEventsToday(itemView)
+        } else {
+            displayNoEventsTomorrow(itemView)
+        }
+    }
+
     private fun displayNoEventsToday(itemView: View) {
+        setNoEventsViews(itemView)
+        itemView.noEvents.text = context.getString(R.string.no_events_today)
+    }
+
+    private fun setNoEventsViews(itemView: View) {
         itemView.eventTitleTextView.visibility = GONE
         itemView.eventHourTextView.visibility = GONE
         itemView.divider.visibility = GONE
         itemView.noEvents.visibility = VISIBLE
+    }
+
+    private fun displayNoEventsTomorrow(itemView: View) {
+        setNoEventsViews(itemView)
+        itemView.noEvents.text = context.getString(R.string.no_events_tomorrow)
     }
 
     private fun displayEvent(itemView: View, note: NoteModel) {
