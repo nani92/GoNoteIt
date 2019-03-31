@@ -260,4 +260,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public void hideProgressBar() {
         binding.progressBar.setVisibility(GONE);
     }
+
+    public void displayMessage(String message) {
+        Snackbar.make(binding.mainContainerFrame, message, Snackbar.LENGTH_LONG).show();
+    }
 }

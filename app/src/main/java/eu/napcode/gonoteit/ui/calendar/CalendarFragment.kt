@@ -1,5 +1,6 @@
 package eu.napcode.gonoteit.ui.calendar
 
+import android.app.Activity
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
@@ -20,10 +21,12 @@ import dagger.android.support.AndroidSupportInjection
 import eu.napcode.gonoteit.R
 import eu.napcode.gonoteit.di.modules.viewmodel.ViewModelFactory
 import eu.napcode.gonoteit.model.note.NoteModel
+import eu.napcode.gonoteit.repository.Resource
 import eu.napcode.gonoteit.ui.note.NoteActivity
 import eu.napcode.gonoteit.utils.getTodayCalendar
 import eu.napcode.gonoteit.utils.getTomorrowCalendar
 import eu.napcode.gonoteit.utils.isSameDate
+import eu.napcode.gonoteit.utils.processResource
 import kotlinx.android.synthetic.main.fragment_calendar.*
 import java.util.*
 
@@ -67,6 +70,8 @@ class CalendarFragment : Fragment(), CalendarAdapter.CalendarEventListener {
         calendarResult.notes.observe(this, Observer<List<NoteModel>> {
             calendarAdapter!!.calendarElements = getCalendarElementsFromResult(it!!)
         })
+
+        calendarResult.resource.observe(this, Observer<Resource<*>> { processResource(activity as Activity, it!!) })
     }
 
     private fun getCalendarElementsFromResult(notes: List<NoteModel>) : List<CalendarAdapterElement> {

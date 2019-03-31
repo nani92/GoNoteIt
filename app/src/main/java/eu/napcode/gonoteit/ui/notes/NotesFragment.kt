@@ -1,12 +1,12 @@
 package eu.napcode.gonoteit.ui.notes
 
+import android.app.Activity
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.arch.paging.PagedList
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.support.design.widget.Snackbar
 import android.support.v4.app.ActivityOptionsCompat
 import android.support.v4.app.Fragment
 import android.support.v4.util.Pair
@@ -28,12 +28,14 @@ import eu.napcode.gonoteit.ui.note.NoteActivity
 
 import android.content.res.Configuration.ORIENTATION_LANDSCAPE
 import eu.napcode.gonoteit.repository.Resource.Status.ERROR
-import eu.napcode.gonoteit.ui.main.MainActivityProgressBarManager.manageProgressBarDisplaying
 import eu.napcode.gonoteit.ui.note.NoteActivity.Companion.NOTE_ID_KEY
 import eu.napcode.gonoteit.utils.RevealActivityHelper.REVEAL_X_KEY
 import eu.napcode.gonoteit.utils.RevealActivityHelper.REVEAL_Y_KEY
 import kotlinx.android.synthetic.main.fragment_notes.*
 import eu.napcode.gonoteit.R
+import eu.napcode.gonoteit.ui.main.displayMessage
+import eu.napcode.gonoteit.ui.main.manageProgressBarDisplaying
+import eu.napcode.gonoteit.utils.processResource
 
 
 class NotesFragment : Fragment(), NotesAdapter.NoteListener {
@@ -74,7 +76,7 @@ class NotesFragment : Fragment(), NotesAdapter.NoteListener {
             this.viewModel!!.notes
         }
         notesResult.notes.observe(this, Observer<PagedList<NoteModel>> { this.displayNotes(it) })
-        notesResult.resource.observe(this, Observer<Resource<*>> { this.processResource(it!!) })
+        notesResult.resource.observe(this, Observer<Resource<*>> { processResource(activity as Activity, it!!) })
     }
 
     private fun displayNotes(noteModels: PagedList<NoteModel>?) {
@@ -84,24 +86,6 @@ class NotesFragment : Fragment(), NotesAdapter.NoteListener {
             recyclerViewLoadAnimationDisplayed = true
             recyclerView.scheduleLayoutAnimation()
         }
-    }
-
-    private fun processResource(resource: Resource<*>) {
-        manageProgressBarDisplaying(activity, resource.status)
-
-        if (resource.status == ERROR) {
-            displayMessage(resource.message)
-        }
-    }
-
-    private fun displayMessage(message: String?) {
-        var message = message
-
-        if (message == null || message.isEmpty()) {
-            message = getString(R.string.general_error_downloading)
-        }
-
-        Snackbar.make(constraintLayout, message, Snackbar.LENGTH_LONG).show()
     }
 
     private fun setupViews() {
@@ -172,10 +156,10 @@ class NotesFragment : Fragment(), NotesAdapter.NoteListener {
     }
 
     private fun processDeleteResponse(booleanResource: Resource<*>) {
-        manageProgressBarDisplaying(activity, booleanResource.status)
+        manageProgressBarDisplaying(activity as Activity, booleanResource.status)
 
         if (booleanResource.status == ERROR) {
-            displayMessage(booleanResource.message)
+            displayMessage(activity as Activity, booleanResource.message)
         }
     }
 

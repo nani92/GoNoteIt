@@ -18,8 +18,8 @@ import eu.napcode.gonoteit.R;
 import eu.napcode.gonoteit.databinding.FragmentAboutBinding;
 
 import static android.content.Intent.ACTION_VIEW;
-import static eu.napcode.gonoteit.ui.main.MainActivityProgressBarManager.hideProgressBar;
-import static eu.napcode.gonoteit.ui.main.MainActivityProgressBarManager.showProgressBar;
+import static eu.napcode.gonoteit.ui.main.MainActivityProgressBarManagerKt.hideProgressBar;
+import static eu.napcode.gonoteit.ui.main.MainActivityProgressBarManagerKt.showProgressBar;
 
 public class AboutFragment extends Fragment implements GithubDescriptionDownloadAsyncTask.GithubDescriptionListener {
 

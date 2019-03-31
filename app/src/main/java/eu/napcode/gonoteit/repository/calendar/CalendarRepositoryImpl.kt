@@ -22,8 +22,8 @@ constructor(private val calendarLocal: CalendarLocal, private val notesRepositor
     }
 
     override fun getWeekEvents(): CalendarResult {
-        notesRepository.getNotes()
+        var notesResult = notesRepository.getNotes()
 
-        return CalendarResult(calendarLocal.getCurrentWeek(), resource)
+        return CalendarResult(calendarLocal.getCurrentWeek(), notesResult.resource)
     }
 }
