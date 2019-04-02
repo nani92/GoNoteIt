@@ -9,3 +9,5 @@
 /app/release
 /captures
 .externalNativeBuild
+sentry.properties
+
