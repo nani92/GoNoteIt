@@ -95,14 +95,23 @@ class CalendarFragment : Fragment(), CalendarAdapter.CalendarEventListener {
     }
 
     private fun addTodayDateIfShould(list: MutableList<CalendarAdapterElement>, notes: List<NoteModel>) {
+        val todayCalendar = getTodayCalendar()
+
+        if (notes.isEmpty()) {
+            list.add(CalendarAdapterElement(true, null, todayCalendar))
+            list.add(CalendarAdapterElement(false, null, null))
+
+            return
+        }
+
         val firstCalendar = Calendar.getInstance()
         firstCalendar.timeInMillis = notes[0].date!!
 
-        val todayCalendar = getTodayCalendar()
 
         if (isSameDate(firstCalendar, todayCalendar)) {
             return
         }
+
 
         list.add(CalendarAdapterElement(true, null, todayCalendar))
         list.add(CalendarAdapterElement(false, null, null))
